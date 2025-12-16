@@ -40,6 +40,8 @@ bun add github:colbymchenry/react-ui-library#develop
 bun add github:colbymchenry/react-ui-library#a1b2c3d
 ```
 
+> **Having import issues?** See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for common solutions.
+
 ## 📦 Setup
 
 ### 1. Install Peer Dependencies
@@ -282,8 +284,9 @@ bun run build
 
 This will:
 1. Clean the dist folder
-2. Compile TypeScript
-3. Copy CSS files to dist
+2. Bundle all components into a single ESM module using Bun's bundler
+3. Generate TypeScript declarations
+4. Copy CSS files and assets to dist
 
 ### Type Check
 

@@ -1,6 +1,6 @@
 {
 	"name": "@colbymchenry/react-ui-library",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A modern React component library with Tailwind CSS and TypeScript support",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -9,20 +9,20 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
-			"require": "./dist/index.js"
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
 		},
-		"./styles": "./dist/styles/index.css"
+		"./styles": "./dist/styles/index.css",
+		"./assets/*": "./dist/assets/*",
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist",
-		"src/assets",
-		"README.md"
+		"README.md",
+		"LICENSE"
 	],
 	"scripts": {
-		"build": "bun run build:clean && bun run build:ts && bun run build:css",
-		"build:clean": "rm -rf dist",
-		"build:ts": "tsc",
-		"build:css": "mkdir -p dist/styles && cp -r src/styles/* dist/styles/",
+		"build": "bun run build.ts",
 		"type-check": "tsc --noEmit",
 		"prepublishOnly": "bun run build"
 	},
