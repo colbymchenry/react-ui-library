@@ -1,0 +1,292 @@
+/**
+ * Dialog Component Styles
+ * BEM naming convention: .dialog (block), .dialog-content (element)
+ * Provides a modern, accessible dialog/modal experience
+ */
+
+/* Dialog container - hidden by default when not open */
+.dialog:not([open]) {
+	display: none;
+}
+
+/* Dialog backdrop - semi-transparent overlay (only visible when open) */
+.dialog[open]::backdrop {
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(4px);
+	animation: fadeIn 0.2s ease-out;
+}
+
+/* Dialog container - full viewport, centered content (only when open) */
+.dialog[open] {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100dvw;
+	height: 100dvh;
+	max-width: 100%;
+	max-height: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	animation: slideUpFadeIn 0.8s cubic-bezier(0.44, 0, 0.037, 1.004);
+}
+
+/**
+ * Dialog Wrapper
+ * Main container with flexbox layout for header, body, footer
+ * Has off-white background to contrast with white header/footer
+ */
+.dialog-wrapper {
+	position: relative;
+	background-color: #f9fafb;
+	border-radius: 1rem;
+	max-width: 90vw;
+	width: 100%;
+	max-width: 640px;
+	box-shadow:
+		0 20px 25px -5px rgba(0, 0, 0, 0.1),
+		0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	display: flex;
+	flex-direction: column;
+	max-height: 90vh;
+	overflow: hidden;
+}
+
+.dark .dialog-wrapper {
+	background-color: #111827;
+	box-shadow:
+		0 20px 25px -5px rgba(0, 0, 0, 0.4),
+		0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Fixed Header
+ * Sticky header with title, subtitle, and close button
+ * Pure white background to contrast with off-white body
+ */
+.dialog-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding: 1.5rem;
+	border-bottom: 1px solid var(--color-neutral-200, #e5e7eb);
+	background-color: #ffffff;
+	flex-shrink: 0;
+}
+
+.dark .dialog-header {
+	border-bottom-color: var(--color-neutral-700, #374151);
+	background-color: #1f2937;
+}
+
+.dialog-header-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.dialog-title {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--color-neutral-900, #111827);
+	line-height: 1.2;
+}
+
+.dark .dialog-title {
+	color: var(--color-neutral-100, #f3f4f6);
+}
+
+.dialog-subtitle {
+	margin: 0.25rem 0 0 0;
+	font-size: 0.875rem;
+	color: var(--color-neutral-600, #4b5563);
+	line-height: 1.4;
+}
+
+.dark .dialog-subtitle {
+	color: var(--color-neutral-400, #9ca3af);
+}
+
+.dialog-close-button {
+	flex-shrink: 0;
+	margin-left: 1rem;
+	padding: 0;
+	border: none;
+	background: none;
+	cursor: pointer;
+	color: var(--color-neutral-500, #6b7280);
+	transition: color 0.2s ease;
+	line-height: 1;
+}
+
+.dialog-close-button:hover {
+	color: var(--color-neutral-900, #111827);
+}
+
+.dark .dialog-close-button {
+	color: var(--color-neutral-400, #9ca3af);
+}
+
+.dark .dialog-close-button:hover {
+	color: var(--color-neutral-200, #e5e7eb);
+}
+
+.dialog-close-button .material-symbols-outlined {
+	font-size: 24px;
+	line-height: 1;
+}
+
+/**
+ * Scrollable Body
+ * Main content area with independent scroll
+ */
+.dialog-body {
+	flex: 1;
+	overflow-y: auto;
+	padding: 1.5rem;
+	min-height: 0;
+}
+
+.dialog-description {
+	margin: 0 0 1rem 0;
+	font-size: 0.875rem;
+	color: var(--color-neutral-600, #4b5563);
+	line-height: 1.5;
+}
+
+.dark .dialog-description {
+	color: var(--color-neutral-400, #9ca3af);
+}
+
+/**
+ * Fixed Footer
+ * Sticky footer with action buttons
+ * Pure white background to contrast with off-white body
+ */
+.dialog-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.75rem;
+	padding: 1.5rem;
+	border-top: 1px solid var(--color-neutral-200, #e5e7eb);
+	background-color: #ffffff;
+	flex-shrink: 0;
+}
+
+.dark .dialog-footer {
+	border-top-color: var(--color-neutral-700, #374151);
+	background-color: #1f2937;
+}
+
+/* Animation: Backdrop fade in */
+/* Moved to animations.css as fadeIn */
+
+/* Animation: Dialog content fade and scale in */
+/* Moved to animations.css as slideUpFadeIn */
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+	.dialog-content-header {
+		padding-top: 1.5rem;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+	.dialog-content {
+		max-width: 95vw;
+		border-radius: 0.75rem;
+	}
+
+	.dialog-content > h2 {
+		font-size: 1.25rem;
+	}
+
+	.dialog-content > p {
+		font-size: 0.9rem;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+}
+
+/* Focus styles for accessibility */
+.dialog:focus {
+	outline: none;
+}
+
+.dialog-content:focus-visible {
+	outline: 2px solid var(--color-primary-500, #3b82f6);
+	outline-offset: 2px;
+}
+
+/* Scrollbar styling for dialog body */
+.dialog-body::-webkit-scrollbar {
+	width: 8px;
+}
+
+.dialog-body::-webkit-scrollbar-track {
+	background: var(--color-neutral-100, #f3f4f6);
+	border-radius: 4px;
+}
+
+.dialog-body::-webkit-scrollbar-thumb {
+	background: var(--color-neutral-300, #d1d5db);
+	border-radius: 4px;
+}
+
+.dialog-body::-webkit-scrollbar-thumb:hover {
+	background: var(--color-neutral-400, #9ca3af);
+}
+
+.dark .dialog-body::-webkit-scrollbar-track {
+	background: var(--color-neutral-900, #111827);
+}
+
+.dark .dialog-body::-webkit-scrollbar-thumb {
+	background: var(--color-neutral-700, #374151);
+}
+
+.dark .dialog-body::-webkit-scrollbar-thumb:hover {
+	background: var(--color-neutral-600, #4b5563);
+}
+
+/* Edit Account Form Layout Styles */
+.edit-account-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	margin-top: 1rem;
+}
+
+.edit-account-form-actions {
+	display: flex;
+	gap: 1rem;
+	justify-content: flex-end;
+	margin-top: 0.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--color-neutral-200, #d1d1d1);
+}
+
+.dark .edit-account-form-actions {
+	border-top-color: var(--color-neutral-700, #374151);
+}
+
+.edit-account-form-submit {
+	min-width: 120px;
+}
+
+/* Responsive adjustments for edit account form */
+@media (max-width: 768px) {
+	.edit-account-form-actions {
+		flex-direction: column-reverse;
+	}
+
+	.edit-account-form-submit,
+	.edit-account-form-cancel {
+		width: 100%;
+	}
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"ui-card.d.ts","sourceRoot":"","sources":["../../../src/components/ui-card/ui-card.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,cAAc,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAGvD,UAAU,SAAU,SAAQ,cAAc,CAAC,cAAc,CAAC;IACzD,QAAQ,EAAE,SAAS,CAAC;CACpB;AAQD,MAAM,CAAC,OAAO,UAAU,IAAI,CAAC,EAAE,SAAS,EAAE,QAAQ,EAAE,GAAG,KAAK,EAAE,EAAE,SAAS,2CAYxE"}

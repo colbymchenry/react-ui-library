@@ -24,6 +24,7 @@
 	"scripts": {
 		"build": "bun run build.ts",
 		"type-check": "tsc --noEmit",
+		"prepare": "bun run build",
 		"prepublishOnly": "bun run build"
 	},
 	"peerDependencies": {

@@ -1,0 +1,168 @@
+:root {
+	/* Default Animation Variables */
+	--animate-duration: 1s;
+	--animate-delay: 0s;
+	--animate-repeat: 1;
+	--animate-fill: forwards;
+	--animate-timing: ease;
+
+	/* Complex Easings */
+	--ease-spring: linear(
+		0,
+		0.008 1.2%,
+		0.026 2.5%,
+		0.11 5.5%,
+		0.584 16.8%,
+		0.779 22.4%,
+		0.851 25.1%,
+		0.912 27.9%,
+		0.958 30.7%,
+		0.994 33.7%,
+		1.031 39.1%,
+		1.043 45.6%,
+		1.004 73.6%,
+		1
+	);
+
+	--ease-elastic: linear(
+		0,
+		-0.008 11%,
+		-0.025 14.6%,
+		-0.054 17.9%,
+		-0.152 24.1%,
+		-0.408 35%,
+		-0.439 37.5%,
+		-0.436 39.6%,
+		-0.405 41.3%,
+		-0.35 42.8%,
+		-0.156 45.6%,
+		0.153 48.1%,
+		1.05 53.4%,
+		1.284 56%,
+		1.413 59%,
+		1.441 61.5%,
+		1.418 64.4%,
+		1.146 76.2%,
+		1.047 82.7%,
+		1.023 85.8%,
+		1.008 89.3%,
+		1
+	);
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes scaleFadeIn {
+	from {
+		transform: scale(0.6);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideUpFadeIn {
+	from {
+		transform: translateY(10rem);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes dropdownScaleFadeIn {
+	from {
+		transform: scale(0.96) translateY(-4px);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes tooltipScaleFadeIn {
+	0% {
+		transform: translateX(-50%) scale(0.6);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(-50%) scale(1);
+		opacity: 1;
+	}
+}
+
+/* Utility Classes */
+[class*="animate-"] {
+	animation-duration: var(--animate-duration);
+	animation-delay: var(--animate-delay);
+	animation-iteration-count: var(--animate-repeat);
+	animation-fill-mode: var(--animate-fill);
+	animation-timing-function: var(--animate-timing);
+}
+
+.animate-fade-in {
+	animation-name: fadeIn;
+}
+
+.animate-scale-fade-in {
+	animation-name: scaleFadeIn;
+}
+
+.animate-fade-in-up {
+	animation-name: fadeInUp;
+}
+
+.animate-slide-up-fade-in {
+	animation-name: slideUpFadeIn;
+}
+
+.animate-dropdown {
+	animation-name: dropdownScaleFadeIn;
+}
+
+.animate-tooltip {
+	animation-name: tooltipScaleFadeIn;
+}
+
+/* Data Attribute Overrides */
+/* Note: attr() support for these properties is limited in some browsers. 
+   Consider using inline styles or CSS variables for broader compatibility if needed. */
+[data-animate-duration] {
+	animation-duration: attr(data-animate-duration);
+}
+
+[data-animate-delay] {
+	animation-delay: attr(data-animate-delay);
+}
+
+[data-animate-repeat] {
+	animation-iteration-count: attr(data-animate-repeat);
+}
+
+[data-animate-fill] {
+	animation-fill-mode: attr(data-animate-fill);
+}

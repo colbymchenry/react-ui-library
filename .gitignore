@@ -2,7 +2,9 @@
 node_modules/
 
 # Build output
-dist/
+# Note: dist/ is committed to support GitHub installs
+# For npm publishing, package.json "files" field controls what's included
+# dist/
 
 # TypeScript
 *.tsbuildinfo
