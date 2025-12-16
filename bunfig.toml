@@ -1,0 +1,14 @@
+# Bun configuration for component library
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Use exact versions from lockfile
+exact = true
+
+# Automatically install peer dependencies
+peer = true
+
+[install.cache]
+# Enable caching for faster installs
+disable = false
+

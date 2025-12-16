@@ -1,0 +1,53 @@
+{
+	"name": "@colbymchenry/react-ui-library",
+	"version": "1.0.0",
+	"description": "A modern React component library with Tailwind CSS and TypeScript support",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
+		},
+		"./styles": "./dist/styles/index.css"
+	},
+	"files": [
+		"dist",
+		"src/assets",
+		"README.md"
+	],
+	"scripts": {
+		"build": "bun run build:clean && bun run build:ts && bun run build:css",
+		"build:clean": "rm -rf dist",
+		"build:ts": "tsc",
+		"build:css": "mkdir -p dist/styles && cp -r src/styles/* dist/styles/",
+		"type-check": "tsc --noEmit",
+		"prepublishOnly": "bun run build"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@types/react": "^19.0.0",
+		"@types/react-dom": "^19.0.0",
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"formik": "^2.4.9"
+	},
+	"keywords": [
+		"react",
+		"components",
+		"ui",
+		"tailwind",
+		"typescript"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/colbymchenry/react-ui-library.git"
+	},
+	"license": "MIT"
+}
