@@ -1,3 +1,6 @@
+// src/index.ts
+import"./styles/index.css";
+
 // src/lib/cx.ts
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -2834,4 +2837,4 @@ export {
   AddMinus
 };
 
-//# debugId=2B310DF59E78115964756E2164756E21
+//# debugId=6ACECB1A8EFE51F064756E2164756E21

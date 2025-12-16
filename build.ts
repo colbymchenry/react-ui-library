@@ -68,7 +68,7 @@ async function buildTypeScript() {
     format: 'esm',
     splitting: true,
     sourcemap: 'external',
-    external: ['react', 'react-dom', 'formik'],
+    external: ['react', 'react-dom', 'formik', '*.css'],
     naming: {
       entry: 'index.js',
       chunk: '[name]-[hash].js',

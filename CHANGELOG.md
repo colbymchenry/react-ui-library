@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2024-12-16
+
+### Added
+- **Tailwind Preset**: New `@colbymchenry/react-ui-library/preset` export for simplified configuration
+- **Auto-Import Styles**: Styles now automatically import when you use any component
+- **Migration Guide**: Added `MIGRATION.md` for users upgrading from v1.0.2 and earlier
+
+### Changed
+- **Simplified Installation**: Reduced setup from 5+ steps to just 3 steps
+- **Tailwind Config**: Users can now use preset instead of manually copying color configuration
+- **Updated Documentation**: Rewrote `INSTALLATION.md` and `README.md` to highlight simplified setup
+
+### Improved
+- **Developer Experience**: No need to manually import styles or configure colors
+- **Flexibility**: Users can still manually configure everything if needed
+- **Backwards Compatible**: Old manual configuration still works
+
+### Developer Notes
+- Added `import "./styles/index.css"` to main entry point for auto-import
+- Created `tailwind.preset.js` with all required theme configuration
+- Updated package.json exports to include `./preset` path
+- Tailwind content scanning still required (unavoidable for JIT compilation)
+
 ## [1.0.2] - 2024-12-16
 
 ### Fixed

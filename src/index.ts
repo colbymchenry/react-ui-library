@@ -1,3 +1,9 @@
+/**
+ * Auto-import styles for the component library.
+ * This ensures styles are loaded automatically when you import any component.
+ */
+import "./styles/index.css";
+
 export { MaterialIcon } from "./components/material-icon/material-icon";
 export { Badge } from "./components/ui-badge/ui-badge";
 export { Button } from "./components/ui-button/ui-button";

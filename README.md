@@ -12,26 +12,37 @@ A modern, accessible React component library built with TypeScript and Tailwind 
 - ⚡ **Bun Optimized** - Fast builds and installs
 - 📦 **Tree Shakeable** - Import only what you need
 
-## 🚀 Installation
-
-### Install from GitHub
+## 🚀 Quick Start
 
 ```bash
-# Using Bun (recommended)
+# 1. Install the library
 bun add github:colbymchenry/react-ui-library
 
-# Using npm
-npm install github:colbymchenry/react-ui-library
-
-# Using yarn
-yarn add github:colbymchenry/react-ui-library
+# 2. Install peer dependencies
+bun add react react-dom formik
 ```
 
-### Install Specific Version/Tag
+Then add the preset to your `tailwind.config.js`:
+
+```js
+export default {
+  presets: [require('@colbymchenry/react-ui-library/preset')],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+  ],
+};
+```
+
+**That's it!** Start using components immediately. 🎉
+
+> 📚 **New to the library?** See [QUICK_START.md](./QUICK_START.md) for a guided tutorial with examples.
+
+### Install Specific Version
 
 ```bash
 # Install from a specific release tag
-bun add github:colbymchenry/react-ui-library#v1.0.0
+bun add github:colbymchenry/react-ui-library#v1.0.3
 
 # Install from a specific branch
 bun add github:colbymchenry/react-ui-library#develop
@@ -40,9 +51,9 @@ bun add github:colbymchenry/react-ui-library#develop
 bun add github:colbymchenry/react-ui-library#a1b2c3d
 ```
 
-> **Having import issues?** See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for common solutions.
+> **Having issues?** See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for solutions.
 
-## 📦 Setup
+## 📦 Quick Setup (3 Steps)
 
 ### 1. Install Peer Dependencies
 
@@ -50,50 +61,29 @@ bun add github:colbymchenry/react-ui-library#a1b2c3d
 bun add react react-dom formik
 ```
 
-### 2. Import Styles
+### 2. Configure Tailwind with Preset
 
-In your root layout or main CSS file:
-
-```tsx
-// app/layout.tsx or app/globals.css
-import '@colbymchenry/react-ui-library/styles';
-```
-
-### 3. Configure Tailwind
-
-Add the library to your `tailwind.config.js` content array:
+Update your `tailwind.config.js`:
 
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
+  presets: [require('@colbymchenry/react-ui-library/preset')],
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
+    // Required: Add library to content scanning
     './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
   ],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#D11212',
-        secondary: '#B00F0F',
-        'background-light': '#FAFAFA',
-        'background-dark': '#111827',
-        'card-light': '#FFFFFF',
-        'card-dark': '#1F2937',
-        'text-light': '#111827',
-        'text-dark': '#F3F4F6',
-        'text-muted-light': '#6B7280',
-        'text-muted-dark': '#9CA3AF',
-        'border-light': '#E5E7EB',
-        'border-dark': '#374151',
-      },
-    },
-  },
 };
 ```
 
-### 4. Add Material Icons (Optional)
+**That's it!** ✨ The preset automatically includes:
+- ✅ Dark mode configuration
+- ✅ All required color tokens
+- ✅ Component styles (auto-imported)
+
+### 3. Add Material Icons (Optional)
 
 If using components with icons (DatePicker, Dialog, etc.), add Material Symbols to your `<head>`:
 
@@ -103,6 +93,8 @@ If using components with icons (DatePicker, Dialog, etc.), add Material Symbols 
   rel="stylesheet" 
 />
 ```
+
+> **📚 Full Installation Guide:** See [INSTALLATION.md](./INSTALLATION.md) for detailed setup instructions and advanced configuration options.
 
 ## 🎨 Components
 
@@ -248,27 +240,34 @@ function Content() {
 }
 ```
 
-## 🎨 Tailwind CSS
+## 🎨 Customization
 
-This library is designed to work with Tailwind CSS. Ensure you have Tailwind configured in your consuming application with the following color variables:
+### Override Colors
+
+Use the preset and extend with your own colors:
 
 ```js
 // tailwind.config.js
 export default {
-  darkMode: 'class',
+  presets: [require('@colbymchenry/react-ui-library/preset')],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+  ],
   theme: {
     extend: {
       colors: {
-        primary: '#D11212',
-        secondary: '#B00F0F',
-        'background-light': '#FAFAFA',
-        'background-dark': '#111827',
-        // ... see documentation for full color palette
+        primary: '#FF0000', // Override library primary color
+        brand: '#123456',   // Add custom colors
       },
     },
   },
 };
 ```
+
+### Manual Configuration (Without Preset)
+
+If you prefer full control, see [INSTALLATION.md](./INSTALLATION.md) for manual configuration.
 
 ## 🌓 Dark Mode
 

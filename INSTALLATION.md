@@ -2,7 +2,9 @@
 
 This guide walks you through installing and configuring the component library in your Next.js application.
 
-## Step 1: Install from GitHub
+## Quick Start (3 Steps) 🚀
+
+### Step 1: Install the Library
 
 ```bash
 cd your-project
@@ -18,66 +20,39 @@ bun add github:colbymchenry/react-ui-library#v1.0.0
 }
 ```
 
-## Step 2: Install Required Peer Dependencies
+### Step 2: Install Required Peer Dependencies
 
 ```bash
 bun add react react-dom formik
 ```
 
-## Step 3: Import Styles
-
-In your `app/layout.tsx` or `app/globals.css`:
-
-```tsx
-// app/layout.tsx
-import '@colbymchenry/react-ui-library/styles';
-import './globals.css';
-```
-
-Or in your CSS:
-
-```css
-/* app/globals.css */
-@import '@colbymchenry/react-ui-library/styles';
-```
-
-## Step 4: Configure Tailwind CSS
+### Step 3: Configure Tailwind CSS
 
 Update your `tailwind.config.js` or `tailwind.config.mjs`:
 
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class', // IMPORTANT: Use class-based dark mode
+  presets: [require('@colbymchenry/react-ui-library/preset')],
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    // Add the component library to content scanning
+    // Required: Add the library to Tailwind's content scanning
     './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
   ],
-  theme: {
-    extend: {
-      colors: {
-        // Required color variables for the library
-        primary: '#D11212',
-        secondary: '#B00F0F',
-        'background-light': '#FAFAFA',
-        'background-dark': '#111827',
-        'card-light': '#FFFFFF',
-        'card-dark': '#1F2937',
-        'text-light': '#111827',
-        'text-dark': '#F3F4F6',
-        'text-muted-light': '#6B7280',
-        'text-muted-dark': '#9CA3AF',
-        'border-light': '#E5E7EB',
-        'border-dark': '#374151',
-      },
-    },
-  },
 };
 ```
 
-## Step 5: Add Material Symbols Font
+**That's it!** 🎉 The preset automatically includes:
+- ✅ Dark mode configuration (`darkMode: 'class'`)
+- ✅ All required color tokens
+- ✅ Component styles (auto-imported)
+
+---
+
+## Optional: Add Material Symbols Font
+
+Some components use Material Symbols icons. Add this to your `app/layout.tsx`:
 
 In your `app/layout.tsx`:
 
@@ -97,7 +72,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-## Step 6: Start Using Components
+---
+
+## Start Using Components
 
 ```tsx
 import { 
@@ -117,6 +94,29 @@ export default function MyPage() {
   );
 }
 ```
+
+---
+
+## What's Automated? ✨
+
+The library now handles these automatically:
+
+1. **✅ Styles auto-import** - No need to manually import styles
+2. **✅ Color configuration** - The preset includes all required colors
+3. **✅ Dark mode setup** - Configured automatically via preset
+
+## What You Still Need to Do?
+
+**Only one thing:** Add the library to Tailwind's `content` array.
+
+```js
+content: [
+  './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+]
+```
+
+**Why is this required?**  
+The library uses Tailwind utility classes (like `bg-primary`, `hover:bg-secondary`). Tailwind's JIT compiler must scan the library files to generate the necessary CSS. This is unavoidable for any Tailwind-based component library.
 
 ## Updating the Library
 
@@ -149,6 +149,79 @@ cd react-ui-library
 bun run build
 ```
 
+---
+
+## Advanced Configuration
+
+### Manual Style Import (Not Required)
+
+If you need to manually control when styles load:
+
+```tsx
+// Instead of auto-import, you can still import manually
+import '@colbymchenry/react-ui-library/styles';
+```
+
+### Custom Tailwind Configuration
+
+If you need to customize colors or add your own:
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  presets: [require('@colbymchenry/react-ui-library/preset')],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Override library colors
+        primary: '#FF0000', // Your custom primary color
+        // Or add your own colors
+        brand: '#123456',
+      },
+    },
+  },
+};
+```
+
+### Without Using the Preset
+
+If you prefer not to use the preset, you can configure manually:
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: 'class',
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#D11212',
+        secondary: '#B00F0F',
+        'background-light': '#FAFAFA',
+        'background-dark': '#111827',
+        'card-light': '#FFFFFF',
+        'card-dark': '#1F2937',
+        'text-light': '#111827',
+        'text-dark': '#F3F4F6',
+        'text-muted-light': '#6B7280',
+        'text-muted-dark': '#9CA3AF',
+        'border-light': '#E5E7EB',
+        'border-dark': '#374151',
+      },
+    },
+  },
+};
+```
+
+---
+
 ## Troubleshooting
 
 ### Components Not Styled Correctly
@@ -156,18 +229,18 @@ bun run build
 **Problem:** Components appear unstyled or broken.
 
 **Solution:** 
-1. Make sure you imported the styles: `import '@colbymchenry/react-ui-library/styles';`
+1. Ensure you're using the preset: `presets: [require('@colbymchenry/react-ui-library/preset')]`
 2. Verify Tailwind config includes the library in `content` array
-3. Ensure required color variables are in your Tailwind config
+3. Run `bun run build` in your project to regenerate Tailwind CSS
 
 ### Dark Mode Not Working
 
 **Problem:** Dark mode styles not applying.
 
 **Solution:**
-1. Set `darkMode: 'class'` in your `tailwind.config.js`
+1. The preset automatically configures dark mode
 2. Use the `ThemeToggle` component or manually add `dark` class to `<html>`
-3. Ensure you have dark mode color variables configured
+3. Make sure you're using the preset in your Tailwind config
 
 ### TypeScript Errors
 
@@ -187,4 +260,14 @@ Add Material Symbols font to your layout:
 ```html
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
 ```
+
+### Styles Not Loading
+
+**Problem:** Components have no styles at all.
+
+**Solution:**
+Styles should auto-import. If they don't:
+1. Make sure you're importing components from the package
+2. Check your bundler supports CSS imports in JS files
+3. Manually import: `import '@colbymchenry/react-ui-library/styles'`
 

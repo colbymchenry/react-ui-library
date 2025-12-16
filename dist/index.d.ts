@@ -1,3 +1,4 @@
+import "./styles/index.css";
 export { MaterialIcon } from "./components/material-icon/material-icon";
 export { Badge } from "./components/ui-badge/ui-badge";
 export { Button } from "./components/ui-button/ui-button";

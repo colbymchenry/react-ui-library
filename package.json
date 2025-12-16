@@ -1,6 +1,6 @@
 {
 	"name": "@colbymchenry/react-ui-library",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A modern React component library with Tailwind CSS and TypeScript support",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -12,12 +12,14 @@
 			"require": "./dist/index.js",
 			"default": "./dist/index.js"
 		},
+		"./preset": "./tailwind.preset.js",
 		"./styles": "./dist/styles/index.css",
 		"./assets/*": "./dist/assets/*",
 		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist",
+		"tailwind.preset.js",
 		"README.md",
 		"LICENSE"
 	],
