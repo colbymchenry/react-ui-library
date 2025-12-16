@@ -7,10 +7,110 @@
  * import '@colbymchenry/react-ui-library/styles';
  */
 
-@import './animations.css';
-@import './date-picker.css';
-@import './dialog.css';
-@import './dropdown.css';
-@import './form-group.css';
-@import './phone-input.css';
+@import "./animations.css";
+@import "./date-picker.css";
+@import "./dialog.css";
+@import "./dropdown.css";
+@import "./form-group.css";
+@import "./phone-input.css";
 
+body {
+	font-family: var(--font-body), sans-serif;
+}
+
+/* Match `ui_template.html` typography behavior */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+	font-family: var(--font-display), sans-serif;
+}
+
+/* Material Symbols (outlined + filled variants) */
+.material-symbols-outlined {
+	font-variation-settings:
+		"FILL" 0,
+		"wght" 400,
+		"GRAD" 0,
+		"opsz" 24;
+}
+
+.icon-filled {
+	font-variation-settings:
+		"FILL" 1,
+		"wght" 400,
+		"GRAD" 0,
+		"opsz" 24;
+}
+
+body:has(dialog[open]) {
+	overflow: hidden;
+}
+
+.separator {
+	position: relative;
+	height: 1px;
+	width: 100%;
+	background-color: var(--color-neutral-200);
+}
+
+.separator::before {
+	content: attr(data-label);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	padding: 0 1rem;
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+
+@media (min-width: 768px) {
+	[data-tooltip] {
+		position: relative;
+	}
+
+	[data-tooltip]::before {
+		pointer-events: none;
+		opacity: 0;
+		content: attr(data-tooltip);
+		position: absolute;
+		top: -1.5rem;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: black;
+		padding: 0 1rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+		z-index: 1;
+		border-radius: 0.25rem;
+	}
+
+	[data-tooltip]:hover::before {
+		animation: tooltipScaleFadeIn 0.4s
+			linear(
+				0,
+				0.006 1.2%,
+				0.026 2.5%,
+				0.11 5.5%,
+				0.584 16.8%,
+				0.779 22.4%,
+				0.851 25.1%,
+				0.912 27.9%,
+				0.958 30.7%,
+				0.994 33.7%,
+				1.031 39.1%,
+				1.043 45.6%,
+				1.004 73.6%,
+				1
+			);
+		animation-delay: 200ms;
+		animation-fill-mode: forwards;
+	}
+
+	/* Keyframes moved to animations.css as tooltipScaleFadeIn */
+}
