@@ -53,7 +53,7 @@ bun add github:colbymchenry/react-ui-library#a1b2c3d
 
 > **Having issues?** See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for solutions.
 
-## 📦 Quick Setup (3 Steps)
+## 📦 Setup (2 Steps)
 
 ### 1. Install Peer Dependencies
 
@@ -61,27 +61,29 @@ bun add github:colbymchenry/react-ui-library#a1b2c3d
 bun add react react-dom formik
 ```
 
-### 2. Configure Tailwind with Preset
+### 2. Add Library to Tailwind Content
 
 Update your `tailwind.config.js`:
 
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  presets: [require('@colbymchenry/react-ui-library/preset')],
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    // Required: Add library to content scanning
+    './src/**/*.{js,ts,jsx,tsx}',
+    // ⚠️ REQUIRED: Add this line
     './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
   ],
+  // ... rest of your config
 };
 ```
 
-**That's it!** ✨ The preset automatically includes:
-- ✅ Dark mode configuration
-- ✅ All required color tokens
-- ✅ Component styles (auto-imported)
+**That's it!** ✨ Everything else is automatic:
+- ✅ Component styles auto-import
+- ✅ Works with your existing Tailwind config
+- ✅ No additional configuration needed
+
+> **Why is this required?** Tailwind must scan the library to generate CSS for its utility classes. This is unavoidable for any Tailwind-based component library.
 
 ### 3. Add Material Icons (Optional)
 
@@ -242,14 +244,13 @@ function Content() {
 
 ## 🎨 Customization
 
-### Override Colors
+### Custom Colors
 
-Use the preset and extend with your own colors:
+Define colors in your Tailwind config to customize the library:
 
 ```js
 // tailwind.config.js
 export default {
-  presets: [require('@colbymchenry/react-ui-library/preset')],
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
@@ -257,17 +258,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#FF0000', // Override library primary color
-        brand: '#123456',   // Add custom colors
+        primary: '#FF0000',    // Customize library colors
+        secondary: '#CC0000',
+        brand: '#123456',      // Add your own colors
       },
     },
   },
 };
 ```
 
-### Manual Configuration (Without Preset)
+### Using the Preset (Optional)
 
-If you prefer full control, see [INSTALLATION.md](./INSTALLATION.md) for manual configuration.
+For the library's complete theme configuration:
+
+```js
+export default {
+  presets: [require('@colbymchenry/react-ui-library/preset')],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
+  ],
+};
+```
+
+The preset includes:
+- ✅ Colors (primary, backgrounds, text, borders, accents)
+- ✅ Typography (display and body fonts)
+- ✅ Border radius values
+- ✅ Box shadows
+- ✅ Dark mode configuration
+
+For more options, see [INSTALLATION.md](./INSTALLATION.md).
 
 ## 🌓 Dark Mode
 
