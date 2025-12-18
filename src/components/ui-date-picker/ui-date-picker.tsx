@@ -8,14 +8,14 @@ import { FormikProps } from "formik";
 
 /**
  * Type definitions for DatePicker component with optional Formik integration
- * WithFormik: When using Formik for form state management
- * WithoutFormik: For standalone date picker with controlled value
  */
 type BaseDatePickerProps = {
 	minDate?: Date;
 	placeholder?: string;
 	className?: string;
 	label?: string;
+	error?: string;
+	containerClassName?: string;
 };
 
 type WithFormik = BaseDatePickerProps & {
@@ -36,7 +36,7 @@ type DatePickerProps = WithFormik | WithoutFormik;
 
 /**
  * DatePicker Component
- * Calendar date picker with optional Formik integration
+ * Calendar date picker with modern styling and Formik integration
  *
  * @example
  * // With Formik
@@ -52,12 +52,23 @@ export default function DatePicker(props: DatePickerProps) {
 		placeholder = "Select date",
 		className,
 		label,
+		error: externalError,
+		containerClassName,
 		formik,
 		name,
 	} = props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const triggerRef = useRef<HTMLDivElement>(null);
+
+	/** Check if using Formik and extract relevant state */
+	const isFormik = !!formik && !!name;
+	const touched = isFormik ? formik.touched?.[name] : false;
+	const formikError = isFormik ? formik.errors?.[name] : undefined;
+	const hasError = !!(externalError || (touched && formikError));
+	const errorMessage =
+		externalError ||
+		(touched && typeof formikError === "string" ? formikError : undefined);
 
 	// Determine current value based on formik or controlled prop
 	const currentValue =
@@ -106,12 +117,10 @@ export default function DatePicker(props: DatePickerProps) {
 			viewDate.getMonth(),
 			day
 		);
-		// Normalize time to midnight for comparison consistency
 		newDate.setHours(0, 0, 0, 0);
 
 		if (isDateDisabled(newDate)) return;
 
-		// Handle both Formik and non-Formik cases
 		if (formik && name) {
 			formik.setFieldValue(name, newDate);
 			formik.setFieldTouched(name, true);
@@ -155,9 +164,7 @@ export default function DatePicker(props: DatePickerProps) {
 
 		// Empty cells for previous month
 		for (let i = 0; i < startDay; i++) {
-			days.push(
-				<div key={`empty-${i}`} className="calendar-day empty" />
-			);
+			days.push(<div key={`empty-${i}`} className="w-8 h-8" />);
 		}
 
 		// Days of current month
@@ -175,10 +182,12 @@ export default function DatePicker(props: DatePickerProps) {
 				<div
 					key={`day-${i}`}
 					className={cx(
-						"calendar-day",
-						disabled && "disabled",
-						selected && "selected",
-						today && "today"
+						"w-8 h-8 flex items-center justify-center rounded-full text-sm cursor-pointer",
+						"transition-colors",
+						disabled && "text-gray-300 dark:text-gray-600 cursor-not-allowed",
+						!disabled && !selected && "hover:bg-gray-100 dark:hover:bg-gray-800",
+						selected && "bg-primary text-white font-medium",
+						today && !selected && "border border-primary text-primary"
 					)}
 					onClick={e => {
 						e.stopPropagation();
@@ -203,23 +212,46 @@ export default function DatePicker(props: DatePickerProps) {
 	};
 
 	return (
-		<div className={cx("form-group", className)}>
-			{label && <label>{label}</label>}
+		<div className={cx("space-y-2", containerClassName, className)}>
+			{/* Label */}
+			{label && (
+				<label className="block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1">
+					{label}
+				</label>
+			)}
+
+			{/* Trigger */}
 			<div
 				ref={triggerRef}
-				className={cx("date-picker-trigger", isOpen && "open")}
+				className={cx(
+					"flex items-center justify-between w-full rounded-xl cursor-pointer",
+					"border border-gray-200 dark:border-gray-700",
+					"bg-white dark:bg-card-dark py-3.5 px-4",
+					"text-text-light dark:text-text-dark",
+					"sm:text-sm shadow-sm transition-shadow",
+					hasError && "border-red-500",
+					isOpen && "border-primary ring-1 ring-primary"
+				)}
 				onClick={() => setIsOpen(!isOpen)}
 			>
-				<div className="date-picker-value">
+				<div className="flex items-center gap-2">
 					<MaterialIcon
 						name="calendar_month"
-						className="date-picker-icon"
+						className={cx(
+							"text-gray-400",
+							isOpen && "text-primary"
+						)}
 					/>
-					<span>{formatDateDisplay(dateValue)}</span>
+					<span className={cx(!dateValue && "text-gray-400")}>
+						{formatDateDisplay(dateValue)}
+					</span>
 				</div>
 				<MaterialIcon
 					name="expand_more"
-					className={cx("combobox-chevron", isOpen && "open")}
+					className={cx(
+						"text-gray-400 transition-transform duration-200",
+						isOpen && "rotate-180"
+					)}
 				/>
 			</div>
 
@@ -227,18 +259,19 @@ export default function DatePicker(props: DatePickerProps) {
 				open={isOpen}
 				onClose={() => setIsOpen(false)}
 				anchorRef={triggerRef as React.RefObject<HTMLElement>}
-				className="date-picker-dropdown"
+				className="p-3"
 				matchTriggerWidth={false}
 			>
-				<div className="calendar-header">
+				{/* Calendar Header */}
+				<div className="flex items-center justify-between mb-3">
 					<button
 						type="button"
-						className="calendar-nav-btn"
+						className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						onClick={handlePrevMonth}
 					>
-						<MaterialIcon name="chevron_left" />
+						<MaterialIcon name="chevron_left" className="text-gray-600 dark:text-gray-400" />
 					</button>
-					<span className="current-month">
+					<span className="font-medium text-sm text-text-light dark:text-text-dark">
 						{viewDate.toLocaleDateString("en-US", {
 							month: "long",
 							year: "numeric",
@@ -246,33 +279,33 @@ export default function DatePicker(props: DatePickerProps) {
 					</span>
 					<button
 						type="button"
-						className="calendar-nav-btn"
+						className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						onClick={handleNextMonth}
 					>
-						<MaterialIcon name="chevron_right" />
+						<MaterialIcon name="chevron_right" className="text-gray-600 dark:text-gray-400" />
 					</button>
 				</div>
-				<div className="calendar-grid">
+
+				{/* Calendar Grid */}
+				<div className="grid grid-cols-7 gap-1">
+					{/* Weekday Headers */}
 					{["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(day => (
-						<div key={day} className="calendar-weekday">
+						<div
+							key={day}
+							className="w-8 h-8 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-400"
+						>
 							{day}
 						</div>
 					))}
+					{/* Day Cells */}
 					{renderCalendarDays()}
 				</div>
 			</Dropdown>
 
-			{/* Error message display for Formik integration */}
-			{formik &&
-				name &&
-				formik.touched?.[name] &&
-				formik.errors?.[name] && (
-					<span className="error-message">
-						{typeof formik.errors[name] === "string"
-							? formik.errors[name]
-							: "Invalid field"}
-					</span>
-				)}
+			{/* Error message */}
+			{hasError && errorMessage && (
+				<p className="text-xs text-red-500 mt-1">{errorMessage}</p>
+			)}
 		</div>
 	);
 }

@@ -13,6 +13,8 @@ type BaseComboboxProps = {
     searchPlaceholder?: string;
     renderOption?: (option: ComboboxOption) => React.ReactNode;
     matchTriggerWidth?: boolean;
+    error?: string;
+    containerClassName?: string;
 };
 type WithFormik = BaseComboboxProps & {
     formik: FormikProps<any>;

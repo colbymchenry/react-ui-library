@@ -4,6 +4,8 @@ type BasePhoneInputProps = {
     placeholder?: string;
     className?: string;
     defaultCountry?: string;
+    error?: string;
+    containerClassName?: string;
 };
 type WithFormik = BasePhoneInputProps & {
     formik: FormikProps<any>;

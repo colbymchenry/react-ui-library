@@ -8,14 +8,14 @@ import { FormikProps } from "formik";
 
 /**
  * Type definitions for PhoneInput component with optional Formik integration
- * WithFormik: When using Formik for form state management
- * WithoutFormik: For standalone phone input with controlled value
  */
 type BasePhoneInputProps = {
 	label?: string;
 	placeholder?: string;
 	className?: string;
-	defaultCountry?: string; // Country name to default the code to
+	defaultCountry?: string;
+	error?: string;
+	containerClassName?: string;
 };
 
 type WithFormik = BasePhoneInputProps & {
@@ -36,8 +36,7 @@ type PhoneInputProps = WithFormik | WithoutFormik;
 
 /**
  * PhoneInput Component
- * A custom input for phone numbers with a country code selector and optional Formik integration.
- * Formats the phone number as the user types.
+ * Phone number input with country code selector, modern styling, and Formik integration.
  * Returns the full E.164 formatted number (e.g., "+1-555-123-4567").
  *
  * @example
@@ -54,20 +53,32 @@ function PhoneInput(props: PhoneInputProps) {
 		placeholder = "Phone number",
 		className,
 		defaultCountry = "United States",
+		error: externalError,
+		containerClassName,
 		formik,
 		name,
 	} = props;
+
+	/** Check if using Formik and extract relevant state */
+	const isFormik = !!formik && !!name;
+	const touched = isFormik ? formik.touched?.[name] : false;
+	const formikError = isFormik ? formik.errors?.[name] : undefined;
+	const hasError = !!(externalError || (touched && formikError));
+	const errorMessage =
+		externalError ||
+		(touched && typeof formikError === "string" ? formikError : undefined);
 
 	// Determine current value based on formik or controlled prop
 	const currentValue =
 		formik && name
 			? (formik.values?.[name] ?? "")
 			: (props as WithoutFormik).value;
-	// State to track the explicitly selected country name (to disambiguate shared codes like +1)
+
+	// State to track the explicitly selected country name
 	const [selectedCountryName, setSelectedCountryName] =
 		useState(defaultCountry);
 
-	// Memoize the sorted countries list (optimization)
+	// Memoize the sorted countries list
 	const sortedCountries = useMemo(() => {
 		return [...countriesData].sort(
 			(a, b) => b.dial_code.length - a.dial_code.length
@@ -92,7 +103,6 @@ function PhoneInput(props: PhoneInputProps) {
 		let numberPart = "";
 
 		if (cleanValue.startsWith("+")) {
-			// Find matching code
 			const matched = sortedCountries.find(c =>
 				cleanValue.startsWith(c.dial_code)
 			);
@@ -103,7 +113,6 @@ function PhoneInput(props: PhoneInputProps) {
 		}
 
 		if (!matchedCountryCode) {
-			// Fallback
 			const defaultData = countriesData.find(
 				c => c.name === defaultCountry
 			);
@@ -112,7 +121,6 @@ function PhoneInput(props: PhoneInputProps) {
 		}
 
 		// Determine active country
-		// Check if currently selected country matches the code
 		const currentSelectedData = countriesData.find(
 			c => c.name === selectedCountryName
 		);
@@ -127,8 +135,6 @@ function PhoneInput(props: PhoneInputProps) {
 			};
 		}
 
-		// If not, find the first country that matches this code
-		// (This happens if value changes externally to a different region code)
 		const newMatch = countriesData.find(
 			c => c.dial_code === matchedCountryCode
 		);
@@ -139,7 +145,7 @@ function PhoneInput(props: PhoneInputProps) {
 		};
 	}, [currentValue, defaultCountry, selectedCountryName, sortedCountries]);
 
-	// Sync state if derived activeCountry differs (e.g. external prop change to different code)
+	// Sync state if derived activeCountry differs
 	useEffect(() => {
 		if (activeCountryName !== selectedCountryName) {
 			setSelectedCountryName(activeCountryName);
@@ -149,10 +155,10 @@ function PhoneInput(props: PhoneInputProps) {
 	// Format options for the combobox
 	const countryOptions = useMemo(() => {
 		return countriesData.map(c => ({
-			value: c.name, // UNIQUE KEY: Use Country Name
+			value: c.name,
 			label: c.dial_code,
 			icon: c.flag,
-			searchLabel: `${c.name} ${c.dial_code}`, // Helper for better search
+			searchLabel: `${c.name} ${c.dial_code}`,
 		}));
 	}, []);
 
@@ -164,7 +170,6 @@ function PhoneInput(props: PhoneInputProps) {
 				const cleanNumber = phoneNumber.replace(/\D/g, "");
 				const newValue = `${country.dial_code}-${cleanNumber}`;
 
-				// Handle both Formik and non-Formik cases
 				if (formik && name) {
 					formik.setFieldValue(name, newValue);
 					formik.setFieldTouched(name, true);
@@ -180,14 +185,10 @@ function PhoneInput(props: PhoneInputProps) {
 	const handleNumberChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const input = e.target.value;
-			// Enforce numeric only (allow hyphens/spaces for user comfort but strip them for logic)
 			const numericValue = input.replace(/\D/g, "");
-
-			// Combine with current country code
 			const newValue =
 				numericValue === "" ? "" : `${countryCode}-${numericValue}`;
 
-			// Handle both Formik and non-Formik cases
 			if (formik && name) {
 				formik.setFieldValue(name, newValue);
 			} else {
@@ -199,7 +200,6 @@ function PhoneInput(props: PhoneInputProps) {
 	);
 
 	const renderCountryOption = useCallback((option: ComboboxOption) => {
-		// Extract country name from searchLabel which is formatted as "Name Code"
 		const name = option.searchLabel
 			? option.searchLabel.substring(
 					0,
@@ -219,47 +219,74 @@ function PhoneInput(props: PhoneInputProps) {
 	}, []);
 
 	return (
-		<div className={cx("form-group", className)}>
-			{label && <label>{label}</label>}
-			<div className={"phone-input-container"}>
-				<div className="phone-input-code-selector">
+		<div className={cx("space-y-2", containerClassName, className)}>
+			{/* Label */}
+			{label && (
+				<label className="block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1">
+					{label}
+				</label>
+			)}
+
+			{/* Phone Input Container */}
+			<div
+				className={cx(
+					"flex items-center w-full rounded-xl overflow-hidden",
+					"border border-gray-200 dark:border-gray-700",
+					"bg-white dark:bg-card-dark",
+					"shadow-sm transition-shadow",
+					"focus-within:border-primary focus-within:ring-1 focus-within:ring-primary",
+					hasError && "border-red-500 focus-within:border-red-500 focus-within:ring-red-500"
+				)}
+			>
+				{/* Country Code Selector */}
+				<div className="shrink-0">
 					<Combobox
 						options={countryOptions}
-						value={activeCountryName} // Controlled by activeCountryName
+						value={activeCountryName}
 						onChange={handleCountryChange}
-						className="phone-input-combobox"
 						matchTriggerWidth={false}
 						renderOption={renderCountryOption}
 						placeholder="+1"
+						containerClassName="!space-y-0"
+						className={cx(
+							"!border-0 !shadow-none !rounded-none !ring-0",
+							"!py-3.5 !px-3 min-w-[90px]",
+							"bg-gray-50 dark:bg-gray-800/50"
+						)}
 					/>
 				</div>
-				<div className="phone-input-separator" />
+
+				{/* Separator */}
+				<div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+
+				{/* Phone Number Input */}
 				<input
 					type="tel"
 					inputMode="numeric"
 					value={phoneNumber}
 					onChange={handleNumberChange}
 					placeholder={placeholder}
-					className="phone-input-field"
+					className={cx(
+						"flex-1 py-3.5 px-4",
+						"bg-transparent",
+						"text-text-light dark:text-text-dark placeholder-gray-400",
+						"focus:outline-none",
+						"sm:text-sm"
+					)}
 				/>
 			</div>
-			{/* Error message display for Formik integration */}
-			{formik &&
-				name &&
-				formik.touched?.[name] &&
-				formik.errors?.[name] && (
-					<span className="error-message">
-						{typeof formik.errors[name] === "string"
-							? formik.errors[name]
-							: "Invalid field"}
-					</span>
-				)}
+
+			{/* Error message */}
+			{hasError && errorMessage && (
+				<p className="text-xs text-red-500 mt-1">{errorMessage}</p>
+			)}
 		</div>
 	);
 }
 
-// Simple US-style formatter: 123-456-7890
-// We can make this smarter later if needed
+/**
+ * Format phone number in US-style: 123-456-7890
+ */
 function formatPhoneNumber(value: string) {
 	if (!value) return value;
 	const phoneNumber = value.replace(/[^\d]/g, "");
@@ -268,10 +295,7 @@ function formatPhoneNumber(value: string) {
 	if (phoneNumberLength < 7) {
 		return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
 	}
-	return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
-		3,
-		6
-	)}-${phoneNumber.slice(6, 10)}`;
+	return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
 }
 
 export default memo(PhoneInput);

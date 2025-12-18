@@ -15,8 +15,6 @@ export interface ComboboxOption {
 
 /**
  * Type definitions for Combobox component with optional Formik integration
- * WithFormik: When using Formik for form state management
- * WithoutFormik: For standalone combobox with controlled value
  */
 type BaseComboboxProps = {
 	options: ComboboxOption[];
@@ -26,6 +24,8 @@ type BaseComboboxProps = {
 	searchPlaceholder?: string;
 	renderOption?: (option: ComboboxOption) => React.ReactNode;
 	matchTriggerWidth?: boolean;
+	error?: string;
+	containerClassName?: string;
 };
 
 type WithFormik = BaseComboboxProps & {
@@ -46,7 +46,7 @@ type ComboboxProps = WithFormik | WithoutFormik;
 
 /**
  * Combobox Component
- * Searchable select dropdown using the Dropdown component with optional Formik integration
+ * Searchable select dropdown with modern styling and Formik integration
  *
  * @example
  * // With Formik
@@ -65,6 +65,8 @@ function Combobox(props: ComboboxProps) {
 		searchPlaceholder = "Search...",
 		renderOption,
 		matchTriggerWidth = true,
+		error: externalError,
+		containerClassName,
 		formik,
 		name,
 	} = props;
@@ -73,6 +75,15 @@ function Combobox(props: ComboboxProps) {
 	const [search, setSearch] = useState("");
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	/** Check if using Formik and extract relevant state */
+	const isFormik = !!formik && !!name;
+	const touched = isFormik ? formik.touched?.[name] : false;
+	const formikError = isFormik ? formik.errors?.[name] : undefined;
+	const hasError = !!(externalError || (touched && formikError));
+	const errorMessage =
+		externalError ||
+		(touched && typeof formikError === "string" ? formikError : undefined);
 
 	// Determine current value based on formik or controlled prop
 	const currentValue =
@@ -100,7 +111,7 @@ function Combobox(props: ComboboxProps) {
 			const aValue = (a.value || "").toLowerCase();
 			const bValue = (b.value || "").toLowerCase();
 
-			// 1. Exact match on value (e.g. searching "+1")
+			// 1. Exact match on value
 			const aExactValue = aValue === lowerSearch;
 			const bExactValue = bValue === lowerSearch;
 			if (aExactValue && !bExactValue) return -1;
@@ -124,13 +135,11 @@ function Combobox(props: ComboboxProps) {
 			if (aStartsValue && !bStartsValue) return -1;
 			if (!aStartsValue && bStartsValue) return 1;
 
-			// Default order (alphabetical or original)
 			return 0;
 		});
 	}, [options, search]);
 
 	const handleSelect = (optionValue: string) => {
-		// Handle both Formik and non-Formik cases
 		if (formik && name) {
 			formik.setFieldValue(name, optionValue);
 			formik.setFieldTouched(name, true);
@@ -143,11 +152,9 @@ function Combobox(props: ComboboxProps) {
 		setSearch("");
 	};
 
-	// Focus search input when opened
 	const handleOpen = (e: React.MouseEvent) => {
-		e.preventDefault(); // Prevent form submission
+		e.preventDefault();
 		setOpen(true);
-		// Timeout to wait for dialog to render
 		setTimeout(() => {
 			searchInputRef.current?.focus();
 		}, 50);
@@ -165,17 +172,33 @@ function Combobox(props: ComboboxProps) {
 	};
 
 	return (
-		<div className={cx("form-group", className)}>
-			{label && <label>{label}</label>}
+		<div className={cx("space-y-2", containerClassName, className)}>
+			{/* Label */}
+			{label && (
+				<label className="block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1">
+					{label}
+				</label>
+			)}
+
+			{/* Trigger Button */}
 			<button
 				ref={triggerRef}
 				type="button"
-				className="input combobox-trigger"
+				className={cx(
+					"flex items-center justify-between w-full rounded-xl",
+					"border border-gray-200 dark:border-gray-700",
+					"bg-white dark:bg-card-dark py-3.5 px-4",
+					"text-text-light dark:text-text-dark",
+					"focus:border-primary focus:ring-primary focus:outline-none",
+					"sm:text-sm shadow-sm transition-shadow",
+					hasError && "border-red-500 focus:border-red-500 focus:ring-red-500",
+					open && "border-primary ring-primary"
+				)}
 				onClick={handleTriggerClick}
 				aria-expanded={open}
 				aria-haspopup="dialog"
 			>
-				<span className={cx(!selectedOption && "text-gray-500")}>
+				<span className={cx(!selectedOption && "text-gray-400")}>
 					{selectedOption ? (
 						<span className="flex items-center gap-2">
 							{selectedOption.icon && (
@@ -189,7 +212,10 @@ function Combobox(props: ComboboxProps) {
 				</span>
 				<MaterialIcon
 					name="expand_more"
-					className={cx("combobox-chevron", open && "open")}
+					className={cx(
+						"text-gray-400 transition-transform duration-200",
+						open && "rotate-180"
+					)}
 				/>
 			</button>
 
@@ -199,28 +225,39 @@ function Combobox(props: ComboboxProps) {
 				anchorRef={triggerRef as React.RefObject<HTMLElement>}
 				matchTriggerWidth={matchTriggerWidth}
 			>
-				<div className="dropdown-header">
+				{/* Search Input */}
+				<div className="p-2 border-b border-gray-200 dark:border-gray-700">
 					<input
 						ref={searchInputRef}
 						type="text"
-						className="dropdown-search-input"
+						className={cx(
+							"w-full rounded-lg border border-gray-200 dark:border-gray-700",
+							"bg-white dark:bg-card-dark py-2 px-3",
+							"text-text-light dark:text-text-dark placeholder-gray-400",
+							"focus:border-primary focus:ring-primary focus:outline-none",
+							"text-sm"
+						)}
 						placeholder={searchPlaceholder}
 						value={search}
 						onChange={e => setSearch(e.target.value)}
-						onClick={e => e.stopPropagation()} // Prevent click from closing dialog if propagated to backdrop handler
+						onClick={e => e.stopPropagation()}
 					/>
 				</div>
-				{/* Only render list items if open to improve performance */}
+
+				{/* Options List */}
 				{open && (
-					<ul className="dropdown-list">
+					<ul className="max-h-60 overflow-auto py-1">
 						{filteredOptions.length > 0 ? (
 							filteredOptions.map(option => (
 								<li
-									key={`${option.value}-${option.label}`} // Unique key using value + label
+									key={`${option.value}-${option.label}`}
 									className={cx(
-										"dropdown-item",
+										"flex items-center gap-2 px-4 py-2.5 cursor-pointer",
+										"text-sm text-text-light dark:text-text-dark",
+										"hover:bg-gray-100 dark:hover:bg-gray-800",
+										"transition-colors",
 										option.value === currentValue &&
-											"selected"
+											"bg-primary/10 text-primary font-medium"
 									)}
 									onClick={() => handleSelect(option.value)}
 								>
@@ -237,7 +274,7 @@ function Combobox(props: ComboboxProps) {
 								</li>
 							))
 						) : (
-							<li className="dropdown-item text-gray-400 cursor-default">
+							<li className="px-4 py-2.5 text-sm text-gray-400 cursor-default">
 								No results found
 							</li>
 						)}
@@ -245,17 +282,10 @@ function Combobox(props: ComboboxProps) {
 				)}
 			</Dropdown>
 
-			{/* Error message display for Formik integration */}
-			{formik &&
-				name &&
-				formik.touched?.[name] &&
-				formik.errors?.[name] && (
-					<span className="error-message">
-						{typeof formik.errors[name] === "string"
-							? formik.errors[name]
-							: "Invalid field"}
-					</span>
-				)}
+			{/* Error message */}
+			{hasError && errorMessage && (
+				<p className="text-xs text-red-500 mt-1">{errorMessage}</p>
+			)}
 		</div>
 	);
 }

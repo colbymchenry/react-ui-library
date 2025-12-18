@@ -1,6 +1,6 @@
 {
 	"name": "@colbymchenry/ui-library-mcp",
-	"version": "1.0.12",
+	"version": "1.0.13",
 	"description": "MCP server for Volcanica React UI Library documentation - provides on-demand component docs for AI assistants",
 	"type": "module",
 	"main": "dist/index.js",

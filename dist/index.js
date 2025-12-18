@@ -414,6 +414,8 @@ function Combobox(props) {
     searchPlaceholder = "Search...",
     renderOption,
     matchTriggerWidth = true,
+    error: externalError,
+    containerClassName,
     formik,
     name
   } = props;
@@ -421,6 +423,11 @@ function Combobox(props) {
   const [search, setSearch] = useState3("");
   const triggerRef = useRef2(null);
   const searchInputRef = useRef2(null);
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
   const currentValue = formik && name ? formik.values?.[name] : props.value;
   const selectedOption = options.find((opt) => opt.value === currentValue);
   const filteredOptions = useMemo2(() => {
@@ -488,21 +495,22 @@ function Combobox(props) {
     }
   };
   return /* @__PURE__ */ jsxDEV10("div", {
-    className: cx("form-group", className),
+    className: cx("space-y-2", containerClassName, className),
     children: [
       label && /* @__PURE__ */ jsxDEV10("label", {
+        className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1",
         children: label
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV10("button", {
         ref: triggerRef,
         type: "button",
-        className: "input combobox-trigger",
+        className: cx("flex items-center justify-between w-full rounded-xl", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", open && "border-primary ring-primary"),
         onClick: handleTriggerClick,
         "aria-expanded": open,
         "aria-haspopup": "dialog",
         children: [
           /* @__PURE__ */ jsxDEV10("span", {
-            className: cx(!selectedOption && "text-gray-500"),
+            className: cx(!selectedOption && "text-gray-400"),
             children: selectedOption ? /* @__PURE__ */ jsxDEV10("span", {
               className: "flex items-center gap-2",
               children: [
@@ -515,7 +523,7 @@ function Combobox(props) {
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV10(MaterialIcon, {
             name: "expand_more",
-            className: cx("combobox-chevron", open && "open")
+            className: cx("text-gray-400 transition-transform duration-200", open && "rotate-180")
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
@@ -526,11 +534,11 @@ function Combobox(props) {
         matchTriggerWidth,
         children: [
           /* @__PURE__ */ jsxDEV10("div", {
-            className: "dropdown-header",
+            className: "p-2 border-b border-gray-200 dark:border-gray-700",
             children: /* @__PURE__ */ jsxDEV10("input", {
               ref: searchInputRef,
               type: "text",
-              className: "dropdown-search-input",
+              className: cx("w-full rounded-lg border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-2 px-3", "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "text-sm"),
               placeholder: searchPlaceholder,
               value: search,
               onChange: (e) => setSearch(e.target.value),
@@ -538,9 +546,9 @@ function Combobox(props) {
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this),
           open && /* @__PURE__ */ jsxDEV10("ul", {
-            className: "dropdown-list",
+            className: "max-h-60 overflow-auto py-1",
             children: filteredOptions.length > 0 ? filteredOptions.map((option) => /* @__PURE__ */ jsxDEV10("li", {
-              className: cx("dropdown-item", option.value === currentValue && "selected"),
+              className: cx("flex items-center gap-2 px-4 py-2.5 cursor-pointer", "text-sm text-text-light dark:text-text-dark", "hover:bg-gray-100 dark:hover:bg-gray-800", "transition-colors", option.value === currentValue && "bg-primary/10 text-primary font-medium"),
               onClick: () => handleSelect(option.value),
               children: renderOption ? renderOption(option) : /* @__PURE__ */ jsxDEV10(Fragment, {
                 children: [
@@ -553,15 +561,15 @@ function Combobox(props) {
                 ]
               }, undefined, true, undefined, this)
             }, `${option.value}-${option.label}`, false, undefined, this)) : /* @__PURE__ */ jsxDEV10("li", {
-              className: "dropdown-item text-gray-400 cursor-default",
+              className: "px-4 py-2.5 text-sm text-gray-400 cursor-default",
               children: "No results found"
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      formik && name && formik.touched?.[name] && formik.errors?.[name] && /* @__PURE__ */ jsxDEV10("span", {
-        className: "error-message",
-        children: typeof formik.errors[name] === "string" ? formik.errors[name] : "Invalid field"
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV10("p", {
+        className: "text-xs text-red-500 mt-1",
+        children: errorMessage
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
@@ -577,11 +585,18 @@ function DatePicker(props) {
     placeholder = "Select date",
     className,
     label,
+    error: externalError,
+    containerClassName,
     formik,
     name
   } = props;
   const [isOpen, setIsOpen] = useState4(false);
   const triggerRef = useRef3(null);
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
   const currentValue = formik && name ? formik.values?.[name] : props.value;
   const dateValue = currentValue ? new Date(currentValue) : null;
   const [viewDate, setViewDate] = useState4(dateValue || new Date);
@@ -644,7 +659,7 @@ function DatePicker(props) {
     const startDay = firstDayOfMonth(viewDate);
     for (let i = 0;i < startDay; i++) {
       days.push(/* @__PURE__ */ jsxDEV11("div", {
-        className: "calendar-day empty"
+        className: "w-8 h-8"
       }, `empty-${i}`, false, undefined, this));
     }
     for (let i = 1;i <= totalDays; i++) {
@@ -653,7 +668,7 @@ function DatePicker(props) {
       const selected = isSameDate(dateValue, currentDate);
       const today = isToday(currentDate);
       days.push(/* @__PURE__ */ jsxDEV11("div", {
-        className: cx("calendar-day", disabled && "disabled", selected && "selected", today && "today"),
+        className: cx("w-8 h-8 flex items-center justify-center rounded-full text-sm cursor-pointer", "transition-colors", disabled && "text-gray-300 dark:text-gray-600 cursor-not-allowed", !disabled && !selected && "hover:bg-gray-100 dark:hover:bg-gray-800", selected && "bg-primary text-white font-medium", today && !selected && "border border-primary text-primary"),
         onClick: (e) => {
           e.stopPropagation();
           if (!disabled)
@@ -674,31 +689,33 @@ function DatePicker(props) {
     });
   };
   return /* @__PURE__ */ jsxDEV11("div", {
-    className: cx("form-group", className),
+    className: cx("space-y-2", containerClassName, className),
     children: [
       label && /* @__PURE__ */ jsxDEV11("label", {
+        className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1",
         children: label
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV11("div", {
         ref: triggerRef,
-        className: cx("date-picker-trigger", isOpen && "open"),
+        className: cx("flex items-center justify-between w-full rounded-xl cursor-pointer", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500", isOpen && "border-primary ring-1 ring-primary"),
         onClick: () => setIsOpen(!isOpen),
         children: [
           /* @__PURE__ */ jsxDEV11("div", {
-            className: "date-picker-value",
+            className: "flex items-center gap-2",
             children: [
               /* @__PURE__ */ jsxDEV11(MaterialIcon, {
                 name: "calendar_month",
-                className: "date-picker-icon"
+                className: cx("text-gray-400", isOpen && "text-primary")
               }, undefined, false, undefined, this),
               /* @__PURE__ */ jsxDEV11("span", {
+                className: cx(!dateValue && "text-gray-400"),
                 children: formatDateDisplay(dateValue)
               }, undefined, false, undefined, this)
             ]
           }, undefined, true, undefined, this),
           /* @__PURE__ */ jsxDEV11(MaterialIcon, {
             name: "expand_more",
-            className: cx("combobox-chevron", isOpen && "open")
+            className: cx("text-gray-400 transition-transform duration-200", isOpen && "rotate-180")
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
@@ -706,22 +723,23 @@ function DatePicker(props) {
         open: isOpen,
         onClose: () => setIsOpen(false),
         anchorRef: triggerRef,
-        className: "date-picker-dropdown",
+        className: "p-3",
         matchTriggerWidth: false,
         children: [
           /* @__PURE__ */ jsxDEV11("div", {
-            className: "calendar-header",
+            className: "flex items-center justify-between mb-3",
             children: [
               /* @__PURE__ */ jsxDEV11("button", {
                 type: "button",
-                className: "calendar-nav-btn",
+                className: "p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
                 onClick: handlePrevMonth,
                 children: /* @__PURE__ */ jsxDEV11(MaterialIcon, {
-                  name: "chevron_left"
+                  name: "chevron_left",
+                  className: "text-gray-600 dark:text-gray-400"
                 }, undefined, false, undefined, this)
               }, undefined, false, undefined, this),
               /* @__PURE__ */ jsxDEV11("span", {
-                className: "current-month",
+                className: "font-medium text-sm text-text-light dark:text-text-dark",
                 children: viewDate.toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric"
@@ -729,19 +747,20 @@ function DatePicker(props) {
               }, undefined, false, undefined, this),
               /* @__PURE__ */ jsxDEV11("button", {
                 type: "button",
-                className: "calendar-nav-btn",
+                className: "p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
                 onClick: handleNextMonth,
                 children: /* @__PURE__ */ jsxDEV11(MaterialIcon, {
-                  name: "chevron_right"
+                  name: "chevron_right",
+                  className: "text-gray-600 dark:text-gray-400"
                 }, undefined, false, undefined, this)
               }, undefined, false, undefined, this)
             ]
           }, undefined, true, undefined, this),
           /* @__PURE__ */ jsxDEV11("div", {
-            className: "calendar-grid",
+            className: "grid grid-cols-7 gap-1",
             children: [
               ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => /* @__PURE__ */ jsxDEV11("div", {
-                className: "calendar-weekday",
+                className: "w-8 h-8 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-400",
                 children: day
               }, day, false, undefined, this)),
               renderCalendarDays()
@@ -749,9 +768,9 @@ function DatePicker(props) {
           }, undefined, true, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      formik && name && formik.touched?.[name] && formik.errors?.[name] && /* @__PURE__ */ jsxDEV11("span", {
-        className: "error-message",
-        children: typeof formik.errors[name] === "string" ? formik.errors[name] : "Invalid field"
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV11("p", {
+        className: "text-xs text-red-500 mt-1",
+        children: errorMessage
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
@@ -2403,9 +2422,16 @@ function PhoneInput(props) {
     placeholder = "Phone number",
     className,
     defaultCountry = "United States",
+    error: externalError,
+    containerClassName,
     formik,
     name
   } = props;
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
   const currentValue = formik && name ? formik.values?.[name] ?? "" : props.value;
   const [selectedCountryName, setSelectedCountryName] = useState5(defaultCountry);
   const sortedCountries = useMemo3(() => {
@@ -2509,28 +2535,30 @@ function PhoneInput(props) {
     }, undefined, true, undefined, this);
   }, []);
   return /* @__PURE__ */ jsxDEV13("div", {
-    className: cx("form-group", className),
+    className: cx("space-y-2", containerClassName, className),
     children: [
       label && /* @__PURE__ */ jsxDEV13("label", {
+        className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1",
         children: label
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV13("div", {
-        className: "phone-input-container",
+        className: cx("flex items-center w-full rounded-xl overflow-hidden", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark", "shadow-sm transition-shadow", "focus-within:border-primary focus-within:ring-1 focus-within:ring-primary", hasError && "border-red-500 focus-within:border-red-500 focus-within:ring-red-500"),
         children: [
           /* @__PURE__ */ jsxDEV13("div", {
-            className: "phone-input-code-selector",
+            className: "shrink-0",
             children: /* @__PURE__ */ jsxDEV13(ui_combobox_default, {
               options: countryOptions,
               value: activeCountryName,
               onChange: handleCountryChange,
-              className: "phone-input-combobox",
               matchTriggerWidth: false,
               renderOption: renderCountryOption,
-              placeholder: "+1"
+              placeholder: "+1",
+              containerClassName: "!space-y-0",
+              className: cx("!border-0 !shadow-none !rounded-none !ring-0", "!py-3.5 !px-3 min-w-[90px]", "bg-gray-50 dark:bg-gray-800/50")
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV13("div", {
-            className: "phone-input-separator"
+            className: "w-px h-8 bg-gray-200 dark:bg-gray-700"
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV13("input", {
             type: "tel",
@@ -2538,13 +2566,13 @@ function PhoneInput(props) {
             value: phoneNumber,
             onChange: handleNumberChange,
             placeholder,
-            className: "phone-input-field"
+            className: cx("flex-1 py-3.5 px-4", "bg-transparent", "text-text-light dark:text-text-dark placeholder-gray-400", "focus:outline-none", "sm:text-sm")
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      formik && name && formik.touched?.[name] && formik.errors?.[name] && /* @__PURE__ */ jsxDEV13("span", {
-        className: "error-message",
-        children: typeof formik.errors[name] === "string" ? formik.errors[name] : "Invalid field"
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV13("p", {
+        className: "text-xs text-red-500 mt-1",
+        children: errorMessage
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
@@ -3057,4 +3085,4 @@ export {
   AddMinus
 };
 
-//# debugId=0B8CC247386D1AB064756E2164756E21
+//# debugId=366223639DE8ED2264756E2164756E21

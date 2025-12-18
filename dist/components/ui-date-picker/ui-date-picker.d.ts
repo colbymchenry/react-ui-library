@@ -4,6 +4,8 @@ type BaseDatePickerProps = {
     placeholder?: string;
     className?: string;
     label?: string;
+    error?: string;
+    containerClassName?: string;
 };
 type WithFormik = BaseDatePickerProps & {
     formik: FormikProps<any>;
