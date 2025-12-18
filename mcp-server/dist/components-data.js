@@ -1371,6 +1371,94 @@ export const componentsData = [
             'User preference persists in localStorage'
         ],
         relatedComponents: ['Header', 'PageShell']
+    },
+    // ============================================
+    // SEPARATOR COMPONENT
+    // ============================================
+    {
+        name: 'Separator',
+        importName: 'Separator',
+        category: 'ui',
+        description: 'Horizontal divider line with optional centered label. Perfect for visually separating content sections or providing context between different form areas (e.g., "Or sign in with email").',
+        props: [
+            {
+                name: 'label',
+                type: 'string',
+                required: false,
+                description: 'Optional label text displayed centered on the separator line'
+            },
+            {
+                name: 'styleVars',
+                type: '{ lineColor?: string; labelBackground?: string; textColor?: string }',
+                required: false,
+                description: 'Custom CSS variables for theming the separator'
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: 'Additional CSS classes'
+            }
+        ],
+        examples: [
+            {
+                title: 'Simple Line Separator',
+                description: 'Basic horizontal divider without label',
+                code: `<Separator />`
+            },
+            {
+                title: 'Separator with Label',
+                description: 'Divider with centered text',
+                code: `<Separator label="Or continue with" />`
+            },
+            {
+                title: 'Social Sign-In Divider',
+                description: 'Common pattern for auth forms separating OAuth from email login',
+                code: `<div className="space-y-4">
+  <Button variant="social" iconLeading={<GoogleIcon />}>
+    Sign in with Google
+  </Button>
+  
+  <Separator label="Or sign in with email" />
+  
+  <Input label="Email" type="email" name="email" />
+  <Input label="Password" type="password" name="password" />
+</div>`
+            },
+            {
+                title: 'Custom Themed Separator',
+                description: 'Separator with custom colors via styleVars',
+                code: `<Separator
+  label="Or sign in with email"
+  styleVars={{
+    lineColor: "var(--border-light)",
+    labelBackground: "var(--text-muted-light)",
+    textColor: "var(--text-light)",
+  }}
+/>`
+            },
+            {
+                title: 'Dark Mode Compatible',
+                description: 'Using CSS variables for theme-aware colors',
+                code: `<Separator
+  label="Section Break"
+  styleVars={{
+    lineColor: "var(--border-light, #e5e7eb)",
+    labelBackground: "var(--bg-primary, white)",
+    textColor: "var(--text-muted, #6b7280)",
+  }}
+/>`
+            }
+        ],
+        bestPractices: [
+            'Use without label for simple visual breaks between sections',
+            'Use with label to provide context (e.g., alternative actions)',
+            'Set labelBackground to match parent container background for seamless appearance',
+            'Use CSS variables in styleVars for dark mode compatibility',
+            'Common use case: separating social OAuth buttons from email/password form',
+            'Keep label text short and descriptive'
+        ],
+        relatedComponents: ['Button', 'Card', 'FormGroup']
     }
 ];
 /**

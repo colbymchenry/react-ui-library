@@ -2834,9 +2834,38 @@ function Card({ className, children, ...props }) {
     children
   }, undefined, false, undefined, this);
 }
+// src/components/ui-separator/ui-separator.tsx
+import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
+function Separator({
+  label,
+  styleVars,
+  className,
+  ...props
+}) {
+  const cssVars = {};
+  if (styleVars?.lineColor) {
+    cssVars["--line-color"] = styleVars.lineColor;
+  }
+  if (styleVars?.labelBackground) {
+    cssVars["--label-color"] = styleVars.labelBackground;
+  }
+  if (styleVars?.textColor) {
+    cssVars["--text-color"] = styleVars.textColor;
+  }
+  const hasCustomStyles = Object.keys(cssVars).length > 0;
+  return /* @__PURE__ */ jsxDEV19("div", {
+    ...props,
+    className: cx("separator", className),
+    "data-label": label,
+    style: hasCustomStyles ? cssVars : undefined,
+    role: "separator",
+    "aria-orientation": "horizontal"
+  }, undefined, false, undefined, this);
+}
 export {
   Typography,
   ThemeToggle,
+  Separator,
   Select,
   SectionHeader,
   ui_phone_input_default as PhoneInput,
@@ -2855,4 +2884,4 @@ export {
   AddMinus
 };
 
-//# debugId=F7421B2D8BE2D0B364756E2164756E21
+//# debugId=C5347DC6F3DB00D764756E2164756E21

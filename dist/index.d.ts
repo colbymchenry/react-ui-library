@@ -19,4 +19,5 @@ export { default as Select } from "./components/ui-select/ui-select";
 export { default as FormGroup } from "./components/ui-form-group/ui-form-group";
 export { default as AddMinus } from "./components/ui-add-minus/ui-add-minus";
 export { default as Card } from "./components/ui-card/ui-card";
+export { Separator } from "./components/ui-separator/ui-separator";
 //# sourceMappingURL=index.d.ts.map
