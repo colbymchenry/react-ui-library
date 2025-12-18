@@ -1101,49 +1101,94 @@ export const componentsData = [
         name: 'Combobox',
         importName: 'Combobox',
         category: 'form',
-        description: 'Searchable select/autocomplete input with filtering functionality.',
+        description: 'Searchable select/autocomplete input with filtering, modern styling, and Formik integration.',
         props: [
             {
                 name: 'options',
-                type: 'Array<{ value: string; label: string }>',
+                type: 'Array<{ value: string; label: string; icon?: string; searchLabel?: string }>',
                 required: true,
-                description: 'Array of selectable options'
+                description: 'Array of selectable options with optional icon and searchLabel for custom filtering'
             },
             {
                 name: 'value',
                 type: 'string',
-                required: true,
-                description: 'Currently selected value'
+                required: false,
+                description: 'Currently selected value (required without Formik)'
             },
             {
                 name: 'onChange',
                 type: '(value: string) => void',
-                required: true,
-                description: 'Callback when value changes'
+                required: false,
+                description: 'Callback when value changes (required without Formik)'
+            },
+            {
+                name: 'formik',
+                type: 'FormikProps<any>',
+                required: false,
+                description: 'Formik instance for automatic value/onChange/error binding'
+            },
+            {
+                name: 'name',
+                type: 'string',
+                required: false,
+                description: 'Field name (required when using formik prop)'
             },
             {
                 name: 'label',
                 type: 'string',
                 required: false,
-                description: 'Label text'
+                description: 'Label text displayed above the field'
             },
             {
                 name: 'error',
                 type: 'string',
                 required: false,
-                description: 'Error message'
+                description: 'Error message to display'
             },
             {
                 name: 'placeholder',
                 type: 'string',
                 required: false,
-                description: 'Placeholder text when empty'
+                default: '"Select option..."',
+                description: 'Placeholder text when no option is selected'
+            },
+            {
+                name: 'searchPlaceholder',
+                type: 'string',
+                required: false,
+                default: '"Search..."',
+                description: 'Placeholder text for the search input'
+            },
+            {
+                name: 'matchTriggerWidth',
+                type: 'boolean',
+                required: false,
+                default: 'true',
+                description: 'Whether dropdown should match the trigger button width'
+            },
+            {
+                name: 'dropdownClassName',
+                type: 'string',
+                required: false,
+                description: 'Additional CSS classes for the dropdown (e.g., width constraints like "min-w-[280px] max-w-[320px]")'
+            },
+            {
+                name: 'containerClassName',
+                type: 'string',
+                required: false,
+                description: 'Additional CSS classes for the outer container'
+            },
+            {
+                name: 'renderOption',
+                type: '(option: ComboboxOption) => ReactNode',
+                required: false,
+                description: 'Custom render function for dropdown options'
             }
         ],
         examples: [
             {
-                title: 'Searchable City Select',
-                description: 'Combobox with many options',
+                title: 'Basic Combobox',
+                description: 'Simple searchable select',
                 code: `<Combobox
   label="Select City"
   options={cities.map(city => ({ value: city.id, label: city.name }))}
@@ -1153,25 +1198,51 @@ export const componentsData = [
 />`
             },
             {
-                title: 'User Search',
-                description: 'Autocomplete for user selection',
+                title: 'With Formik',
+                description: 'Combobox integrated with Formik form',
                 code: `<Combobox
-  label="Assign To"
-  options={users.map(u => ({ value: u.id, label: u.name }))}
-  value={assignee}
-  onChange={setAssignee}
-  placeholder="Search users..."
-  error={error}
+  formik={formik}
+  name="country"
+  label="Country"
+  options={countries}
+  placeholder="Select a country..."
+/>`
+            },
+            {
+                title: 'Custom Dropdown Width',
+                description: 'Combobox with custom dropdown width constraints',
+                code: `<Combobox
+  options={countryOptions}
+  value={country}
+  onChange={setCountry}
+  matchTriggerWidth={false}
+  dropdownClassName="min-w-[280px] max-w-[320px]"
+/>`
+            },
+            {
+                title: 'Custom Option Rendering',
+                description: 'Combobox with custom option display',
+                code: `<Combobox
+  options={users}
+  value={selectedUser}
+  onChange={setSelectedUser}
+  renderOption={(option) => (
+    <span className="flex items-center gap-2">
+      <img src={option.avatar} className="w-6 h-6 rounded-full" />
+      <span>{option.label}</span>
+    </span>
+  )}
 />`
             }
         ],
         bestPractices: [
             'Use Combobox when you have many options (>10)',
-            'Use Select for smaller option lists',
-            'Provide a helpful placeholder',
-            'Options should have unique values'
+            'Use dropdownClassName to set custom width when matchTriggerWidth={false}',
+            'Provide searchLabel in options for better search filtering',
+            'Use renderOption for rich option displays with icons/images',
+            'Prefer Formik integration for forms'
         ],
-        relatedComponents: ['Select', 'Input']
+        relatedComponents: ['FormGroup', 'PhoneInput', 'DatePicker']
     },
     // ============================================
     // ADD MINUS COMPONENT

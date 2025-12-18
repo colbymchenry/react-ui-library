@@ -414,6 +414,7 @@ function Combobox(props) {
     matchTriggerWidth = true,
     error: externalError,
     containerClassName,
+    dropdownClassName,
     formik,
     name
   } = props;
@@ -530,6 +531,7 @@ function Combobox(props) {
         onClose: () => setOpen(false),
         anchorRef: triggerRef,
         matchTriggerWidth,
+        className: dropdownClassName,
         children: [
           /* @__PURE__ */ jsxDEV10("div", {
             className: "p-2 border-b border-gray-200 dark:border-gray-700",
@@ -2549,7 +2551,8 @@ function PhoneInput(props) {
             matchTriggerWidth: false,
             renderOption: renderCountryOption,
             placeholder: "+1",
-            containerClassName: "shrink-0 [&>button]:border-0 [&>button]:shadow-none [&>button]:rounded-none [&>button]:ring-0 [&>button]:bg-gray-50 [&>button]:dark:bg-gray-800/50 [&>button]:min-w-[90px]"
+            containerClassName: "shrink-0 [&>button]:border-0 [&>button]:shadow-none [&>button]:rounded-none [&>button]:ring-0 [&>button]:bg-gray-50 [&>button]:dark:bg-gray-800/50 [&>button]:min-w-[90px]",
+            dropdownClassName: "min-w-[280px] max-w-[320px]"
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV13("div", {
             className: "w-px h-8 bg-gray-200 dark:bg-gray-700 shrink-0"
@@ -3079,4 +3082,4 @@ export {
   AddMinus
 };
 
-//# debugId=18C96220C94BB11F64756E2164756E21
+//# debugId=CC33FA1592E5FE2764756E2164756E21

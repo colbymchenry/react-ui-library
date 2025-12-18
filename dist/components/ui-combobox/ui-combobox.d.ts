@@ -15,6 +15,7 @@ type BaseComboboxProps = {
     matchTriggerWidth?: boolean;
     error?: string;
     containerClassName?: string;
+    dropdownClassName?: string;
 };
 type WithFormik = BaseComboboxProps & {
     formik: FormikProps<any>;

@@ -247,6 +247,7 @@ function PhoneInput(props: PhoneInputProps) {
 					renderOption={renderCountryOption}
 					placeholder="+1"
 					containerClassName="shrink-0 [&>button]:border-0 [&>button]:shadow-none [&>button]:rounded-none [&>button]:ring-0 [&>button]:bg-gray-50 [&>button]:dark:bg-gray-800/50 [&>button]:min-w-[90px]"
+					dropdownClassName="min-w-[280px] max-w-[320px]"
 				/>
 
 				{/* Separator */}

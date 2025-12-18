@@ -26,6 +26,7 @@ type BaseComboboxProps = {
 	matchTriggerWidth?: boolean;
 	error?: string;
 	containerClassName?: string;
+	dropdownClassName?: string;
 };
 
 type WithFormik = BaseComboboxProps & {
@@ -67,6 +68,7 @@ function Combobox(props: ComboboxProps) {
 		matchTriggerWidth = true,
 		error: externalError,
 		containerClassName,
+		dropdownClassName,
 		formik,
 		name,
 	} = props;
@@ -225,6 +227,7 @@ function Combobox(props: ComboboxProps) {
 				onClose={() => setOpen(false)}
 				anchorRef={triggerRef as React.RefObject<HTMLElement>}
 				matchTriggerWidth={matchTriggerWidth}
+				className={dropdownClassName}
 			>
 				{/* Search Input */}
 				<div className="p-2 border-b border-gray-200 dark:border-gray-700">
