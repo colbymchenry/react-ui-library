@@ -1,5 +1,5 @@
 /**
- * Component documentation data for the Volcanica React UI Library
+ * Component documentation data for the Colby McHenry React UI Library
  *
  * This structured data allows AI assistants to query specific component
  * information on-demand without loading the entire documentation.

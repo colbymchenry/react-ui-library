@@ -1,5 +1,5 @@
 /**
- * Component documentation data for the Volcanica React UI Library
+ * Component documentation data for the Colby McHenry React UI Library
  * 
  * This structured data allows AI assistants to query specific component
  * information on-demand without loading the entire documentation.
@@ -1534,20 +1534,20 @@ export const componentsData: ComponentDoc[] = [
  * Get library metadata and setup information
  */
 export const libraryInfo = {
-  name: 'Volcanica React UI Library',
-  package: '@volcanica/react-ui-library',
+  name: 'Colby McHenry React UI Library',
+  package: '@colbymchenry/react-ui-library',
   version: '1.0.0',
-  installation: `npm install @volcanica/react-ui-library`,
-  stylesImport: `import '@volcanica/react-ui-library/styles';`,
+  installation: `npm install @colbymchenry/react-ui-library`,
+  stylesImport: `import '@colbymchenry/react-ui-library/styles';`,
   peerDependencies: ['react', 'react-dom', 'formik'],
   tailwindConfig: `// tailwind.config.js
 export default {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@volcanica/react-ui-library/dist/**/*.js',
+    './node_modules/@colbymchenry/react-ui-library/dist/**/*.js',
   ],
   // Optional: use the library's preset
-  presets: [require('@volcanica/react-ui-library/preset')],
+  presets: [require('@colbymchenry/react-ui-library/preset')],
 };`,
   materialIconsSetup: `<link 
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" 

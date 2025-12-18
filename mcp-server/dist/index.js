@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Volcanica React UI Library - MCP Server
+ * Colby McHenry React UI Library - MCP Server
  *
- * This MCP server provides on-demand documentation for the Volcanica React UI
+ * This MCP server provides on-demand documentation for the Colby McHenry React UI
  * component library. AI assistants can query specific components, search for
  * patterns, and get setup guides without loading the entire documentation.
  *
@@ -21,7 +21,7 @@ import { componentsData, libraryInfo } from './components-data.js';
  * Create and configure the MCP server
  */
 const server = new Server({
-    name: 'volcanica-ui-library',
+    name: 'colbymchenry-ui-library',
     version: '1.0.0',
 }, {
     capabilities: {
@@ -34,7 +34,7 @@ const server = new Server({
 const tools = [
     {
         name: 'list_components',
-        description: 'List all available components in the Volcanica React UI Library with brief descriptions. Use this to discover what components are available.',
+        description: 'List all available components in the Colby McHenry React UI Library with brief descriptions. Use this to discover what components are available.',
         inputSchema: {
             type: 'object',
             properties: {
@@ -116,7 +116,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
  */
 function formatComponentDoc(component) {
     let output = `# ${component.name}\n\n`;
-    output += `**Import:** \`import { ${component.importName} } from '@volcanica/react-ui-library'\`\n\n`;
+    output += `**Import:** \`import { ${component.importName} } from '@colbymchenry/react-ui-library'\`\n\n`;
     output += `**Category:** ${component.category}\n\n`;
     output += `${component.description}\n\n`;
     // Props
@@ -162,7 +162,7 @@ const commonPatterns = {
 \`\`\`tsx
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Input, Select, Button, FormGroup } from '@volcanica/react-ui-library';
+import { Input, Select, Button, FormGroup } from '@colbymchenry/react-ui-library';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -229,7 +229,7 @@ function MyForm() {
     social_signin: `## Social Sign-In Buttons
 
 \`\`\`tsx
-import { Button, MaterialIcon } from '@volcanica/react-ui-library';
+import { Button, MaterialIcon } from '@colbymchenry/react-ui-library';
 
 function AuthButtons({ onGoogleSignIn, onEmailContinue, isLoading }) {
   return (
@@ -276,7 +276,7 @@ function AuthButtons({ onGoogleSignIn, onEmailContinue, isLoading }) {
     loading_button: `## Loading Button States
 
 \`\`\`tsx
-import { Button, MaterialIcon } from '@volcanica/react-ui-library';
+import { Button, MaterialIcon } from '@colbymchenry/react-ui-library';
 
 // Basic loading state
 <Button
@@ -329,7 +329,7 @@ import { Button, MaterialIcon } from '@volcanica/react-ui-library';
 
 \`\`\`tsx
 import { useState } from 'react';
-import { Dialog, Button, Input, MaterialIcon } from '@volcanica/react-ui-library';
+import { Dialog, Button, Input, MaterialIcon } from '@colbymchenry/react-ui-library';
 
 function ConfirmDialog({ open, onClose, onConfirm, title, message }) {
   return (
@@ -406,7 +406,7 @@ import {
   Button,
   MaterialIcon,
   SectionHeader
-} from '@volcanica/react-ui-library';
+} from '@colbymchenry/react-ui-library';
 
 function Dashboard() {
   return (
@@ -471,7 +471,7 @@ function Dashboard() {
     data_table_row: `## Data Table Row Actions
 
 \`\`\`tsx
-import { Button, Badge, Dropdown, MaterialIcon } from '@volcanica/react-ui-library';
+import { Button, Badge, Dropdown, MaterialIcon } from '@colbymchenry/react-ui-library';
 
 function TableRow({ item, onEdit, onDelete, onDuplicate }) {
   return (
@@ -547,8 +547,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 }
                 grouped[comp.category].push(comp);
             }
-            let output = '# Volcanica React UI Library Components\n\n';
-            output += `**Import:** \`import { ComponentName } from '@volcanica/react-ui-library'\`\n\n`;
+            let output = '# Colby McHenry React UI Library Components\n\n';
+            output += `**Import:** \`import { ComponentName } from '@colbymchenry/react-ui-library'\`\n\n`;
             for (const [cat, comps] of Object.entries(grouped)) {
                 output += `## ${cat.charAt(0).toUpperCase() + cat.slice(1)} Components\n\n`;
                 for (const comp of comps) {
@@ -623,7 +623,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // GET SETUP GUIDE
         // ========================================
         case 'get_setup_guide': {
-            let output = '# Volcanica React UI Library - Setup Guide\n\n';
+            let output = '# Colby McHenry React UI Library - Setup Guide\n\n';
             output += `## Installation\n\n\`\`\`bash\n${libraryInfo.installation}\n\`\`\`\n\n`;
             output += `## Import Styles\n\nAdd to your root layout:\n\n\`\`\`tsx\n${libraryInfo.stylesImport}\n\`\`\`\n\n`;
             output += `## Tailwind Configuration\n\n\`\`\`js\n${libraryInfo.tailwindConfig}\n\`\`\`\n\n`;
@@ -634,8 +634,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }
             output += '\n## Basic Import Example\n\n';
             output += '```tsx\n';
-            output += "import { Button, Input, Card, Dialog } from '@volcanica/react-ui-library';\n";
-            output += "import '@volcanica/react-ui-library/styles';\n\n";
+            output += "import { Button, Input, Card, Dialog } from '@colbymchenry/react-ui-library';\n";
+            output += "import '@colbymchenry/react-ui-library/styles';\n\n";
             output += 'function MyComponent() {\n';
             output += '  return (\n';
             output += '    <Card>\n';
@@ -682,6 +682,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error('Volcanica UI Library MCP Server running');
+    console.error('Colby McHenry React UI Library MCP Server running');
 }
 main().catch(console.error);

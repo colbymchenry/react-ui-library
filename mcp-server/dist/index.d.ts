@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Volcanica React UI Library - MCP Server
+ * Colby McHenry React UI Library - MCP Server
  *
- * This MCP server provides on-demand documentation for the Volcanica React UI
+ * This MCP server provides on-demand documentation for the Colby McHenry React UI
  * component library. AI assistants can query specific components, search for
  * patterns, and get setup guides without loading the entire documentation.
  *
