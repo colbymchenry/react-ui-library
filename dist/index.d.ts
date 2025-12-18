@@ -25,4 +25,5 @@ export { RadioGroup } from "./components/ui-radio/ui-radio";
 export type { RadioOption } from "./components/ui-radio/ui-radio";
 export { Alert } from "./components/ui-alert/ui-alert";
 export type { AlertVariant } from "./components/ui-alert/ui-alert";
+export { SocialProof } from "./components/ui-social-proof/ui-social-proof";
 //# sourceMappingURL=index.d.ts.map

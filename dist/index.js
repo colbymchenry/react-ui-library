@@ -3087,9 +3087,68 @@ function Alert({
     ]
   }, undefined, true, undefined, this);
 }
+// src/components/ui-social-proof/ui-social-proof.tsx
+import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+function formatCount(count) {
+  if (count >= 1000) {
+    return `${(count / 1000).toFixed(0)}k`;
+  }
+  return count.toString();
+}
+function SocialProof({
+  avatars = [],
+  additionalCount = 0,
+  rating = 5,
+  subtitle = "Trusted by Users",
+  className
+}) {
+  const renderStars = () => {
+    return Array.from({ length: 5 }).map((_, index) => /* @__PURE__ */ jsxDEV23(MaterialIcon, {
+      name: "star",
+      variant: index < rating ? "filled" : "outlined",
+      className: "text-[16px]"
+    }, index, false, undefined, this));
+  };
+  return /* @__PURE__ */ jsxDEV23("div", {
+    className: cx("flex items-center gap-4", "bg-white/10 backdrop-blur-md", "p-4 rounded-xl border border-white/10 w-fit", className),
+    children: [
+      (avatars.length > 0 || additionalCount > 0) && /* @__PURE__ */ jsxDEV23("div", {
+        className: "flex -space-x-3",
+        children: [
+          avatars.map((avatarUrl, index) => /* @__PURE__ */ jsxDEV23("img", {
+            alt: "User avatar",
+            className: "w-10 h-10 rounded-full border-2 border-gray-900 object-cover",
+            src: avatarUrl
+          }, index, false, undefined, this)),
+          additionalCount > 0 && /* @__PURE__ */ jsxDEV23("div", {
+            className: "w-10 h-10 rounded-full border-2 border-gray-900 bg-primary flex items-center justify-center text-xs font-bold text-white",
+            children: [
+              "+",
+              formatCount(additionalCount)
+            ]
+          }, undefined, true, undefined, this)
+        ]
+      }, undefined, true, undefined, this),
+      /* @__PURE__ */ jsxDEV23("div", {
+        className: "text-sm font-medium text-gray-200",
+        children: [
+          /* @__PURE__ */ jsxDEV23("div", {
+            className: "flex text-amber-400",
+            children: renderStars()
+          }, undefined, false, undefined, this),
+          /* @__PURE__ */ jsxDEV23("span", {
+            className: "opacity-80 text-xs uppercase tracking-wide",
+            children: subtitle
+          }, undefined, false, undefined, this)
+        ]
+      }, undefined, true, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
 export {
   Typography,
   ThemeToggle,
+  SocialProof,
   Separator,
   Select,
   SectionHeader,
@@ -3112,4 +3171,4 @@ export {
   AddMinus
 };
 
-//# debugId=C062EF862B623A1464756E2164756E21
+//# debugId=672B8A1DA32A80F164756E2164756E21

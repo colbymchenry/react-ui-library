@@ -2016,6 +2016,123 @@ export const componentsData: ComponentDoc[] = [
       'Place form-level errors above the form, field-level errors use Input error prop'
     ],
     relatedComponents: ['Dialog', 'Button', 'Input']
+  },
+
+  // ============================================
+  // SOCIAL PROOF COMPONENT
+  // ============================================
+  {
+    name: 'SocialProof',
+    importName: 'SocialProof',
+    category: 'ui',
+    description: 'Displays social proof with stacked user avatars, star ratings, and a subtitle. Features a glassmorphism design with backdrop blur. Used to build trust by showing that other users love the product.',
+    props: [
+      {
+        name: 'avatars',
+        type: 'string[]',
+        required: false,
+        default: '[]',
+        description: 'Array of avatar image URLs to display as stacked circles'
+      },
+      {
+        name: 'additionalCount',
+        type: 'number',
+        required: false,
+        default: '0',
+        description: 'Number of additional users beyond the shown avatars (displays as "+2k" etc.)'
+      },
+      {
+        name: 'rating',
+        type: 'number',
+        required: false,
+        default: '5',
+        description: 'Star rating value (1-5), filled stars based on this value'
+      },
+      {
+        name: 'subtitle',
+        type: 'string',
+        required: false,
+        default: '"Trusted by Users"',
+        description: 'Text to display below the star rating'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the container'
+      }
+    ],
+    examples: [
+      {
+        title: 'Full Social Proof',
+        description: 'Complete social proof with avatars, count, rating, and subtitle',
+        code: `<SocialProof
+  avatars={[
+    '/avatars/user1.jpg',
+    '/avatars/user2.jpg',
+    '/avatars/user3.jpg',
+  ]}
+  additionalCount={2000}
+  rating={5}
+  subtitle="Trusted by Coffee Lovers"
+/>`
+      },
+      {
+        title: 'Rating Only',
+        description: 'Simple star rating with subtitle',
+        code: `<SocialProof
+  rating={5}
+  subtitle="5-star rated product"
+/>`
+      },
+      {
+        title: 'Avatars with Count',
+        description: 'Show user avatars and total count',
+        code: `<SocialProof
+  avatars={['/user1.jpg', '/user2.jpg', '/user3.jpg', '/user4.jpg']}
+  additionalCount={500}
+  subtitle="Happy customers"
+/>`
+      },
+      {
+        title: 'Partial Rating',
+        description: 'Show a 4-star rating',
+        code: `<SocialProof
+  rating={4}
+  subtitle="Highly rated"
+/>`
+      },
+      {
+        title: 'Hero Section Usage',
+        description: 'Typical placement in a hero section',
+        code: `<section className="relative bg-gray-900 text-white py-20">
+  <div className="container mx-auto px-6">
+    <h1 className="text-4xl font-bold mb-4">
+      Premium Coffee Delivered
+    </h1>
+    <p className="text-gray-400 mb-8">
+      Fresh roasted beans, shipped to your door.
+    </p>
+    
+    <SocialProof
+      avatars={['/avatar1.jpg', '/avatar2.jpg', '/avatar3.jpg']}
+      additionalCount={5000}
+      rating={5}
+      subtitle="Loved by coffee enthusiasts"
+    />
+  </div>
+</section>`
+      }
+    ],
+    bestPractices: [
+      'Use on landing pages and hero sections to build trust',
+      'Show 3-4 avatars maximum for best visual balance',
+      'Use real customer photos when possible for authenticity',
+      'Large additionalCount values auto-format (2000 → "2k")',
+      'Works best on dark backgrounds due to glassmorphism design',
+      'Combine with testimonials for stronger social proof'
+    ],
+    relatedComponents: ['Card', 'Badge', 'MaterialIcon']
   }
 ];
 
