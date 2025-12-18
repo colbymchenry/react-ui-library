@@ -239,25 +239,18 @@ function PhoneInput(props: PhoneInputProps) {
 				)}
 			>
 				{/* Country Code Selector */}
-				<div className="shrink-0">
-					<Combobox
-						options={countryOptions}
-						value={activeCountryName}
-						onChange={handleCountryChange}
-						matchTriggerWidth={false}
-						renderOption={renderCountryOption}
-						placeholder="+1"
-						containerClassName="!space-y-0"
-						className={cx(
-							"!border-0 !shadow-none !rounded-none !ring-0",
-							"!py-3.5 !px-3 min-w-[90px]",
-							"bg-gray-50 dark:bg-gray-800/50"
-						)}
-					/>
-				</div>
+				<Combobox
+					options={countryOptions}
+					value={activeCountryName}
+					onChange={handleCountryChange}
+					matchTriggerWidth={false}
+					renderOption={renderCountryOption}
+					placeholder="+1"
+					containerClassName="shrink-0 [&>button]:border-0 [&>button]:shadow-none [&>button]:rounded-none [&>button]:ring-0 [&>button]:bg-gray-50 [&>button]:dark:bg-gray-800/50 [&>button]:min-w-[90px]"
+				/>
 
 				{/* Separator */}
-				<div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+				<div className="w-px h-8 bg-gray-200 dark:bg-gray-700 shrink-0" />
 
 				{/* Phone Number Input */}
 				<input
@@ -266,13 +259,7 @@ function PhoneInput(props: PhoneInputProps) {
 					value={phoneNumber}
 					onChange={handleNumberChange}
 					placeholder={placeholder}
-					className={cx(
-						"flex-1 py-3.5 px-4",
-						"bg-transparent",
-						"text-text-light dark:text-text-dark placeholder-gray-400",
-						"focus:outline-none",
-						"sm:text-sm"
-					)}
+					className="flex-1 py-3.5 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
 				/>
 			</div>
 

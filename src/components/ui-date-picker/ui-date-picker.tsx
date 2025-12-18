@@ -259,7 +259,7 @@ export default function DatePicker(props: DatePickerProps) {
 				open={isOpen}
 				onClose={() => setIsOpen(false)}
 				anchorRef={triggerRef as React.RefObject<HTMLElement>}
-				className="p-3"
+				className="p-3 min-w-[280px] max-w-[300px]"
 				matchTriggerWidth={false}
 			>
 				{/* Calendar Header */}

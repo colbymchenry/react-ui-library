@@ -723,7 +723,7 @@ function DatePicker(props) {
         open: isOpen,
         onClose: () => setIsOpen(false),
         anchorRef: triggerRef,
-        className: "p-3",
+        className: "p-3 min-w-[280px] max-w-[300px]",
         matchTriggerWidth: false,
         children: [
           /* @__PURE__ */ jsxDEV11("div", {
@@ -2544,21 +2544,17 @@ function PhoneInput(props) {
       /* @__PURE__ */ jsxDEV13("div", {
         className: cx("flex items-center w-full rounded-xl overflow-hidden", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark", "shadow-sm transition-shadow", "focus-within:border-primary focus-within:ring-1 focus-within:ring-primary", hasError && "border-red-500 focus-within:border-red-500 focus-within:ring-red-500"),
         children: [
-          /* @__PURE__ */ jsxDEV13("div", {
-            className: "shrink-0",
-            children: /* @__PURE__ */ jsxDEV13(ui_combobox_default, {
-              options: countryOptions,
-              value: activeCountryName,
-              onChange: handleCountryChange,
-              matchTriggerWidth: false,
-              renderOption: renderCountryOption,
-              placeholder: "+1",
-              containerClassName: "!space-y-0",
-              className: cx("!border-0 !shadow-none !rounded-none !ring-0", "!py-3.5 !px-3 min-w-[90px]", "bg-gray-50 dark:bg-gray-800/50")
-            }, undefined, false, undefined, this)
+          /* @__PURE__ */ jsxDEV13(ui_combobox_default, {
+            options: countryOptions,
+            value: activeCountryName,
+            onChange: handleCountryChange,
+            matchTriggerWidth: false,
+            renderOption: renderCountryOption,
+            placeholder: "+1",
+            containerClassName: "shrink-0 [&>button]:border-0 [&>button]:shadow-none [&>button]:rounded-none [&>button]:ring-0 [&>button]:bg-gray-50 [&>button]:dark:bg-gray-800/50 [&>button]:min-w-[90px]"
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV13("div", {
-            className: "w-px h-8 bg-gray-200 dark:bg-gray-700"
+            className: "w-px h-8 bg-gray-200 dark:bg-gray-700 shrink-0"
           }, undefined, false, undefined, this),
           /* @__PURE__ */ jsxDEV13("input", {
             type: "tel",
@@ -2566,7 +2562,7 @@ function PhoneInput(props) {
             value: phoneNumber,
             onChange: handleNumberChange,
             placeholder,
-            className: cx("flex-1 py-3.5 px-4", "bg-transparent", "text-text-light dark:text-text-dark placeholder-gray-400", "focus:outline-none", "sm:text-sm")
+            className: "flex-1 py-3.5 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
@@ -3085,4 +3081,4 @@ export {
   AddMinus
 };
 
-//# debugId=366223639DE8ED2264756E2164756E21
+//# debugId=7377C256002829D064756E2164756E21
