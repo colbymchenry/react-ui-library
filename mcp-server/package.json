@@ -1,14 +1,12 @@
 {
   "name": "@colbymchenry/ui-library-mcp",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "MCP server for Volcanica React UI Library documentation - provides on-demand component docs for AI assistants",
   "type": "module",
   "main": "dist/index.js",
-  "bin": {
-    "volcanica-ui-mcp": "./dist/index.js"
-  },
+  "bin": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/index.js",
     "start": "node dist/index.js",
     "dev": "tsc --watch",
     "prepublishOnly": "npm run build"
