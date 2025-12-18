@@ -2590,8 +2590,8 @@ function Input(props) {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur
   } : {};
-  const paddingLeft = iconLeading ? "pl-14" : "pl-4";
-  const paddingRight = iconTrailing ? "pr-14" : "pr-4";
+  const paddingLeft = iconLeading ? "pl-13" : "pl-4";
+  const paddingRight = iconTrailing ? "pr-13" : "pr-4";
   return /* @__PURE__ */ jsxDEV14("div", {
     className: cx("space-y-2", containerClassName),
     children: [
@@ -3072,7 +3072,7 @@ function Alert({
         className: cx(iconColorClasses[variant], "text-[20px] mt-0.5 shrink-0")
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV22("div", {
-        className: "flex-1 min-w-0 pt-2",
+        className: "flex-1 min-w-0 pt-1",
         children: [
           title && /* @__PURE__ */ jsxDEV22("p", {
             className: "font-semibold text-sm mb-1",
@@ -3112,4 +3112,4 @@ export {
   AddMinus
 };
 
-//# debugId=06875E3210F4672464756E2164756E21
+//# debugId=C062EF862B623A1464756E2164756E21

@@ -1,6 +1,6 @@
 {
 	"name": "@colbymchenry/react-ui-library",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "A modern React component library with Tailwind CSS and TypeScript support",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",

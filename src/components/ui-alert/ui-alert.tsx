@@ -113,7 +113,7 @@ export function Alert({
 			)}
 
 			{/* Content */}
-			<div className="flex-1 min-w-0 pt-2">
+			<div className="flex-1 min-w-0 pt-1">
 				{title && (
 					<p className="font-semibold text-sm mb-1">{title}</p>
 				)}

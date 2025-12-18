@@ -108,8 +108,8 @@ export default function Input(props: InputProps) {
 		: {};
 
 	/** Compute padding classes based on icon presence */
-	const paddingLeft = iconLeading ? "pl-14" : "pl-4";
-	const paddingRight = iconTrailing ? "pr-14" : "pr-4";
+	const paddingLeft = iconLeading ? "pl-13" : "pl-4";
+	const paddingRight = iconTrailing ? "pr-13" : "pr-4";
 
 	return (
 		<div className={cx("space-y-2", containerClassName)}>
