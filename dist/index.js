@@ -2565,47 +2565,65 @@ var ui_phone_input_default = memo2(PhoneInput);
 // src/components/ui-input/ui-input.tsx
 import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 function Input(props) {
-  const { label, formik, name, id, ...rest } = props;
-  if (formik) {
-    const inputName = name;
-    return /* @__PURE__ */ jsxDEV14("div", {
-      className: "form-group",
-      children: [
-        label && /* @__PURE__ */ jsxDEV14("label", {
-          htmlFor: id ?? inputName,
-          children: label
-        }, undefined, false, undefined, this),
-        /* @__PURE__ */ jsxDEV14("input", {
-          type: "text",
-          id: id ?? inputName,
-          name: inputName,
-          value: formik.values?.[inputName] ?? "",
-          onChange: formik.handleChange,
-          onBlur: formik.handleBlur,
-          className: cx("input", formik.touched?.[inputName] && formik.errors?.[inputName] ? "error" : ""),
-          placeholder: rest.placeholder || "",
-          ...rest
-        }, undefined, false, undefined, this),
-        formik.touched?.[inputName] && formik.errors?.[inputName] && /* @__PURE__ */ jsxDEV14("span", {
-          className: "error-message",
-          children: typeof formik.errors[inputName] === "string" ? formik.errors[inputName] : "Invalid field"
-        }, undefined, false, undefined, this)
-      ]
-    }, undefined, true, undefined, this);
-  }
+  const {
+    label,
+    formik,
+    name,
+    id,
+    iconLeading,
+    iconTrailing,
+    error: externalError,
+    inputClassName,
+    containerClassName,
+    className,
+    ...rest
+  } = props;
+  const inputId = id ?? name;
+  const inputName = name;
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
+  const inputProps = isFormik ? {
+    value: formik.values?.[name] ?? "",
+    onChange: formik.handleChange,
+    onBlur: formik.handleBlur
+  } : {};
+  const paddingLeft = iconLeading ? "pl-11" : "pl-4";
+  const paddingRight = iconTrailing ? "pr-11" : "pr-4";
   return /* @__PURE__ */ jsxDEV14("div", {
-    className: "form-group",
+    className: cx("space-y-2", containerClassName),
     children: [
       label && /* @__PURE__ */ jsxDEV14("label", {
-        htmlFor: id || name,
+        htmlFor: inputId,
+        className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1",
         children: label
       }, undefined, false, undefined, this),
-      /* @__PURE__ */ jsxDEV14("input", {
-        type: "text",
-        id: id || name,
-        name,
-        className: cx("input"),
-        ...rest
+      /* @__PURE__ */ jsxDEV14("div", {
+        className: "relative group",
+        children: [
+          iconLeading && /* @__PURE__ */ jsxDEV14("div", {
+            className: "pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 transition-colors text-gray-400 group-focus-within:text-primary",
+            children: iconLeading
+          }, undefined, false, undefined, this),
+          /* @__PURE__ */ jsxDEV14("input", {
+            type: "text",
+            id: inputId,
+            name: inputName,
+            className: cx("block w-full rounded-xl border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5", paddingLeft, paddingRight, "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", inputClassName, className),
+            ...inputProps,
+            ...rest
+          }, undefined, false, undefined, this),
+          iconTrailing && /* @__PURE__ */ jsxDEV14("div", {
+            className: "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 transition-colors text-gray-400 group-focus-within:text-primary",
+            children: iconTrailing
+          }, undefined, false, undefined, this)
+        ]
+      }, undefined, true, undefined, this),
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV14("p", {
+        className: "text-xs text-red-500 mt-1",
+        children: errorMessage
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
@@ -2869,12 +2887,213 @@ function Separator({
     ]
   }, undefined, true, undefined, this);
 }
+// src/components/ui-checkbox/ui-checkbox.tsx
+import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
+function Checkbox(props) {
+  const {
+    label,
+    description,
+    formik,
+    name,
+    id,
+    error: externalError,
+    containerClassName,
+    className,
+    ...rest
+  } = props;
+  const inputId = id ?? name;
+  const inputName = name;
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
+  const inputProps = isFormik ? {
+    checked: !!formik.values?.[name],
+    onChange: formik.handleChange,
+    onBlur: formik.handleBlur
+  } : {};
+  return /* @__PURE__ */ jsxDEV20("div", {
+    className: cx("flex flex-col", containerClassName),
+    children: [
+      /* @__PURE__ */ jsxDEV20("div", {
+        className: "flex items-start",
+        children: [
+          /* @__PURE__ */ jsxDEV20("input", {
+            type: "checkbox",
+            id: inputId,
+            name: inputName,
+            className: cx("h-4 w-4 rounded border-gray-300 dark:border-gray-600", "text-primary focus:ring-primary focus:ring-offset-0", "bg-white dark:bg-card-dark", "cursor-pointer transition-colors", hasError && "border-red-500", className),
+            ...inputProps,
+            ...rest
+          }, undefined, false, undefined, this),
+          /* @__PURE__ */ jsxDEV20("div", {
+            className: "ml-3",
+            children: [
+              /* @__PURE__ */ jsxDEV20("label", {
+                htmlFor: inputId,
+                className: cx("block text-sm font-medium cursor-pointer", "text-text-light dark:text-text-dark", hasError && "text-red-500"),
+                children: label
+              }, undefined, false, undefined, this),
+              description && /* @__PURE__ */ jsxDEV20("p", {
+                className: "text-xs text-text-muted-light dark:text-text-muted-dark mt-0.5",
+                children: description
+              }, undefined, false, undefined, this)
+            ]
+          }, undefined, true, undefined, this)
+        ]
+      }, undefined, true, undefined, this),
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV20("p", {
+        className: "text-xs text-red-500 mt-1 ml-7",
+        children: errorMessage
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
+// src/components/ui-radio/ui-radio.tsx
+import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
+function RadioGroup(props) {
+  const {
+    label,
+    options,
+    direction = "vertical",
+    formik,
+    name,
+    error: externalError,
+    containerClassName,
+    className,
+    ...rest
+  } = props;
+  const isFormik = !!formik && !!name;
+  const touched = isFormik ? formik.touched?.[name] : false;
+  const formikError = isFormik ? formik.errors?.[name] : undefined;
+  const hasError = !!(externalError || touched && formikError);
+  const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
+  const currentValue = isFormik ? formik.values?.[name] : rest.value;
+  const getInputProps = (optionValue) => {
+    if (isFormik) {
+      return {
+        checked: currentValue === optionValue,
+        onChange: formik.handleChange,
+        onBlur: formik.handleBlur
+      };
+    }
+    return {
+      checked: currentValue === optionValue,
+      onChange: rest.onChange
+    };
+  };
+  return /* @__PURE__ */ jsxDEV21("div", {
+    className: cx("space-y-2", containerClassName),
+    children: [
+      label && /* @__PURE__ */ jsxDEV21("label", {
+        className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-2",
+        children: label
+      }, undefined, false, undefined, this),
+      /* @__PURE__ */ jsxDEV21("div", {
+        className: cx(direction === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3"),
+        role: "radiogroup",
+        "aria-label": label,
+        children: options.map((option) => {
+          const optionId = `${name}-${option.value}`;
+          const isChecked = currentValue === option.value;
+          return /* @__PURE__ */ jsxDEV21("div", {
+            className: "flex items-start",
+            children: [
+              /* @__PURE__ */ jsxDEV21("input", {
+                type: "radio",
+                id: optionId,
+                name,
+                value: option.value,
+                disabled: option.disabled,
+                className: cx("h-4 w-4 border-gray-300 dark:border-gray-600", "text-primary focus:ring-primary focus:ring-offset-0", "bg-white dark:bg-card-dark", "cursor-pointer transition-colors", option.disabled && "opacity-50 cursor-not-allowed", hasError && "border-red-500", className),
+                ...getInputProps(option.value)
+              }, undefined, false, undefined, this),
+              /* @__PURE__ */ jsxDEV21("div", {
+                className: "ml-3",
+                children: [
+                  /* @__PURE__ */ jsxDEV21("label", {
+                    htmlFor: optionId,
+                    className: cx("block text-sm font-medium", "text-text-light dark:text-text-dark", option.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer", isChecked && "text-primary"),
+                    children: option.label
+                  }, undefined, false, undefined, this),
+                  option.description && /* @__PURE__ */ jsxDEV21("p", {
+                    className: "text-xs text-text-muted-light dark:text-text-muted-dark mt-0.5",
+                    children: option.description
+                  }, undefined, false, undefined, this)
+                ]
+              }, undefined, true, undefined, this)
+            ]
+          }, option.value, true, undefined, this);
+        })
+      }, undefined, false, undefined, this),
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV21("p", {
+        className: "text-xs text-red-500 mt-1",
+        children: errorMessage
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
+// src/components/ui-alert/ui-alert.tsx
+import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+var defaultIcons = {
+  info: "info",
+  success: "check_circle",
+  warning: "warning",
+  error: "error"
+};
+var variantClasses3 = {
+  info: "bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-900/30 text-blue-700 dark:text-blue-300",
+  success: "bg-green-50 dark:bg-green-900/10 border-green-100 dark:border-green-900/30 text-green-700 dark:text-green-300",
+  warning: "bg-amber-50 dark:bg-amber-900/10 border-amber-100 dark:border-amber-900/30 text-amber-700 dark:text-amber-300",
+  error: "bg-red-50 dark:bg-red-900/10 border-red-100 dark:border-red-900/30 text-red-700 dark:text-red-300"
+};
+var iconColorClasses = {
+  info: "text-blue-500",
+  success: "text-green-500",
+  warning: "text-amber-500",
+  error: "text-red-500"
+};
+function Alert({
+  children,
+  variant = "info",
+  icon,
+  showIcon = true,
+  title,
+  className
+}) {
+  const iconName = icon ?? defaultIcons[variant];
+  return /* @__PURE__ */ jsxDEV22("div", {
+    className: cx("flex gap-3 items-start rounded-lg border p-3", variantClasses3[variant], className),
+    role: "alert",
+    children: [
+      showIcon && /* @__PURE__ */ jsxDEV22(MaterialIcon, {
+        name: iconName,
+        className: cx(iconColorClasses[variant], "text-[20px] mt-0.5 shrink-0")
+      }, undefined, false, undefined, this),
+      /* @__PURE__ */ jsxDEV22("div", {
+        className: "flex-1 min-w-0",
+        children: [
+          title && /* @__PURE__ */ jsxDEV22("p", {
+            className: "font-semibold text-sm mb-1",
+            children: title
+          }, undefined, false, undefined, this),
+          /* @__PURE__ */ jsxDEV22("div", {
+            className: "text-xs leading-relaxed",
+            children
+          }, undefined, false, undefined, this)
+        ]
+      }, undefined, true, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
 export {
   Typography,
   ThemeToggle,
   Separator,
   Select,
   SectionHeader,
+  RadioGroup,
   ui_phone_input_default as PhoneInput,
   PageShell,
   MaterialIcon,
@@ -2885,10 +3104,12 @@ export {
   Dialog,
   DatePicker,
   ui_combobox_default as Combobox,
+  Checkbox,
   Card,
   Button,
   Badge,
+  Alert,
   AddMinus
 };
 
-//# debugId=705B9F958946BFB764756E2164756E21
+//# debugId=428443EBC28404A064756E2164756E21

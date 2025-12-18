@@ -257,19 +257,43 @@ export const componentsData: ComponentDoc[] = [
     name: 'Input',
     importName: 'Input',
     category: 'form',
-    description: 'Styled text input component with label, error state, and full native input support. Dark mode compatible.',
+    description: 'Styled text input with optional label, leading/trailing icons, and seamless Formik integration. Icons respond to focus state with color transitions. Dark mode compatible.',
     props: [
       {
         name: 'label',
         type: 'string',
         required: false,
-        description: 'Label text displayed above the input'
+        description: 'Label text displayed above the input (uppercase, bold styling)'
+      },
+      {
+        name: 'iconLeading',
+        type: 'ReactNode',
+        required: false,
+        description: 'Icon or element displayed at the start of the input (e.g., MaterialIcon)'
+      },
+      {
+        name: 'iconTrailing',
+        type: 'ReactNode',
+        required: false,
+        description: 'Icon or element displayed at the end of the input (e.g., MaterialIcon)'
       },
       {
         name: 'error',
         type: 'string',
         required: false,
-        description: 'Error message displayed below the input'
+        description: 'Error message displayed below the input (overrides Formik error when provided)'
+      },
+      {
+        name: 'formik',
+        type: 'FormikProps<any>',
+        required: false,
+        description: 'Formik instance for automatic value/onChange/onBlur/error binding'
+      },
+      {
+        name: 'name',
+        type: 'string',
+        required: false,
+        description: 'Input name attribute (required when using formik prop)'
       },
       {
         name: 'type',
@@ -279,16 +303,22 @@ export const componentsData: ComponentDoc[] = [
         description: 'HTML input type (text, email, password, etc.)'
       },
       {
-        name: 'name',
+        name: 'inputClassName',
         type: 'string',
         required: false,
-        description: 'Input name attribute for forms'
+        description: 'Additional CSS classes for the input element'
+      },
+      {
+        name: 'containerClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the outer container'
       },
       {
         name: 'className',
         type: 'string',
         required: false,
-        description: 'Additional CSS classes'
+        description: 'Additional CSS classes (applied to input element)'
       }
     ],
     examples: [
@@ -303,25 +333,83 @@ export const componentsData: ComponentDoc[] = [
 />`
       },
       {
+        title: 'Input with Leading Icon',
+        description: 'Email input with mail icon',
+        code: `<Input
+  label="Email Address"
+  name="email"
+  type="email"
+  iconLeading={<MaterialIcon name="mail" />}
+  placeholder="you@example.com"
+/>`
+      },
+      {
+        title: 'Input with Trailing Icon',
+        description: 'Search input with icon on the right',
+        code: `<Input
+  label="Search"
+  name="search"
+  iconTrailing={<MaterialIcon name="search" />}
+  placeholder="Search..."
+/>`
+      },
+      {
+        title: 'Password Input with Icons',
+        description: 'Password field with lock icon',
+        code: `<Input
+  label="Password"
+  name="password"
+  type="password"
+  iconLeading={<MaterialIcon name="lock" />}
+  placeholder="Enter your password"
+/>`
+      },
+      {
+        title: 'Formik Integration (Simple)',
+        description: 'Using formik prop for automatic binding',
+        code: `<Input
+  formik={formik}
+  name="email"
+  label="Email Address"
+  type="email"
+  iconLeading={<MaterialIcon name="mail" />}
+  placeholder="you@example.com"
+/>`
+      },
+      {
+        title: 'Formik Integration (Full Form)',
+        description: 'Complete login form with Formik',
+        code: `<form onSubmit={formik.handleSubmit} className="space-y-4">
+  <Input
+    formik={formik}
+    name="email"
+    label="Email Address"
+    type="email"
+    iconLeading={<MaterialIcon name="mail" />}
+    placeholder="you@example.com"
+  />
+  <Input
+    formik={formik}
+    name="password"
+    label="Password"
+    type="password"
+    iconLeading={<MaterialIcon name="lock" />}
+    placeholder="Enter your password"
+  />
+  <Button type="submit" variant="primary" className="w-full">
+    Sign In
+  </Button>
+</form>`
+      },
+      {
         title: 'Input with Error',
         description: 'Input showing validation error',
         code: `<Input 
   label="Password"
   type="password"
   name="password"
+  iconLeading={<MaterialIcon name="lock" />}
   error="Password must be at least 8 characters"
-/>`
-      },
-      {
-        title: 'Formik Integration',
-        description: 'Input connected to Formik',
-        code: `<Input
-  label="Username"
-  name="username"
-  value={formik.values.username}
-  onChange={formik.handleChange}
-  onBlur={formik.handleBlur}
-  error={formik.touched.username && formik.errors.username}
 />`
       },
       {
@@ -335,12 +423,14 @@ export const componentsData: ComponentDoc[] = [
       }
     ],
     bestPractices: [
-      'Always provide a label for accessibility',
-      'Show errors using the error prop, not custom elements',
-      'Use appropriate input types (email, password, tel, etc.)',
-      'Connect to Formik using value, onChange, onBlur, and error props'
+      'Use iconLeading for context (mail for email, lock for password, search for search)',
+      'When using formik prop, just pass formik instance and name - binding is automatic',
+      'Icons automatically transition to primary color on focus',
+      'Use appropriate input types (email, password, tel) for mobile keyboards',
+      'Error styling is automatic when using formik prop',
+      'Prefer formik prop over manual value/onChange/onBlur for cleaner code'
     ],
-    relatedComponents: ['FormGroup', 'Select', 'Button']
+    relatedComponents: ['MaterialIcon', 'FormGroup', 'Select', 'Button']
   },
 
   // ============================================
@@ -1527,6 +1617,405 @@ export const componentsData: ComponentDoc[] = [
       'Label appears uppercase with bold styling for visual hierarchy'
     ],
     relatedComponents: ['Button', 'Card', 'FormGroup']
+  },
+
+  // ============================================
+  // CHECKBOX COMPONENT
+  // ============================================
+  {
+    name: 'Checkbox',
+    importName: 'Checkbox',
+    category: 'form',
+    description: 'Styled checkbox input with label, optional description, and Formik integration. Supports both controlled and uncontrolled usage patterns.',
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        required: true,
+        description: 'Label text displayed next to the checkbox'
+      },
+      {
+        name: 'description',
+        type: 'string',
+        required: false,
+        description: 'Additional description text below the label'
+      },
+      {
+        name: 'formik',
+        type: 'FormikProps<any>',
+        required: false,
+        description: 'Formik instance for automatic checked/onChange/onBlur binding'
+      },
+      {
+        name: 'name',
+        type: 'string',
+        required: false,
+        description: 'Input name attribute (required when using formik prop)'
+      },
+      {
+        name: 'error',
+        type: 'string',
+        required: false,
+        description: 'Error message to display below the checkbox'
+      },
+      {
+        name: 'containerClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the container'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the checkbox input'
+      }
+    ],
+    examples: [
+      {
+        title: 'Basic Checkbox',
+        description: 'Simple checkbox with label',
+        code: `<Checkbox
+  label="Remember me"
+  name="rememberMe"
+  checked={rememberMe}
+  onChange={(e) => setRememberMe(e.target.checked)}
+/>`
+      },
+      {
+        title: 'Checkbox with Description',
+        description: 'Checkbox with additional context',
+        code: `<Checkbox
+  label="Email notifications"
+  description="Receive emails about account activity and updates"
+  name="emailNotifications"
+  checked={notifications}
+  onChange={(e) => setNotifications(e.target.checked)}
+/>`
+      },
+      {
+        title: 'Terms Agreement',
+        description: 'Common pattern for terms acceptance',
+        code: `<Checkbox
+  label="I agree to the Terms of Service and Privacy Policy"
+  name="agreeToTerms"
+  checked={agreed}
+  onChange={(e) => setAgreed(e.target.checked)}
+  error={!agreed && submitted ? "You must agree to continue" : undefined}
+/>`
+      },
+      {
+        title: 'Formik Integration',
+        description: 'Checkbox with automatic Formik binding',
+        code: `<Checkbox
+  formik={formik}
+  name="agreeToTerms"
+  label="I agree to the Terms of Service"
+  description="By checking this box, you agree to our terms"
+/>`
+      },
+      {
+        title: 'Login Form Remember Me',
+        description: 'Typical remember me checkbox in login form',
+        code: `<div className="flex items-center justify-between">
+  <Checkbox
+    label="Remember me"
+    name="rememberMe"
+    checked={rememberMe}
+    onChange={(e) => setRememberMe(e.target.checked)}
+  />
+  <Button variant="link">Forgot password?</Button>
+</div>`
+      }
+    ],
+    bestPractices: [
+      'Always provide a descriptive label',
+      'Use description for additional context when needed',
+      'For boolean Formik fields, the binding is automatic with checked state',
+      'Use for single yes/no options, use RadioGroup for multiple choices',
+      'Error messages appear below and indented to align with label'
+    ],
+    relatedComponents: ['RadioGroup', 'Input', 'FormGroup', 'Button']
+  },
+
+  // ============================================
+  // RADIO GROUP COMPONENT
+  // ============================================
+  {
+    name: 'RadioGroup',
+    importName: 'RadioGroup',
+    category: 'form',
+    description: 'A group of styled radio button inputs with labels and optional descriptions. Supports horizontal and vertical layouts with Formik integration.',
+    props: [
+      {
+        name: 'name',
+        type: 'string',
+        required: true,
+        description: 'Name attribute for the radio group (shared by all options)'
+      },
+      {
+        name: 'options',
+        type: 'RadioOption[]',
+        required: true,
+        description: 'Array of radio options: { value, label, description?, disabled? }'
+      },
+      {
+        name: 'label',
+        type: 'string',
+        required: false,
+        description: 'Group label displayed above the options'
+      },
+      {
+        name: 'direction',
+        type: "'horizontal' | 'vertical'",
+        required: false,
+        default: "'vertical'",
+        description: 'Layout direction for the radio options'
+      },
+      {
+        name: 'formik',
+        type: 'FormikProps<any>',
+        required: false,
+        description: 'Formik instance for automatic value/onChange binding'
+      },
+      {
+        name: 'value',
+        type: 'string',
+        required: false,
+        description: 'Currently selected value (when not using formik)'
+      },
+      {
+        name: 'onChange',
+        type: '(e: ChangeEvent<HTMLInputElement>) => void',
+        required: false,
+        description: 'Change handler (when not using formik)'
+      },
+      {
+        name: 'error',
+        type: 'string',
+        required: false,
+        description: 'Error message to display below the group'
+      },
+      {
+        name: 'containerClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the container'
+      }
+    ],
+    examples: [
+      {
+        title: 'Basic Radio Group',
+        description: 'Simple vertical radio group',
+        code: `<RadioGroup
+  name="plan"
+  label="Select a plan"
+  options={[
+    { value: 'free', label: 'Free' },
+    { value: 'pro', label: 'Pro' },
+    { value: 'enterprise', label: 'Enterprise' },
+  ]}
+  value={selectedPlan}
+  onChange={(e) => setSelectedPlan(e.target.value)}
+/>`
+      },
+      {
+        title: 'With Descriptions',
+        description: 'Options with additional context',
+        code: `<RadioGroup
+  name="subscription"
+  label="Choose your subscription"
+  options={[
+    { value: 'monthly', label: 'Monthly', description: '$9.99/month, cancel anytime' },
+    { value: 'annual', label: 'Annual', description: '$99/year, save 17%' },
+    { value: 'lifetime', label: 'Lifetime', description: '$299 one-time payment' },
+  ]}
+  value={subscription}
+  onChange={(e) => setSubscription(e.target.value)}
+/>`
+      },
+      {
+        title: 'Horizontal Layout',
+        description: 'Radio buttons in a row',
+        code: `<RadioGroup
+  name="size"
+  label="Size"
+  direction="horizontal"
+  options={[
+    { value: 'sm', label: 'Small' },
+    { value: 'md', label: 'Medium' },
+    { value: 'lg', label: 'Large' },
+    { value: 'xl', label: 'X-Large' },
+  ]}
+  value={size}
+  onChange={(e) => setSize(e.target.value)}
+/>`
+      },
+      {
+        title: 'With Disabled Option',
+        description: 'Some options can be disabled',
+        code: `<RadioGroup
+  name="shipping"
+  label="Shipping Method"
+  options={[
+    { value: 'standard', label: 'Standard', description: '5-7 business days' },
+    { value: 'express', label: 'Express', description: '2-3 business days' },
+    { value: 'overnight', label: 'Overnight', description: 'Not available', disabled: true },
+  ]}
+  value={shipping}
+  onChange={(e) => setShipping(e.target.value)}
+/>`
+      },
+      {
+        title: 'Formik Integration',
+        description: 'Radio group with automatic Formik binding',
+        code: `<RadioGroup
+  formik={formik}
+  name="paymentMethod"
+  label="Payment Method"
+  options={[
+    { value: 'card', label: 'Credit Card' },
+    { value: 'paypal', label: 'PayPal' },
+    { value: 'bank', label: 'Bank Transfer' },
+  ]}
+/>`
+      }
+    ],
+    bestPractices: [
+      'Use RadioGroup when user must select exactly one option from a list',
+      'Use Checkbox for single boolean yes/no options',
+      'Provide descriptions for complex options that need explanation',
+      'Use horizontal layout for 3-4 short options, vertical for longer lists',
+      'Selected option label highlights in primary color for visual feedback',
+      'Disable options that are temporarily unavailable rather than hiding them'
+    ],
+    relatedComponents: ['Checkbox', 'Select', 'Input', 'FormGroup']
+  },
+
+  // ============================================
+  // ALERT COMPONENT
+  // ============================================
+  {
+    name: 'Alert',
+    importName: 'Alert',
+    category: 'feedback',
+    description: 'Displays informational, success, warning, or error messages with an optional icon and colored background. Perfect for form feedback, system notifications, or contextual information.',
+    props: [
+      {
+        name: 'children',
+        type: 'ReactNode',
+        required: true,
+        description: 'The content to display inside the alert'
+      },
+      {
+        name: 'variant',
+        type: "'info' | 'success' | 'warning' | 'error'",
+        required: false,
+        default: "'info'",
+        description: 'The variant/color scheme of the alert'
+      },
+      {
+        name: 'icon',
+        type: 'string',
+        required: false,
+        description: 'Custom Material Symbols icon name (defaults based on variant: info, check_circle, warning, error)'
+      },
+      {
+        name: 'showIcon',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Whether to show the icon'
+      },
+      {
+        name: 'title',
+        type: 'string',
+        required: false,
+        description: 'Optional title displayed above the content'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the container'
+      }
+    ],
+    examples: [
+      {
+        title: 'Info Alert',
+        description: 'Default informational message',
+        code: `<Alert>
+  We'll send a secure magic link to your inbox.
+</Alert>`
+      },
+      {
+        title: 'Success Alert',
+        description: 'Positive feedback message',
+        code: `<Alert variant="success">
+  Your changes have been saved successfully.
+</Alert>`
+      },
+      {
+        title: 'Warning Alert',
+        description: 'Cautionary message',
+        code: `<Alert variant="warning">
+  Your session will expire in 5 minutes.
+</Alert>`
+      },
+      {
+        title: 'Error Alert',
+        description: 'Error or failure message',
+        code: `<Alert variant="error">
+  There was an error processing your request. Please try again.
+</Alert>`
+      },
+      {
+        title: 'Alert with Title',
+        description: 'Alert with prominent title',
+        code: `<Alert variant="success" title="Payment successful">
+  Your order has been placed and will ship within 2-3 business days.
+</Alert>`
+      },
+      {
+        title: 'Alert with Custom Icon',
+        description: 'Using a different icon',
+        code: `<Alert variant="info" icon="mail">
+  Check your email for the verification link.
+</Alert>`
+      },
+      {
+        title: 'Alert without Icon',
+        description: 'Text-only alert',
+        code: `<Alert variant="warning" showIcon={false}>
+  This action cannot be undone.
+</Alert>`
+      },
+      {
+        title: 'Form Validation Error',
+        description: 'Common pattern for form errors',
+        code: `{formError && (
+  <Alert variant="error" title="Unable to sign in">
+    {formError}
+  </Alert>
+)}
+
+<form onSubmit={handleSubmit}>
+  <Input formik={formik} name="email" label="Email" />
+  <Input formik={formik} name="password" label="Password" type="password" />
+  <Button type="submit">Sign In</Button>
+</form>`
+      }
+    ],
+    bestPractices: [
+      'Use info for neutral information and tips',
+      'Use success for positive confirmations and completed actions',
+      'Use warning for cautionary messages that need attention',
+      'Use error for failures, validation errors, and critical issues',
+      'Add a title for important alerts that need emphasis',
+      'Default icons are contextually appropriate, only override when needed',
+      'Place form-level errors above the form, field-level errors use Input error prop'
+    ],
+    relatedComponents: ['Dialog', 'Button', 'Input']
   }
 ];
 
