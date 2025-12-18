@@ -391,8 +391,6 @@ function Dropdown({
       top: `${position.top}px`,
       left: `${position.left}px`,
       width: matchTriggerWidth ? `${position.width}px` : "auto",
-      minWidth: matchTriggerWidth ? undefined : `${position.width}px`,
-      maxWidth: matchTriggerWidth ? undefined : "300px",
       margin: 0
     },
     children: /* @__PURE__ */ jsxDEV9("div", {
@@ -3081,4 +3079,4 @@ export {
   AddMinus
 };
 
-//# debugId=094EA41BD6A85DD664756E2164756E21
+//# debugId=18C96220C94BB11F64756E2164756E21

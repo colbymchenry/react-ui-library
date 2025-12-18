@@ -198,9 +198,9 @@ export default function Dropdown({
 			style={{
 				top: `${position.top}px`,
 				left: `${position.left}px`,
+				// When matchTriggerWidth is true, set explicit width
+				// When false, let CSS classes control sizing (width: auto)
 				width: matchTriggerWidth ? `${position.width}px` : "auto",
-				minWidth: matchTriggerWidth ? undefined : `${position.width}px`,
-				maxWidth: matchTriggerWidth ? undefined : "300px",
 				// Override default dialog centering
 				margin: 0,
 			}}
