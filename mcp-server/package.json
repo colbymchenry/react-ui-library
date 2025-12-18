@@ -1,0 +1,47 @@
+{
+  "name": "@colbymchenry/ui-library-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Volcanica React UI Library documentation - provides on-demand component docs for AI assistants",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "volcanica-ui-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "documentation",
+    "react",
+    "ui-library",
+    "cursor",
+    "claude"
+  ],
+  "author": "Colby McHenry",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colbymchenry/react-ui-library.git",
+    "directory": "mcp-server"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}
+
