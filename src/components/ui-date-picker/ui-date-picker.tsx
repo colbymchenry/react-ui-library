@@ -226,7 +226,7 @@ export default function DatePicker(props: DatePickerProps) {
 				className={cx(
 					"flex items-center justify-between w-full rounded-xl cursor-pointer",
 					"border border-gray-200 dark:border-gray-700",
-					"bg-white dark:bg-card-dark py-3.5 px-4",
+					"bg-white dark:bg-card-dark py-4 px-4",
 					"text-text-light dark:text-text-dark",
 					"sm:text-sm shadow-sm transition-shadow",
 					hasError && "border-red-500",

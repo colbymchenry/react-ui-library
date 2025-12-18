@@ -503,7 +503,7 @@ function Combobox(props) {
       /* @__PURE__ */ jsxDEV10("button", {
         ref: triggerRef,
         type: "button",
-        className: cx("!mb-0", "flex items-center justify-between w-full rounded-xl", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", open && "border-primary ring-primary"),
+        className: cx("!mb-0", "flex items-center justify-between w-full rounded-xl", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-4 px-4", "text-text-light dark:text-text-dark", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", open && "border-primary ring-primary"),
         onClick: handleTriggerClick,
         "aria-expanded": open,
         "aria-haspopup": "dialog",
@@ -697,7 +697,7 @@ function DatePicker(props) {
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV11("div", {
         ref: triggerRef,
-        className: cx("flex items-center justify-between w-full rounded-xl cursor-pointer", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500", isOpen && "border-primary ring-1 ring-primary"),
+        className: cx("flex items-center justify-between w-full rounded-xl cursor-pointer", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-4 px-4", "text-text-light dark:text-text-dark", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500", isOpen && "border-primary ring-1 ring-primary"),
         onClick: () => setIsOpen(!isOpen),
         children: [
           /* @__PURE__ */ jsxDEV11("div", {
@@ -2563,7 +2563,7 @@ function PhoneInput(props) {
             value: phoneNumber,
             onChange: handleNumberChange,
             placeholder,
-            className: "flex-1 py-3.5 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+            className: "flex-1 py-4 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
@@ -2620,7 +2620,7 @@ function FormGroup(props) {
   } : {};
   const paddingLeft = iconLeading ? "pl-12" : "pl-4";
   const paddingRight = iconTrailing ? "pr-12" : "pr-4";
-  const fieldClasses = cx("block w-full rounded-xl border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5", paddingLeft, paddingRight, "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", fieldClassName, className);
+  const fieldClasses = cx("block w-full rounded-xl border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-4", paddingLeft, paddingRight, "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", fieldClassName, className);
   const renderField = () => {
     switch (variant) {
       case "select":
@@ -3082,4 +3082,4 @@ export {
   AddMinus
 };
 
-//# debugId=CC33FA1592E5FE2764756E2164756E21
+//# debugId=2139BB3397B6773B64756E2164756E21

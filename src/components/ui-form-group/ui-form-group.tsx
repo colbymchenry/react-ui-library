@@ -162,7 +162,7 @@ export default function FormGroup(props: FormGroupProps) {
 	/** Shared field classes for consistent styling across variants */
 	const fieldClasses = cx(
 		"block w-full rounded-xl border border-gray-200 dark:border-gray-700",
-		"bg-white dark:bg-card-dark py-3.5",
+		"bg-white dark:bg-card-dark py-4",
 		paddingLeft,
 		paddingRight,
 		"text-text-light dark:text-text-dark placeholder-gray-400",

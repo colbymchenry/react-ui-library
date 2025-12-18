@@ -190,7 +190,7 @@ function Combobox(props: ComboboxProps) {
 					"!mb-0",
 					"flex items-center justify-between w-full rounded-xl",
 					"border border-gray-200 dark:border-gray-700",
-					"bg-white dark:bg-card-dark py-3.5 px-4",
+					"bg-white dark:bg-card-dark py-4 px-4",
 					"text-text-light dark:text-text-dark",
 					"focus:border-primary focus:ring-primary focus:outline-none",
 					"sm:text-sm shadow-sm transition-shadow",
