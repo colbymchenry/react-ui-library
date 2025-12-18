@@ -2562,41 +2562,75 @@ function formatPhoneNumber(value) {
   return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
 }
 var ui_phone_input_default = memo2(PhoneInput);
-// src/components/ui-input/ui-input.tsx
+// src/components/ui-form-group/ui-form-group.tsx
 import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
-function Input(props) {
+function FormGroup(props) {
   const {
     label,
+    as,
     formik,
     name,
     id,
     iconLeading,
     iconTrailing,
     error: externalError,
-    inputClassName,
+    fieldClassName,
     containerClassName,
     className,
+    children,
     ...rest
   } = props;
-  const inputId = id ?? name;
-  const inputName = name;
+  const variant = children ? "select" : as ?? "input";
+  const fieldId = id ?? name;
+  const fieldName = name;
   const isFormik = !!formik && !!name;
   const touched = isFormik ? formik.touched?.[name] : false;
   const formikError = isFormik ? formik.errors?.[name] : undefined;
   const hasError = !!(externalError || touched && formikError);
   const errorMessage = externalError || (touched && typeof formikError === "string" ? formikError : undefined);
-  const inputProps = isFormik ? {
+  const formikProps = isFormik ? {
     value: formik.values?.[name] ?? "",
     onChange: formik.handleChange,
     onBlur: formik.handleBlur
   } : {};
-  const paddingLeft = iconLeading ? "pl-13" : "pl-4";
-  const paddingRight = iconTrailing ? "pr-13" : "pr-4";
+  const paddingLeft = iconLeading ? "pl-12" : "pl-4";
+  const paddingRight = iconTrailing ? "pr-12" : "pr-4";
+  const fieldClasses = cx("block w-full rounded-xl border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5", paddingLeft, paddingRight, "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", fieldClassName, className);
+  const renderField = () => {
+    switch (variant) {
+      case "select":
+        return /* @__PURE__ */ jsxDEV14("select", {
+          id: fieldId,
+          name: fieldName,
+          className: fieldClasses,
+          ...formikProps,
+          ...rest,
+          children
+        }, undefined, false, undefined, this);
+      case "textarea":
+        return /* @__PURE__ */ jsxDEV14("textarea", {
+          id: fieldId,
+          name: fieldName,
+          className: fieldClasses,
+          ...formikProps,
+          ...rest
+        }, undefined, false, undefined, this);
+      default:
+        return /* @__PURE__ */ jsxDEV14("input", {
+          type: "text",
+          id: fieldId,
+          name: fieldName,
+          className: fieldClasses,
+          ...formikProps,
+          ...rest
+        }, undefined, false, undefined, this);
+    }
+  };
   return /* @__PURE__ */ jsxDEV14("div", {
     className: cx("space-y-2", containerClassName),
     children: [
       label && /* @__PURE__ */ jsxDEV14("label", {
-        htmlFor: inputId,
+        htmlFor: fieldId,
         className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1",
         children: label
       }, undefined, false, undefined, this),
@@ -2607,14 +2641,7 @@ function Input(props) {
             className: "pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 transition-colors text-gray-400 group-focus-within:text-primary",
             children: iconLeading
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV14("input", {
-            type: "text",
-            id: inputId,
-            name: inputName,
-            className: cx("block w-full rounded-xl border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5", paddingLeft, paddingRight, "text-text-light dark:text-text-dark placeholder-gray-400", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", inputClassName, className),
-            ...inputProps,
-            ...rest
-          }, undefined, false, undefined, this),
+          renderField(),
           iconTrailing && /* @__PURE__ */ jsxDEV14("div", {
             className: "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 transition-colors text-gray-400 group-focus-within:text-primary",
             children: iconTrailing
@@ -2628,149 +2655,8 @@ function Input(props) {
     ]
   }, undefined, true, undefined, this);
 }
-// src/components/ui-select/ui-select.tsx
-import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
-function Select(props) {
-  const { label, formik, name, id, children, ...rest } = props;
-  if (formik) {
-    const selectName = name;
-    return /* @__PURE__ */ jsxDEV15("div", {
-      className: "form-group",
-      children: [
-        label && /* @__PURE__ */ jsxDEV15("label", {
-          htmlFor: id ?? selectName,
-          children: label
-        }, undefined, false, undefined, this),
-        /* @__PURE__ */ jsxDEV15("select", {
-          id: id ?? selectName,
-          name: selectName,
-          value: formik.values?.[selectName] ?? "",
-          onChange: formik.handleChange,
-          onBlur: formik.handleBlur,
-          className: cx(formik.touched?.[selectName] && formik.errors?.[selectName] ? "error" : ""),
-          ...rest,
-          children
-        }, undefined, false, undefined, this),
-        formik.touched?.[selectName] && formik.errors?.[selectName] && /* @__PURE__ */ jsxDEV15("span", {
-          className: "error-message",
-          children: typeof formik.errors[selectName] === "string" ? formik.errors[selectName] : "Invalid field"
-        }, undefined, false, undefined, this)
-      ]
-    }, undefined, true, undefined, this);
-  }
-  return /* @__PURE__ */ jsxDEV15("div", {
-    className: "form-group",
-    children: [
-      label && /* @__PURE__ */ jsxDEV15("label", {
-        htmlFor: id || name,
-        children: label
-      }, undefined, false, undefined, this),
-      /* @__PURE__ */ jsxDEV15("select", {
-        id: id || name,
-        name,
-        ...rest,
-        children
-      }, undefined, false, undefined, this)
-    ]
-  }, undefined, true, undefined, this);
-}
-// src/components/ui-form-group/ui-form-group.tsx
-import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
-function FormGroup(props) {
-  const { label, formik, name, id, children, ...rest } = props;
-  const isSelect = children !== undefined && children !== null;
-  if (formik) {
-    const fieldName = name;
-    if (isSelect) {
-      const selectProps = rest;
-      return /* @__PURE__ */ jsxDEV16("div", {
-        className: "form-group",
-        children: [
-          label && /* @__PURE__ */ jsxDEV16("label", {
-            htmlFor: id ?? fieldName,
-            children: label
-          }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV16("select", {
-            id: id ?? fieldName,
-            name: fieldName,
-            value: formik.values?.[fieldName] ?? "",
-            onChange: formik.handleChange,
-            onBlur: formik.handleBlur,
-            className: cx(formik.touched?.[fieldName] && formik.errors?.[fieldName] ? "error" : ""),
-            ...selectProps,
-            children
-          }, undefined, false, undefined, this),
-          formik.touched?.[fieldName] && formik.errors?.[fieldName] && /* @__PURE__ */ jsxDEV16("span", {
-            className: "error-message",
-            children: typeof formik.errors[fieldName] === "string" ? formik.errors[fieldName] : "Invalid field"
-          }, undefined, false, undefined, this)
-        ]
-      }, undefined, true, undefined, this);
-    } else {
-      const inputProps = rest;
-      return /* @__PURE__ */ jsxDEV16("div", {
-        className: "form-group",
-        children: [
-          label && /* @__PURE__ */ jsxDEV16("label", {
-            htmlFor: id ?? fieldName,
-            children: label
-          }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV16("input", {
-            id: id ?? fieldName,
-            name: fieldName,
-            value: formik.values?.[fieldName] ?? "",
-            onChange: formik.handleChange,
-            onBlur: formik.handleBlur,
-            className: cx("input", formik.touched?.[fieldName] && formik.errors?.[fieldName] ? "error" : ""),
-            placeholder: inputProps.placeholder || "",
-            ...inputProps
-          }, undefined, false, undefined, this),
-          formik.touched?.[fieldName] && formik.errors?.[fieldName] && /* @__PURE__ */ jsxDEV16("span", {
-            className: "error-message",
-            children: typeof formik.errors[fieldName] === "string" ? formik.errors[fieldName] : "Invalid field"
-          }, undefined, false, undefined, this)
-        ]
-      }, undefined, true, undefined, this);
-    }
-  }
-  if (isSelect) {
-    const selectProps = rest;
-    return /* @__PURE__ */ jsxDEV16("div", {
-      className: "form-group",
-      children: [
-        label && /* @__PURE__ */ jsxDEV16("label", {
-          htmlFor: id || name,
-          children: label
-        }, undefined, false, undefined, this),
-        /* @__PURE__ */ jsxDEV16("select", {
-          id: id || name,
-          name,
-          ...selectProps,
-          children
-        }, undefined, false, undefined, this)
-      ]
-    }, undefined, true, undefined, this);
-  } else {
-    const inputProps = rest;
-    return /* @__PURE__ */ jsxDEV16("div", {
-      className: "form-group",
-      children: [
-        label && /* @__PURE__ */ jsxDEV16("label", {
-          htmlFor: id || name,
-          children: label
-        }, undefined, false, undefined, this),
-        /* @__PURE__ */ jsxDEV16("input", {
-          id: id || name,
-          name,
-          className: cx("input"),
-          ...inputProps
-        }, undefined, false, undefined, this)
-      ]
-    }, undefined, true, undefined, this);
-  }
-}
 // src/components/ui-add-minus/ui-add-minus.tsx
-import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
 function AddMinus(props) {
   const {
     label,
@@ -2802,38 +2688,38 @@ function AddMinus(props) {
   };
   const isMinDisabled = currentValue <= min;
   const isMaxDisabled = currentValue >= max;
-  return /* @__PURE__ */ jsxDEV17("div", {
+  return /* @__PURE__ */ jsxDEV15("div", {
     className: cx("form-group", className),
     children: [
-      label && /* @__PURE__ */ jsxDEV17("label", {
+      label && /* @__PURE__ */ jsxDEV15("label", {
         className: "text-sm font-medium text-text-light dark:text-text-dark",
         children: label
       }, undefined, false, undefined, this),
-      /* @__PURE__ */ jsxDEV17("div", {
+      /* @__PURE__ */ jsxDEV15("div", {
         className: "flex items-center space-x-3 bg-background-light dark:bg-background-dark rounded-full px-2 py-1 border border-border-light dark:border-border-dark w-fit",
         children: [
-          /* @__PURE__ */ jsxDEV17("button", {
+          /* @__PURE__ */ jsxDEV15("button", {
             type: "button",
             onClick: handleDecrement,
             disabled: isMinDisabled,
             className: "w-8 h-8 flex items-center justify-center rounded-full text-text-muted-light dark:text-text-muted-dark hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-muted-light dark:disabled:hover:text-text-muted-dark",
             "aria-label": "Decrease quantity",
-            children: /* @__PURE__ */ jsxDEV17(MaterialIcon, {
+            children: /* @__PURE__ */ jsxDEV15(MaterialIcon, {
               name: "remove",
               className: "text-sm"
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV17("span", {
+          /* @__PURE__ */ jsxDEV15("span", {
             className: "text-sm font-semibold text-text-light dark:text-text-dark w-8 text-center",
             children: currentValue
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV17("button", {
+          /* @__PURE__ */ jsxDEV15("button", {
             type: "button",
             onClick: handleIncrement,
             disabled: isMaxDisabled,
             className: "w-8 h-8 flex items-center justify-center rounded-full text-text-muted-light dark:text-text-muted-dark hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-muted-light dark:disabled:hover:text-text-muted-dark",
             "aria-label": "Increase quantity",
-            children: /* @__PURE__ */ jsxDEV17(MaterialIcon, {
+            children: /* @__PURE__ */ jsxDEV15(MaterialIcon, {
               name: "add",
               className: "text-sm"
             }, undefined, false, undefined, this)
@@ -2844,16 +2730,16 @@ function AddMinus(props) {
   }, undefined, true, undefined, this);
 }
 // src/components/ui-card/ui-card.tsx
-import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
 function Card({ className, children, ...props }) {
-  return /* @__PURE__ */ jsxDEV18("div", {
+  return /* @__PURE__ */ jsxDEV16("div", {
     ...props,
     className: cx("bg-card-light dark:bg-card-dark rounded-xl shadow-card border border-gray-100 dark:border-gray-800", className),
     children
   }, undefined, false, undefined, this);
 }
 // src/components/ui-separator/ui-separator.tsx
-import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 function Separator({
   label,
   lineClassName,
@@ -2865,21 +2751,21 @@ function Separator({
   const defaultLineClass = "border-border-light dark:border-border-dark";
   const defaultLabelBgClass = "bg-card-light dark:bg-background-dark";
   const defaultLabelTextClass = "text-text-muted-light dark:text-text-muted-dark";
-  return /* @__PURE__ */ jsxDEV19("div", {
+  return /* @__PURE__ */ jsxDEV17("div", {
     ...props,
     className: cx("relative", className),
     role: "separator",
     "aria-orientation": "horizontal",
     children: [
-      /* @__PURE__ */ jsxDEV19("div", {
+      /* @__PURE__ */ jsxDEV17("div", {
         className: "absolute inset-0 flex items-center",
-        children: /* @__PURE__ */ jsxDEV19("div", {
+        children: /* @__PURE__ */ jsxDEV17("div", {
           className: cx("w-full border-t", lineClassName ?? defaultLineClass)
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      label && /* @__PURE__ */ jsxDEV19("div", {
+      label && /* @__PURE__ */ jsxDEV17("div", {
         className: "relative flex justify-center text-sm",
-        children: /* @__PURE__ */ jsxDEV19("span", {
+        children: /* @__PURE__ */ jsxDEV17("span", {
           className: cx("px-4 uppercase tracking-wider font-bold text-[10px]", labelBgClassName ?? defaultLabelBgClass, labelTextClassName ?? defaultLabelTextClass),
           children: label
         }, undefined, false, undefined, this)
@@ -2888,7 +2774,7 @@ function Separator({
   }, undefined, true, undefined, this);
 }
 // src/components/ui-checkbox/ui-checkbox.tsx
-import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
 function Checkbox(props) {
   const {
     label,
@@ -2913,13 +2799,13 @@ function Checkbox(props) {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur
   } : {};
-  return /* @__PURE__ */ jsxDEV20("div", {
+  return /* @__PURE__ */ jsxDEV18("div", {
     className: cx("flex flex-col", containerClassName),
     children: [
-      /* @__PURE__ */ jsxDEV20("div", {
+      /* @__PURE__ */ jsxDEV18("div", {
         className: "flex items-center",
         children: [
-          /* @__PURE__ */ jsxDEV20("input", {
+          /* @__PURE__ */ jsxDEV18("input", {
             type: "checkbox",
             id: inputId,
             name: inputName,
@@ -2927,15 +2813,15 @@ function Checkbox(props) {
             ...inputProps,
             ...rest
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV20("div", {
+          /* @__PURE__ */ jsxDEV18("div", {
             className: "ml-3",
             children: [
-              /* @__PURE__ */ jsxDEV20("label", {
+              /* @__PURE__ */ jsxDEV18("label", {
                 htmlFor: inputId,
                 className: cx("block text-sm font-medium cursor-pointer", "text-text-light dark:text-text-dark", hasError && "text-red-500"),
                 children: label
               }, undefined, false, undefined, this),
-              description && /* @__PURE__ */ jsxDEV20("p", {
+              description && /* @__PURE__ */ jsxDEV18("p", {
                 className: "text-xs text-text-muted-light dark:text-text-muted-dark mt-0.5",
                 children: description
               }, undefined, false, undefined, this)
@@ -2943,7 +2829,7 @@ function Checkbox(props) {
           }, undefined, true, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      hasError && errorMessage && /* @__PURE__ */ jsxDEV20("p", {
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV18("p", {
         className: "text-xs text-red-500 mt-1 ml-7",
         children: errorMessage
       }, undefined, false, undefined, this)
@@ -2951,7 +2837,7 @@ function Checkbox(props) {
   }, undefined, true, undefined, this);
 }
 // src/components/ui-radio/ui-radio.tsx
-import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
 function RadioGroup(props) {
   const {
     label,
@@ -2983,24 +2869,24 @@ function RadioGroup(props) {
       onChange: rest.onChange
     };
   };
-  return /* @__PURE__ */ jsxDEV21("div", {
+  return /* @__PURE__ */ jsxDEV19("div", {
     className: cx("space-y-2", containerClassName),
     children: [
-      label && /* @__PURE__ */ jsxDEV21("label", {
+      label && /* @__PURE__ */ jsxDEV19("label", {
         className: "block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-2",
         children: label
       }, undefined, false, undefined, this),
-      /* @__PURE__ */ jsxDEV21("div", {
+      /* @__PURE__ */ jsxDEV19("div", {
         className: cx(direction === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3"),
         role: "radiogroup",
         "aria-label": label,
         children: options.map((option) => {
           const optionId = `${name}-${option.value}`;
           const isChecked = currentValue === option.value;
-          return /* @__PURE__ */ jsxDEV21("div", {
+          return /* @__PURE__ */ jsxDEV19("div", {
             className: "flex items-start",
             children: [
-              /* @__PURE__ */ jsxDEV21("input", {
+              /* @__PURE__ */ jsxDEV19("input", {
                 type: "radio",
                 id: optionId,
                 name,
@@ -3009,15 +2895,15 @@ function RadioGroup(props) {
                 className: cx("h-4 w-4 border-gray-300 dark:border-gray-600", "text-primary focus:ring-primary focus:ring-offset-0", "bg-white dark:bg-card-dark", "cursor-pointer transition-colors", option.disabled && "opacity-50 cursor-not-allowed", hasError && "border-red-500", className),
                 ...getInputProps(option.value)
               }, undefined, false, undefined, this),
-              /* @__PURE__ */ jsxDEV21("div", {
+              /* @__PURE__ */ jsxDEV19("div", {
                 className: "ml-3",
                 children: [
-                  /* @__PURE__ */ jsxDEV21("label", {
+                  /* @__PURE__ */ jsxDEV19("label", {
                     htmlFor: optionId,
                     className: cx("block text-sm font-medium", "text-text-light dark:text-text-dark", option.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer", isChecked && "text-primary"),
                     children: option.label
                   }, undefined, false, undefined, this),
-                  option.description && /* @__PURE__ */ jsxDEV21("p", {
+                  option.description && /* @__PURE__ */ jsxDEV19("p", {
                     className: "text-xs text-text-muted-light dark:text-text-muted-dark mt-0.5",
                     children: option.description
                   }, undefined, false, undefined, this)
@@ -3027,7 +2913,7 @@ function RadioGroup(props) {
           }, option.value, true, undefined, this);
         })
       }, undefined, false, undefined, this),
-      hasError && errorMessage && /* @__PURE__ */ jsxDEV21("p", {
+      hasError && errorMessage && /* @__PURE__ */ jsxDEV19("p", {
         className: "text-xs text-red-500 mt-1",
         children: errorMessage
       }, undefined, false, undefined, this)
@@ -3035,7 +2921,7 @@ function RadioGroup(props) {
   }, undefined, true, undefined, this);
 }
 // src/components/ui-alert/ui-alert.tsx
-import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV20 } from "react/jsx-dev-runtime";
 var defaultIcons = {
   info: "info",
   success: "check_circle",
@@ -3063,22 +2949,22 @@ function Alert({
   className
 }) {
   const iconName = icon ?? defaultIcons[variant];
-  return /* @__PURE__ */ jsxDEV22("div", {
+  return /* @__PURE__ */ jsxDEV20("div", {
     className: cx("flex gap-3 items-start rounded-lg border p-3", variantClasses3[variant], className),
     role: "alert",
     children: [
-      showIcon && /* @__PURE__ */ jsxDEV22(MaterialIcon, {
+      showIcon && /* @__PURE__ */ jsxDEV20(MaterialIcon, {
         name: iconName,
         className: cx(iconColorClasses[variant], "text-[20px] mt-0.5 shrink-0")
       }, undefined, false, undefined, this),
-      /* @__PURE__ */ jsxDEV22("div", {
+      /* @__PURE__ */ jsxDEV20("div", {
         className: "flex-1 min-w-0 pt-1",
         children: [
-          title && /* @__PURE__ */ jsxDEV22("p", {
+          title && /* @__PURE__ */ jsxDEV20("p", {
             className: "font-semibold text-sm mb-1",
             children: title
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV22("div", {
+          /* @__PURE__ */ jsxDEV20("div", {
             className: "text-xs leading-relaxed",
             children
           }, undefined, false, undefined, this)
@@ -3088,7 +2974,7 @@ function Alert({
   }, undefined, true, undefined, this);
 }
 // src/components/ui-social-proof/ui-social-proof.tsx
-import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+import { jsxDEV as jsxDEV21 } from "react/jsx-dev-runtime";
 function formatCount(count) {
   if (count >= 1000) {
     return `${(count / 1000).toFixed(0)}k`;
@@ -3103,24 +2989,24 @@ function SocialProof({
   className
 }) {
   const renderStars = () => {
-    return Array.from({ length: 5 }).map((_, index) => /* @__PURE__ */ jsxDEV23(MaterialIcon, {
+    return Array.from({ length: 5 }).map((_, index) => /* @__PURE__ */ jsxDEV21(MaterialIcon, {
       name: "star",
       variant: index < rating ? "filled" : "outlined",
       className: "text-[16px]"
     }, index, false, undefined, this));
   };
-  return /* @__PURE__ */ jsxDEV23("div", {
+  return /* @__PURE__ */ jsxDEV21("div", {
     className: cx("flex items-center gap-4", "bg-white/10 backdrop-blur-md", "p-4 rounded-xl border border-white/10 w-fit", className),
     children: [
-      (avatars.length > 0 || additionalCount > 0) && /* @__PURE__ */ jsxDEV23("div", {
+      (avatars.length > 0 || additionalCount > 0) && /* @__PURE__ */ jsxDEV21("div", {
         className: "flex -space-x-3",
         children: [
-          avatars.map((avatarUrl, index) => /* @__PURE__ */ jsxDEV23("img", {
+          avatars.map((avatarUrl, index) => /* @__PURE__ */ jsxDEV21("img", {
             alt: "User avatar",
             className: "w-10 h-10 rounded-full border-2 border-gray-900 object-cover",
             src: avatarUrl
           }, index, false, undefined, this)),
-          additionalCount > 0 && /* @__PURE__ */ jsxDEV23("div", {
+          additionalCount > 0 && /* @__PURE__ */ jsxDEV21("div", {
             className: "w-10 h-10 rounded-full border-2 border-gray-900 bg-primary flex items-center justify-center text-xs font-bold text-white",
             children: [
               "+",
@@ -3129,14 +3015,14 @@ function SocialProof({
           }, undefined, true, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      /* @__PURE__ */ jsxDEV23("div", {
+      /* @__PURE__ */ jsxDEV21("div", {
         className: "text-sm font-medium text-gray-200",
         children: [
-          /* @__PURE__ */ jsxDEV23("div", {
+          /* @__PURE__ */ jsxDEV21("div", {
             className: "flex text-amber-400",
             children: renderStars()
           }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV23("span", {
+          /* @__PURE__ */ jsxDEV21("span", {
             className: "opacity-80 text-xs uppercase tracking-wide",
             children: subtitle
           }, undefined, false, undefined, this)
@@ -3150,13 +3036,13 @@ export {
   ThemeToggle,
   SocialProof,
   Separator,
-  Select,
+  FormGroup as Select,
   SectionHeader,
   RadioGroup,
   ui_phone_input_default as PhoneInput,
   PageShell,
   MaterialIcon,
-  Input,
+  FormGroup as Input,
   Header,
   FormGroup,
   Dropdown,
@@ -3171,4 +3057,4 @@ export {
   AddMinus
 };
 
-//# debugId=672B8A1DA32A80F164756E2164756E21
+//# debugId=0B8CC247386D1AB064756E2164756E21

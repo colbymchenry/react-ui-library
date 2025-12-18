@@ -223,37 +223,158 @@ export const componentsData = [
         relatedComponents: ['Button']
     },
     // ============================================
-    // INPUT COMPONENT
+    // INPUT COMPONENT (Alias for FormGroup)
     // ============================================
     {
         name: 'Input',
         importName: 'Input',
         category: 'form',
-        description: 'Styled text input with optional label, leading/trailing icons, and seamless Formik integration. Icons respond to focus state with color transitions. Dark mode compatible.',
+        description: 'Alias for FormGroup component. Use Input for semantic clarity when rendering text inputs, or use FormGroup directly. Both components are identical and support all the same props including icons, Formik integration, and error handling.',
+        props: [
+            {
+                name: '...props',
+                type: 'FormGroupProps',
+                required: false,
+                description: 'All props from FormGroup are supported. See FormGroup documentation for full prop list.'
+            }
+        ],
+        examples: [
+            {
+                title: 'Basic Input',
+                description: 'Input and FormGroup are interchangeable',
+                code: `// These are equivalent:
+<Input label="Email" name="email" type="email" />
+<FormGroup label="Email" name="email" type="email" />`
+            },
+            {
+                title: 'Input with Icon',
+                description: 'Using leading icon',
+                code: `<Input
+  label="Email Address"
+  name="email"
+  type="email"
+  iconLeading={<MaterialIcon name="mail" />}
+  placeholder="you@example.com"
+/>`
+            },
+            {
+                title: 'Formik Integration',
+                description: 'Automatic binding',
+                code: `<Input
+  formik={formik}
+  name="email"
+  label="Email"
+  iconLeading={<MaterialIcon name="mail" />}
+/>`
+            }
+        ],
+        bestPractices: [
+            'Input is an alias for FormGroup - they are 100% identical',
+            'Use Input for semantic clarity when you specifically want a text input',
+            'Use FormGroup when you need select or textarea variants',
+            'See FormGroup documentation for complete prop list and examples'
+        ],
+        relatedComponents: ['FormGroup', 'MaterialIcon', 'Button']
+    },
+    // ============================================
+    // SELECT COMPONENT (Alias for FormGroup)
+    // ============================================
+    {
+        name: 'Select',
+        importName: 'Select',
+        category: 'form',
+        description: 'Alias for FormGroup component. When you pass children (option elements), FormGroup automatically renders as a select. Use Select for semantic clarity when rendering dropdowns, or use FormGroup directly. Both are identical.',
+        props: [
+            {
+                name: '...props',
+                type: 'FormGroupProps',
+                required: false,
+                description: 'All props from FormGroup are supported. See FormGroup documentation for full prop list.'
+            }
+        ],
+        examples: [
+            {
+                title: 'Basic Select',
+                description: 'Select and FormGroup with children are interchangeable',
+                code: `// These are equivalent:
+<Select label="Country" name="country">
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+</Select>
+
+<FormGroup label="Country" name="country">
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+</FormGroup>`
+            },
+            {
+                title: 'Select with Icon',
+                description: 'Using leading icon',
+                code: `<Select
+  label="Country"
+  name="country"
+  iconLeading={<MaterialIcon name="public" />}
+>
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+  <option value="ca">Canada</option>
+</Select>`
+            },
+            {
+                title: 'Formik Integration',
+                description: 'Automatic binding',
+                code: `<Select
+  formik={formik}
+  name="country"
+  label="Country"
+  iconLeading={<MaterialIcon name="public" />}
+>
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+</Select>`
+            }
+        ],
+        bestPractices: [
+            'Select is an alias for FormGroup - they are 100% identical',
+            'Use Select for semantic clarity when you specifically want a dropdown',
+            'FormGroup auto-detects select mode when children (option elements) are provided',
+            'See FormGroup documentation for complete prop list and examples'
+        ],
+        relatedComponents: ['FormGroup', 'MaterialIcon', 'Combobox']
+    },
+    // ============================================
+    // FORM GROUP COMPONENT (Primary Form Field)
+    // ============================================
+    {
+        name: 'FormGroup',
+        importName: 'FormGroup',
+        category: 'form',
+        description: 'Unified form field component that renders as input, select, or textarea. The primary component for all form fields - supports leading/trailing icons, Formik integration, and modern styling. Input is an alias to this component.',
         props: [
             {
                 name: 'label',
                 type: 'string',
                 required: false,
-                description: 'Label text displayed above the input (uppercase, bold styling)'
+                description: 'Label text displayed above the field (uppercase, bold styling)'
+            },
+            {
+                name: 'as',
+                type: "'input' | 'select' | 'textarea'",
+                required: false,
+                default: "'input'",
+                description: 'Element variant - auto-detects "select" if children provided'
             },
             {
                 name: 'iconLeading',
                 type: 'ReactNode',
                 required: false,
-                description: 'Icon or element displayed at the start of the input (e.g., MaterialIcon)'
+                description: 'Icon or element displayed at the start of the field'
             },
             {
                 name: 'iconTrailing',
                 type: 'ReactNode',
                 required: false,
-                description: 'Icon or element displayed at the end of the input (e.g., MaterialIcon)'
-            },
-            {
-                name: 'error',
-                type: 'string',
-                required: false,
-                description: 'Error message displayed below the input (overrides Formik error when provided)'
+                description: 'Icon or element displayed at the end of the field'
             },
             {
                 name: 'formik',
@@ -265,49 +386,48 @@ export const componentsData = [
                 name: 'name',
                 type: 'string',
                 required: false,
-                description: 'Input name attribute (required when using formik prop)'
+                description: 'Field name attribute (required when using formik prop)'
             },
             {
-                name: 'type',
+                name: 'error',
                 type: 'string',
                 required: false,
-                default: "'text'",
-                description: 'HTML input type (text, email, password, etc.)'
+                description: 'Error message to display (overrides Formik error when provided)'
             },
             {
-                name: 'inputClassName',
+                name: 'children',
+                type: 'ReactNode',
+                required: false,
+                description: 'Option elements for select variant - presence of children auto-switches to select mode'
+            },
+            {
+                name: 'fieldClassName',
                 type: 'string',
                 required: false,
-                description: 'Additional CSS classes for the input element'
+                description: 'Additional CSS classes for the field element'
             },
             {
                 name: 'containerClassName',
                 type: 'string',
                 required: false,
                 description: 'Additional CSS classes for the outer container'
-            },
-            {
-                name: 'className',
-                type: 'string',
-                required: false,
-                description: 'Additional CSS classes (applied to input element)'
             }
         ],
         examples: [
             {
                 title: 'Basic Input',
-                description: 'Simple labeled input',
-                code: `<Input 
+                description: 'Simple text input with label',
+                code: `<FormGroup
   label="Email Address"
-  type="email"
   name="email"
+  type="email"
   placeholder="you@example.com"
 />`
             },
             {
                 title: 'Input with Leading Icon',
                 description: 'Email input with mail icon',
-                code: `<Input
+                code: `<FormGroup
   label="Email Address"
   name="email"
   type="email"
@@ -316,19 +436,9 @@ export const componentsData = [
 />`
             },
             {
-                title: 'Input with Trailing Icon',
-                description: 'Search input with icon on the right',
-                code: `<Input
-  label="Search"
-  name="search"
-  iconTrailing={<MaterialIcon name="search" />}
-  placeholder="Search..."
-/>`
-            },
-            {
-                title: 'Password Input with Icons',
+                title: 'Password Input with Icon',
                 description: 'Password field with lock icon',
-                code: `<Input
+                code: `<FormGroup
   label="Password"
   name="password"
   type="password"
@@ -337,9 +447,43 @@ export const componentsData = [
 />`
             },
             {
-                title: 'Formik Integration (Simple)',
-                description: 'Using formik prop for automatic binding',
-                code: `<Input
+                title: 'Select Dropdown',
+                description: 'Auto-detects select when children are provided',
+                code: `<FormGroup label="Country" name="country">
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+  <option value="ca">Canada</option>
+  <option value="uk">United Kingdom</option>
+</FormGroup>`
+            },
+            {
+                title: 'Select with Icon',
+                description: 'Select dropdown with leading icon',
+                code: `<FormGroup
+  label="Country"
+  name="country"
+  iconLeading={<MaterialIcon name="public" />}
+>
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+  <option value="ca">Canada</option>
+</FormGroup>`
+            },
+            {
+                title: 'Textarea',
+                description: 'Multi-line text input',
+                code: `<FormGroup
+  as="textarea"
+  label="Message"
+  name="message"
+  rows={4}
+  placeholder="Enter your message..."
+/>`
+            },
+            {
+                title: 'Formik Integration',
+                description: 'Automatic binding with Formik',
+                code: `<FormGroup
   formik={formik}
   name="email"
   label="Email Address"
@@ -349,10 +493,10 @@ export const componentsData = [
 />`
             },
             {
-                title: 'Formik Integration (Full Form)',
-                description: 'Complete login form with Formik',
+                title: 'Complete Login Form',
+                description: 'Full form with Formik integration',
                 code: `<form onSubmit={formik.handleSubmit} className="space-y-4">
-  <Input
+  <FormGroup
     formik={formik}
     name="email"
     label="Email Address"
@@ -360,7 +504,7 @@ export const componentsData = [
     iconLeading={<MaterialIcon name="mail" />}
     placeholder="you@example.com"
   />
-  <Input
+  <FormGroup
     formik={formik}
     name="password"
     label="Password"
@@ -372,197 +516,18 @@ export const componentsData = [
     Sign In
   </Button>
 </form>`
-            },
-            {
-                title: 'Input with Error',
-                description: 'Input showing validation error',
-                code: `<Input 
-  label="Password"
-  type="password"
-  name="password"
-  iconLeading={<MaterialIcon name="lock" />}
-  error="Password must be at least 8 characters"
-/>`
-            },
-            {
-                title: 'Disabled Input',
-                description: 'Read-only disabled input',
-                code: `<Input 
-  label="Account ID"
-  value={accountId}
-  disabled
-/>`
             }
         ],
         bestPractices: [
+            'FormGroup is the primary form field component - use it for inputs, selects, and textareas',
+            'Input is an alias to FormGroup for semantic clarity, both work identically',
             'Use iconLeading for context (mail for email, lock for password, search for search)',
-            'When using formik prop, just pass formik instance and name - binding is automatic',
+            'When using formik prop, binding is automatic - no need for value/onChange/onBlur',
+            'Children presence auto-switches to select mode - no need to set as="select"',
             'Icons automatically transition to primary color on focus',
-            'Use appropriate input types (email, password, tel) for mobile keyboards',
-            'Error styling is automatic when using formik prop',
-            'Prefer formik prop over manual value/onChange/onBlur for cleaner code'
+            'Error styling is automatic when using formik prop'
         ],
-        relatedComponents: ['MaterialIcon', 'FormGroup', 'Select', 'Button']
-    },
-    // ============================================
-    // SELECT COMPONENT
-    // ============================================
-    {
-        name: 'Select',
-        importName: 'Select',
-        category: 'form',
-        description: 'Styled select dropdown with label and error support. Supports option children or options prop array.',
-        props: [
-            {
-                name: 'label',
-                type: 'string',
-                required: false,
-                description: 'Label text displayed above the select'
-            },
-            {
-                name: 'error',
-                type: 'string',
-                required: false,
-                description: 'Error message displayed below the select'
-            },
-            {
-                name: 'options',
-                type: 'Array<{ value: string; label: string }>',
-                required: false,
-                description: 'Array of options (alternative to children)'
-            },
-            {
-                name: 'className',
-                type: 'string',
-                required: false,
-                description: 'Additional CSS classes'
-            }
-        ],
-        examples: [
-            {
-                title: 'Select with Options Array',
-                description: 'Using the options prop',
-                code: `<Select
-  label="Country"
-  name="country"
-  options={[
-    { value: 'us', label: 'United States' },
-    { value: 'ca', label: 'Canada' },
-    { value: 'uk', label: 'United Kingdom' },
-  ]}
-  value={country}
-  onChange={(e) => setCountry(e.target.value)}
-/>`
-            },
-            {
-                title: 'Select with Children',
-                description: 'Using option children',
-                code: `<Select label="Size" name="size">
-  <option value="">Select a size</option>
-  <option value="sm">Small</option>
-  <option value="md">Medium</option>
-  <option value="lg">Large</option>
-</Select>`
-            },
-            {
-                title: 'Select with Error',
-                description: 'Showing validation error',
-                code: `<Select
-  label="Category"
-  name="category"
-  options={categoryOptions}
-  value={formik.values.category}
-  onChange={formik.handleChange}
-  error={formik.touched.category && formik.errors.category}
-/>`
-            }
-        ],
-        bestPractices: [
-            'Provide a label for accessibility',
-            'Include a placeholder option with empty value',
-            'Use options prop for dynamic option lists',
-            'Use children for static option lists'
-        ],
-        relatedComponents: ['Input', 'FormGroup', 'Combobox']
-    },
-    // ============================================
-    // FORM GROUP COMPONENT
-    // ============================================
-    {
-        name: 'FormGroup',
-        importName: 'FormGroup',
-        category: 'form',
-        description: 'Container wrapper for form fields providing consistent label, error, and required indicator styling.',
-        props: [
-            {
-                name: 'label',
-                type: 'string',
-                required: false,
-                description: 'Label text for the form field'
-            },
-            {
-                name: 'error',
-                type: 'string',
-                required: false,
-                description: 'Error message to display'
-            },
-            {
-                name: 'required',
-                type: 'boolean',
-                required: false,
-                description: 'Shows required indicator (*) on label'
-            },
-            {
-                name: 'htmlFor',
-                type: 'string',
-                required: false,
-                description: 'ID of the form element for label association'
-            },
-            {
-                name: 'children',
-                type: 'ReactNode',
-                required: true,
-                description: 'Form input element(s) to wrap'
-            }
-        ],
-        examples: [
-            {
-                title: 'Basic Form Group',
-                description: 'Wrapping a custom input',
-                code: `<FormGroup label="Email Address" htmlFor="email">
-  <input id="email" type="email" className="..." />
-</FormGroup>`
-            },
-            {
-                title: 'Required Field',
-                description: 'Form group with required indicator',
-                code: `<FormGroup 
-  label="Password" 
-  error={errors.password}
-  required
-  htmlFor="password"
->
-  <input id="password" type="password" />
-</FormGroup>`
-            },
-            {
-                title: 'Custom Input Wrapper',
-                description: 'Wrapping third-party or custom inputs',
-                code: `<FormGroup label="Phone Number" error={errors.phone}>
-  <PhoneInput 
-    value={phone}
-    onChange={setPhone}
-  />
-</FormGroup>`
-            }
-        ],
-        bestPractices: [
-            'Use FormGroup when wrapping custom or third-party inputs',
-            'Prefer Input/Select components which have built-in styling',
-            'Always provide htmlFor for proper label association',
-            'Use required prop rather than adding * manually'
-        ],
-        relatedComponents: ['Input', 'Select', 'PhoneInput', 'DatePicker']
+        relatedComponents: ['MaterialIcon', 'Button', 'Checkbox', 'RadioGroup']
     },
     // ============================================
     // CARD COMPONENT

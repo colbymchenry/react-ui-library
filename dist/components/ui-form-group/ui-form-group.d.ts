@@ -1,32 +1,27 @@
+import type { ReactNode, ReactElement } from "react";
 import { FormikProps } from "formik";
-import { ReactElement } from "react";
 type OptionElement = ReactElement<React.OptionHTMLAttributes<HTMLOptionElement>>;
 type SelectChildren = OptionElement | OptionElement[];
-type InputWithFormik = {
+type ElementVariant = "input" | "select" | "textarea";
+interface BaseFormGroupProps {
+    label?: string;
+    as?: ElementVariant;
+    iconLeading?: ReactNode;
+    iconTrailing?: ReactNode;
+    error?: string;
+    fieldClassName?: string;
+    containerClassName?: string;
+    children?: SelectChildren;
+}
+type WithFormik = BaseFormGroupProps & {
     formik: FormikProps<any>;
     name: string;
-    label?: string;
-    children?: never;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "name" | "value" | "onChange" | "onBlur" | "children">;
-type InputWithoutFormik = {
+} & Omit<React.InputHTMLAttributes<HTMLInputElement> & React.SelectHTMLAttributes<HTMLSelectElement> & React.TextareaHTMLAttributes<HTMLTextAreaElement>, "name" | "value" | "onChange" | "onBlur">;
+type WithoutFormik = BaseFormGroupProps & {
     formik?: undefined;
     name?: string;
-    label?: string;
-    children?: never;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">;
-type SelectWithFormik = {
-    formik: FormikProps<any>;
-    name: string;
-    label?: string;
-    children: SelectChildren;
-} & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "name" | "value" | "onChange" | "onBlur" | "children">;
-type SelectWithoutFormik = {
-    formik?: undefined;
-    name?: string;
-    label?: string;
-    children: SelectChildren;
-} & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children">;
-type FormGroupProps = InputWithFormik | InputWithoutFormik | SelectWithFormik | SelectWithoutFormik;
+} & (React.InputHTMLAttributes<HTMLInputElement> | React.SelectHTMLAttributes<HTMLSelectElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>);
+type FormGroupProps = WithFormik | WithoutFormik;
 export default function FormGroup(props: FormGroupProps): import("react/jsx-runtime").JSX.Element;
-export {};
+export { default as Input } from "./ui-form-group";
 //# sourceMappingURL=ui-form-group.d.ts.map

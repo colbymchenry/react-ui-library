@@ -1,206 +1,261 @@
+import type { ReactNode, ReactElement } from "react";
 import { cx } from "../../lib/cx";
 import { FormikProps } from "formik";
-import { ReactElement } from "react";
 
 /**
- * Type definition for option elements - enforces only <option> elements as children
+ * Type definition for option elements in select variant
  */
-type OptionElement = ReactElement<
-	React.OptionHTMLAttributes<HTMLOptionElement>
->;
+type OptionElement = ReactElement<React.OptionHTMLAttributes<HTMLOptionElement>>;
 type SelectChildren = OptionElement | OptionElement[];
 
 /**
- * Type definitions for FormGroup component with polymorphic behavior
- * The component renders as:
- * - <select> when children are provided (SelectChildren)
- * - <input> when no children are provided
+ * Element variant determines which HTML element renders
  */
-
-// Input variant types (no children)
-type InputWithFormik = {
-	formik: FormikProps<any>;
-	name: string;
-	label?: string;
-	children?: never; // Explicitly no children for input variant
-} & Omit<
-	React.InputHTMLAttributes<HTMLInputElement>,
-	"name" | "value" | "onChange" | "onBlur" | "children"
->;
-
-type InputWithoutFormik = {
-	formik?: undefined;
-	name?: string;
-	label?: string;
-	children?: never; // Explicitly no children for input variant
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">;
-
-// Select variant types (with children)
-type SelectWithFormik = {
-	formik: FormikProps<any>;
-	name: string;
-	label?: string;
-	children: SelectChildren; // Required children for select variant
-} & Omit<
-	React.SelectHTMLAttributes<HTMLSelectElement>,
-	"name" | "value" | "onChange" | "onBlur" | "children"
->;
-
-type SelectWithoutFormik = {
-	formik?: undefined;
-	name?: string;
-	label?: string;
-	children: SelectChildren; // Required children for select variant
-} & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children">;
-
-// Union type that enforces proper usage
-type FormGroupProps =
-	| InputWithFormik
-	| InputWithoutFormik
-	| SelectWithFormik
-	| SelectWithoutFormik;
+type ElementVariant = "input" | "select" | "textarea";
 
 /**
- * FormGroup Component - Polymorphic Form Field
+ * Base props shared across all variants
+ */
+interface BaseFormGroupProps {
+	/** Label text displayed above the field */
+	label?: string;
+	/** Element variant - defaults to "input", auto-detects "select" if children provided */
+	as?: ElementVariant;
+	/** Icon or element displayed at the start of the field */
+	iconLeading?: ReactNode;
+	/** Icon or element displayed at the end of the field */
+	iconTrailing?: ReactNode;
+	/** Error message to display (overrides Formik error when provided) */
+	error?: string;
+	/** Additional classes for the field element */
+	fieldClassName?: string;
+	/** Additional classes for the container */
+	containerClassName?: string;
+	/** Children - only used for select variant (option elements) */
+	children?: SelectChildren;
+}
+
+/**
+ * Props when using with Formik
+ */
+type WithFormik = BaseFormGroupProps & {
+	formik: FormikProps<any>;
+	name: string;
+} & Omit<
+		React.InputHTMLAttributes<HTMLInputElement> &
+			React.SelectHTMLAttributes<HTMLSelectElement> &
+			React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+		"name" | "value" | "onChange" | "onBlur"
+	>;
+
+/**
+ * Props for standalone usage without Formik
+ */
+type WithoutFormik = BaseFormGroupProps & {
+	formik?: undefined;
+	name?: string;
+} & (
+		| React.InputHTMLAttributes<HTMLInputElement>
+		| React.SelectHTMLAttributes<HTMLSelectElement>
+		| React.TextareaHTMLAttributes<HTMLTextAreaElement>
+	);
+
+type FormGroupProps = WithFormik | WithoutFormik;
+
+/**
+ * FormGroup Component
  *
- * Intelligently renders as either an input or select based on presence of children.
- * Follows the Single Responsibility Principle by delegating rendering logic
- * based on component variant while maintaining consistent interface.
+ * A unified form field component that renders as input, select, or textarea.
+ * Supports leading/trailing icons, Formik integration, and modern styling.
  *
  * Behavior:
- * - With children (option elements): Renders as <select> dropdown
- * - Without children: Renders as <input> text field
+ * - Default: Renders as <input>
+ * - With children: Renders as <select>
+ * - With as="textarea": Renders as <textarea>
  *
  * @example
- * // Renders as input
- * <FormGroup formik={formik} name="email" label="Email" />
+ * // Basic input
+ * <FormGroup label="Email" name="email" type="email" />
  *
  * @example
- * // Renders as select
- * <FormGroup formik={formik} name="country" label="Country">
+ * // Input with icon
+ * <FormGroup
+ *   label="Email"
+ *   name="email"
+ *   iconLeading={<MaterialIcon name="mail" />}
+ *   placeholder="you@example.com"
+ * />
+ *
+ * @example
+ * // Select dropdown
+ * <FormGroup label="Country" name="country">
  *   <option value="">Select a country</option>
  *   <option value="us">United States</option>
+ *   <option value="ca">Canada</option>
  * </FormGroup>
+ *
+ * @example
+ * // Textarea
+ * <FormGroup
+ *   as="textarea"
+ *   label="Message"
+ *   name="message"
+ *   rows={4}
+ *   placeholder="Enter your message..."
+ * />
+ *
+ * @example
+ * // Formik integration
+ * <FormGroup
+ *   formik={formik}
+ *   name="email"
+ *   label="Email Address"
+ *   iconLeading={<MaterialIcon name="mail" />}
+ * />
  */
 export default function FormGroup(props: FormGroupProps) {
-	const { label, formik, name, id, children, ...rest } = props;
+	const {
+		label,
+		as,
+		formik,
+		name,
+		id,
+		iconLeading,
+		iconTrailing,
+		error: externalError,
+		fieldClassName,
+		containerClassName,
+		className,
+		children,
+		...rest
+	} = props;
 
-	// Determine if component should render as select (has children) or input (no children)
-	const isSelect = children !== undefined && children !== null;
+	/** Determine element variant: select if children, otherwise use `as` prop or default to input */
+	const variant: ElementVariant = children ? "select" : as ?? "input";
 
-	/**
-	 * Render logic for Formik-integrated variant
-	 * Handles form state, validation, and error display
-	 */
-	if (formik) {
-		const fieldName = name!;
+	/** Determine the field's id/name for label association */
+	const fieldId = id ?? name;
+	const fieldName = name;
 
-		if (isSelect) {
-			// Render as <select> with Formik integration
-			const selectProps = rest as Omit<
-				React.SelectHTMLAttributes<HTMLSelectElement>,
-				"name" | "value" | "onChange" | "onBlur"
-			>;
+	/** Check if using Formik and extract relevant state */
+	const isFormik = !!formik && !!name;
+	const touched = isFormik ? formik.touched?.[name] : false;
+	const formikError = isFormik ? formik.errors?.[name] : undefined;
+	const hasError = !!(externalError || (touched && formikError));
+	const errorMessage =
+		externalError ||
+		(touched && typeof formikError === "string" ? formikError : undefined);
 
-			return (
-				<div className="form-group">
-					{label && <label htmlFor={id ?? fieldName}>{label}</label>}
+	/** Build field props based on whether Formik is being used */
+	const formikProps = isFormik
+		? {
+				value: formik.values?.[name] ?? "",
+				onChange: formik.handleChange,
+				onBlur: formik.handleBlur,
+			}
+		: {};
+
+	/** Compute padding classes based on icon presence */
+	const paddingLeft = iconLeading ? "pl-12" : "pl-4";
+	const paddingRight = iconTrailing ? "pr-12" : "pr-4";
+
+	/** Shared field classes for consistent styling across variants */
+	const fieldClasses = cx(
+		"block w-full rounded-xl border border-gray-200 dark:border-gray-700",
+		"bg-white dark:bg-card-dark py-3.5",
+		paddingLeft,
+		paddingRight,
+		"text-text-light dark:text-text-dark placeholder-gray-400",
+		"focus:border-primary focus:ring-primary focus:outline-none",
+		"sm:text-sm shadow-sm transition-shadow",
+		hasError && "border-red-500 focus:border-red-500 focus:ring-red-500",
+		fieldClassName,
+		className
+	);
+
+	/** Render the appropriate field element based on variant */
+	const renderField = () => {
+		switch (variant) {
+			case "select":
+				return (
 					<select
-						id={id ?? fieldName}
+						id={fieldId}
 						name={fieldName}
-						value={formik.values?.[fieldName] ?? ""}
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						className={cx(
-							formik.touched?.[fieldName] &&
-								formik.errors?.[fieldName]
-								? "error"
-								: ""
-						)}
-						{...selectProps}
+						className={fieldClasses}
+						{...formikProps}
+						{...(rest as React.SelectHTMLAttributes<HTMLSelectElement>)}
 					>
 						{children}
 					</select>
-					{formik.touched?.[fieldName] &&
-						formik.errors?.[fieldName] && (
-							<span className="error-message">
-								{typeof formik.errors[fieldName] === "string"
-									? formik.errors[fieldName]
-									: "Invalid field"}
-							</span>
-						)}
-				</div>
-			);
-		} else {
-			// Render as <input> with Formik integration
-			const inputProps = rest as Omit<
-				React.InputHTMLAttributes<HTMLInputElement>,
-				"name" | "value" | "onChange" | "onBlur"
-			>;
+				);
 
-			return (
-				<div className="form-group">
-					{label && <label htmlFor={id ?? fieldName}>{label}</label>}
-					<input
-						id={id ?? fieldName}
+			case "textarea":
+				return (
+					<textarea
+						id={fieldId}
 						name={fieldName}
-						value={formik.values?.[fieldName] ?? ""}
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						className={cx(
-							"input",
-							formik.touched?.[fieldName] &&
-								formik.errors?.[fieldName]
-								? "error"
-								: ""
-						)}
-						placeholder={inputProps.placeholder || ""}
-						{...inputProps}
+						className={fieldClasses}
+						{...formikProps}
+						{...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
 					/>
-					{formik.touched?.[fieldName] &&
-						formik.errors?.[fieldName] && (
-							<span className="error-message">
-								{typeof formik.errors[fieldName] === "string"
-									? formik.errors[fieldName]
-									: "Invalid field"}
-							</span>
-						)}
-				</div>
-			);
+				);
+
+			default:
+				return (
+					<input
+						type="text"
+						id={fieldId}
+						name={fieldName}
+						className={fieldClasses}
+						{...formikProps}
+						{...(rest as React.InputHTMLAttributes<HTMLInputElement>)}
+					/>
+				);
 		}
-	}
+	};
 
-	/**
-	 * Render logic for standalone variant (without Formik)
-	 * Supports both controlled and uncontrolled usage
-	 */
-	if (isSelect) {
-		// Render as standalone <select>
-		const selectProps =
-			rest as React.SelectHTMLAttributes<HTMLSelectElement>;
+	return (
+		<div className={cx("space-y-2", containerClassName)}>
+			{/* Label */}
+			{label && (
+				<label
+					htmlFor={fieldId}
+					className="block text-xs font-bold text-text-light dark:text-text-dark uppercase tracking-wider mb-1"
+				>
+					{label}
+				</label>
+			)}
 
-		return (
-			<div className="form-group">
-				{label && <label htmlFor={id || name}>{label}</label>}
-				<select id={id || name} name={name} {...selectProps}>
-					{children}
-				</select>
+			{/* Field wrapper with icon positioning */}
+			<div className="relative group">
+				{/* Leading icon */}
+				{iconLeading && (
+					<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 transition-colors text-gray-400 group-focus-within:text-primary">
+						{iconLeading}
+					</div>
+				)}
+
+				{/* Field element (input, select, or textarea) */}
+				{renderField()}
+
+				{/* Trailing icon */}
+				{iconTrailing && (
+					<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 transition-colors text-gray-400 group-focus-within:text-primary">
+						{iconTrailing}
+					</div>
+				)}
 			</div>
-		);
-	} else {
-		// Render as standalone <input>
-		const inputProps = rest as React.InputHTMLAttributes<HTMLInputElement>;
 
-		return (
-			<div className="form-group">
-				{label && <label htmlFor={id || name}>{label}</label>}
-				<input
-					id={id || name}
-					name={name}
-					className={cx("input")}
-					{...inputProps}
-				/>
-			</div>
-		);
-	}
+			{/* Error message */}
+			{hasError && errorMessage && (
+				<p className="text-xs text-red-500 mt-1">{errorMessage}</p>
+			)}
+		</div>
+	);
 }
+
+/**
+ * Re-export as Input for backwards compatibility and semantic clarity
+ * when specifically rendering text inputs
+ */
+export { default as Input } from "./ui-form-group";
