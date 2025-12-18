@@ -2838,29 +2838,36 @@ function Card({ className, children, ...props }) {
 import { jsxDEV as jsxDEV19 } from "react/jsx-dev-runtime";
 function Separator({
   label,
-  styleVars,
+  lineClassName,
+  labelBgClassName,
+  labelTextClassName,
   className,
   ...props
 }) {
-  const cssVars = {};
-  if (styleVars?.lineColor) {
-    cssVars["--line-color"] = styleVars.lineColor;
-  }
-  if (styleVars?.labelBackground) {
-    cssVars["--label-color"] = styleVars.labelBackground;
-  }
-  if (styleVars?.textColor) {
-    cssVars["--text-color"] = styleVars.textColor;
-  }
-  const hasCustomStyles = Object.keys(cssVars).length > 0;
+  const defaultLineClass = "border-border-light dark:border-border-dark";
+  const defaultLabelBgClass = "bg-card-light dark:bg-background-dark";
+  const defaultLabelTextClass = "text-text-muted-light dark:text-text-muted-dark";
   return /* @__PURE__ */ jsxDEV19("div", {
     ...props,
-    className: cx("separator", className),
-    "data-label": label,
-    style: hasCustomStyles ? cssVars : undefined,
+    className: cx("relative", className),
     role: "separator",
-    "aria-orientation": "horizontal"
-  }, undefined, false, undefined, this);
+    "aria-orientation": "horizontal",
+    children: [
+      /* @__PURE__ */ jsxDEV19("div", {
+        className: "absolute inset-0 flex items-center",
+        children: /* @__PURE__ */ jsxDEV19("div", {
+          className: cx("w-full border-t", lineClassName ?? defaultLineClass)
+        }, undefined, false, undefined, this)
+      }, undefined, false, undefined, this),
+      label && /* @__PURE__ */ jsxDEV19("div", {
+        className: "relative flex justify-center text-sm",
+        children: /* @__PURE__ */ jsxDEV19("span", {
+          className: cx("px-4 uppercase tracking-wider font-bold text-[10px]", labelBgClassName ?? defaultLabelBgClass, labelTextClassName ?? defaultLabelTextClass),
+          children: label
+        }, undefined, false, undefined, this)
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
 }
 export {
   Typography,
@@ -2884,4 +2891,4 @@ export {
   AddMinus
 };
 
-//# debugId=C5347DC6F3DB00D764756E2164756E21
+//# debugId=705B9F958946BFB764756E2164756E21
