@@ -58,7 +58,7 @@ var variantClasses2 = {
   "small-pill": "bg-primary hover:bg-secondary text-white text-[10px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1 transition-all shadow hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed",
   link: "text-primary hover:text-secondary font-bold text-xs uppercase tracking-wide underline decoration-2 underline-offset-4 disabled:opacity-50 disabled:cursor-not-allowed",
   ghost: "text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-text-light dark:hover:text-text-dark px-4 py-2 transition-colors hover:bg-background-light dark:hover:bg-background-dark rounded-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-  social: "w-full flex items-center justify-center gap-3 bg-white dark:bg-card-dark text-text-light dark:text-text-dark border border-border-light dark:border-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+  social: "bg-white dark:bg-card-dark text-text-light dark:text-text-dark border border-border-light dark:border-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
 };
 function Button({
   variant = "primary",
@@ -78,7 +78,7 @@ function Button({
     type,
     disabled: isDisabled,
     ...props,
-    className: cx(variantClasses2[variant], className),
+    className: cx("flex items-center justify-center gap-3", variantClasses2[variant], className),
     children: [
       iconLeading && !(loading && loadingText) && /* @__PURE__ */ jsxDEV3("span", {
         className: "button__icon-leading",
@@ -2590,8 +2590,8 @@ function Input(props) {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur
   } : {};
-  const paddingLeft = iconLeading ? "pl-11" : "pl-4";
-  const paddingRight = iconTrailing ? "pr-11" : "pr-4";
+  const paddingLeft = iconLeading ? "pl-14" : "pl-4";
+  const paddingRight = iconTrailing ? "pr-14" : "pr-4";
   return /* @__PURE__ */ jsxDEV14("div", {
     className: cx("space-y-2", containerClassName),
     children: [
@@ -2917,7 +2917,7 @@ function Checkbox(props) {
     className: cx("flex flex-col", containerClassName),
     children: [
       /* @__PURE__ */ jsxDEV20("div", {
-        className: "flex items-start",
+        className: "flex items-center",
         children: [
           /* @__PURE__ */ jsxDEV20("input", {
             type: "checkbox",
@@ -3072,7 +3072,7 @@ function Alert({
         className: cx(iconColorClasses[variant], "text-[20px] mt-0.5 shrink-0")
       }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV22("div", {
-        className: "flex-1 min-w-0",
+        className: "flex-1 min-w-0 pt-2",
         children: [
           title && /* @__PURE__ */ jsxDEV22("p", {
             className: "font-semibold text-sm mb-1",
@@ -3112,4 +3112,4 @@ export {
   AddMinus
 };
 
-//# debugId=428443EBC28404A064756E2164756E21
+//# debugId=06875E3210F4672464756E2164756E21

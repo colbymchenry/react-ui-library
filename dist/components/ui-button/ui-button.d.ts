@@ -1,5 +1,5 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-type ButtonVariant = 'primary' | 'secondary' | 'pill' | 'small-pill' | 'link' | 'ghost' | 'social';
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+type ButtonVariant = "primary" | "secondary" | "pill" | "small-pill" | "link" | "ghost" | "social";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     iconLeading?: ReactNode;

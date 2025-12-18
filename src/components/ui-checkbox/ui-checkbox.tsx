@@ -107,7 +107,7 @@ export function Checkbox(props: CheckboxProps) {
 
 	return (
 		<div className={cx("flex flex-col", containerClassName)}>
-			<div className="flex items-start">
+			<div className="flex items-center">
 				{/* Checkbox input */}
 				<input
 					type="checkbox"
