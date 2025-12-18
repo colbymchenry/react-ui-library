@@ -260,7 +260,7 @@ function PhoneInput(props: PhoneInputProps) {
 					value={phoneNumber}
 					onChange={handleNumberChange}
 					placeholder={placeholder}
-					className="flex-1 py-4 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+					className="flex-1 py-3.5 px-4 bg-transparent border-0 text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
 				/>
 			</div>
 
