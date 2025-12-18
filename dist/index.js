@@ -52,28 +52,46 @@ function Badge({
 // src/components/ui-button/ui-button.tsx
 import { jsxDEV as jsxDEV3 } from "react/jsx-dev-runtime";
 var variantClasses2 = {
-  primary: "bg-primary hover:bg-secondary text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all transform active:scale-95 text-sm uppercase tracking-wide",
-  secondary: "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-text-light dark:text-text-dark text-xs font-bold py-2 px-5 rounded-md transition-colors uppercase tracking-wide",
-  pill: "bg-primary hover:bg-secondary text-white text-xs font-bold py-2 px-5 rounded-full flex items-center gap-1.5 transition-all shadow-md hover:shadow-lg transform active:scale-95",
-  "small-pill": "bg-primary hover:bg-secondary text-white text-[10px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1 transition-all shadow hover:shadow-md",
-  link: "text-primary hover:text-secondary font-bold text-xs uppercase tracking-wide underline decoration-2 underline-offset-4",
-  ghost: "text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-text-light dark:hover:text-text-dark px-4 py-2 transition-colors hover:bg-background-light dark:hover:bg-background-dark rounded-lg cursor-pointer"
+  primary: "bg-primary hover:bg-secondary text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all transform active:scale-95 text-sm uppercase tracking-wide disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none",
+  secondary: "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-text-light dark:text-text-dark text-xs font-bold py-2 px-5 rounded-md transition-colors uppercase tracking-wide disabled:opacity-50 disabled:cursor-not-allowed",
+  pill: "bg-primary hover:bg-secondary text-white text-xs font-bold py-2 px-5 rounded-full flex items-center gap-1.5 transition-all shadow-md hover:shadow-lg transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none",
+  "small-pill": "bg-primary hover:bg-secondary text-white text-[10px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1 transition-all shadow hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed",
+  link: "text-primary hover:text-secondary font-bold text-xs uppercase tracking-wide underline decoration-2 underline-offset-4 disabled:opacity-50 disabled:cursor-not-allowed",
+  ghost: "text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-text-light dark:hover:text-text-dark px-4 py-2 transition-colors hover:bg-background-light dark:hover:bg-background-dark rounded-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+  social: "w-full flex items-center justify-center gap-3 bg-white dark:bg-card-dark text-text-light dark:text-text-dark border border-border-light dark:border-border-dark hover:bg-gray-50 dark:hover:bg-gray-800 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
 };
 function Button({
   variant = "primary",
   iconLeading,
+  iconTrailing,
   className,
   children,
   type = "button",
+  loading = false,
+  loadingText,
+  disabled,
   ...props
 }) {
+  const isDisabled = disabled || loading;
+  const buttonContent = loading && loadingText ? loadingText : children;
   return /* @__PURE__ */ jsxDEV3("button", {
     type,
+    disabled: isDisabled,
     ...props,
     className: cx(variantClasses2[variant], className),
     children: [
-      iconLeading ? iconLeading : null,
-      children
+      iconLeading && !(loading && loadingText) && /* @__PURE__ */ jsxDEV3("span", {
+        className: "button__icon-leading",
+        children: iconLeading
+      }, undefined, false, undefined, this),
+      buttonContent && /* @__PURE__ */ jsxDEV3("span", {
+        className: "button__content",
+        children: buttonContent
+      }, undefined, false, undefined, this),
+      iconTrailing && !(loading && loadingText) && /* @__PURE__ */ jsxDEV3("span", {
+        className: "button__icon-trailing",
+        children: iconTrailing
+      }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
 }
@@ -2837,4 +2855,4 @@ export {
   AddMinus
 };
 
-//# debugId=6ACECB1A8EFE51F064756E2164756E21
+//# debugId=F7421B2D8BE2D0B364756E2164756E21
