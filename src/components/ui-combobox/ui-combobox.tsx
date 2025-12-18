@@ -185,6 +185,7 @@ function Combobox(props: ComboboxProps) {
 				ref={triggerRef}
 				type="button"
 				className={cx(
+					"!mb-0",
 					"flex items-center justify-between w-full rounded-xl",
 					"border border-gray-200 dark:border-gray-700",
 					"bg-white dark:bg-card-dark py-3.5 px-4",

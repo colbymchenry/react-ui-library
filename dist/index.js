@@ -504,7 +504,7 @@ function Combobox(props) {
       /* @__PURE__ */ jsxDEV10("button", {
         ref: triggerRef,
         type: "button",
-        className: cx("flex items-center justify-between w-full rounded-xl", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", open && "border-primary ring-primary"),
+        className: cx("!mb-0", "flex items-center justify-between w-full rounded-xl", "border border-gray-200 dark:border-gray-700", "bg-white dark:bg-card-dark py-3.5 px-4", "text-text-light dark:text-text-dark", "focus:border-primary focus:ring-primary focus:outline-none", "sm:text-sm shadow-sm transition-shadow", hasError && "border-red-500 focus:border-red-500 focus:ring-red-500", open && "border-primary ring-primary"),
         onClick: handleTriggerClick,
         "aria-expanded": open,
         "aria-haspopup": "dialog",
@@ -3081,4 +3081,4 @@ export {
   AddMinus
 };
 
-//# debugId=7377C256002829D064756E2164756E21
+//# debugId=094EA41BD6A85DD664756E2164756E21
