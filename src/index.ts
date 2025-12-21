@@ -38,3 +38,4 @@ export { Alert } from "./components/ui-alert/ui-alert";
 export type { AlertVariant } from "./components/ui-alert/ui-alert";
 export { SocialProof } from "./components/ui-social-proof/ui-social-proof";
 export { SectionDivider } from "./components/ui-section-divider/ui-section-divider";
+export { Switch } from "./components/ui-switch/ui-switch";

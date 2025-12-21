@@ -3090,9 +3090,72 @@ function SectionDivider({
     ]
   }, undefined, true, undefined, this);
 }
+// src/components/ui-switch/ui-switch.tsx
+import { jsxDEV as jsxDEV23 } from "react/jsx-dev-runtime";
+function Switch({
+  children,
+  formik,
+  name,
+  error,
+  checked,
+  onChange,
+  onBlur,
+  disabled,
+  containerClassName,
+  trackClassName,
+  knobClassName,
+  className,
+  ...props
+}) {
+  const isChecked = formik && name ? Boolean(formik.values[name]) : checked;
+  const errorMessage = error ?? (formik && name && formik.touched[name] && formik.errors[name] ? formik.errors[name] : undefined);
+  const handleChange = formik?.handleChange ?? onChange;
+  const handleBlur = formik?.handleBlur ?? onBlur;
+  return /* @__PURE__ */ jsxDEV23("div", {
+    className: cx("flex flex-col", containerClassName),
+    children: [
+      /* @__PURE__ */ jsxDEV23("label", {
+        className: cx("flex items-start gap-3 cursor-pointer group", disabled && "cursor-not-allowed opacity-50", className),
+        children: [
+          /* @__PURE__ */ jsxDEV23("div", {
+            className: "relative flex items-center flex-shrink-0",
+            children: [
+              /* @__PURE__ */ jsxDEV23("input", {
+                type: "checkbox",
+                checked: isChecked,
+                onChange: handleChange,
+                onBlur: handleBlur,
+                disabled,
+                name,
+                className: "peer sr-only",
+                ...props
+              }, undefined, false, undefined, this),
+              /* @__PURE__ */ jsxDEV23("div", {
+                className: cx("w-10 h-6 rounded-full transition-colors duration-200", "bg-gray-300 dark:bg-gray-700", "peer-checked:bg-primary dark:peer-checked:bg-primary", "peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2", trackClassName),
+                "aria-hidden": "true",
+                children: /* @__PURE__ */ jsxDEV23("div", {
+                  className: cx("absolute top-[2px] left-[2px]", "h-5 w-5 rounded-full", "bg-white border border-gray-300", "transition-transform duration-200 ease-in-out", "peer-checked:translate-x-4 peer-checked:border-white", knobClassName)
+                }, undefined, false, undefined, this)
+              }, undefined, false, undefined, this)
+            ]
+          }, undefined, true, undefined, this),
+          children && /* @__PURE__ */ jsxDEV23("div", {
+            className: "flex-grow min-w-0",
+            children
+          }, undefined, false, undefined, this)
+        ]
+      }, undefined, true, undefined, this),
+      errorMessage && /* @__PURE__ */ jsxDEV23("p", {
+        className: "mt-1 ml-[52px] text-xs text-red-500 dark:text-red-400",
+        children: errorMessage
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
 export {
   Typography,
   ThemeToggle,
+  Switch,
   SocialProof,
   Separator,
   FormGroup as Select,
@@ -3117,4 +3180,4 @@ export {
   AddMinus
 };
 
-//# debugId=0FAAD0596CB2922E64756E2164756E21
+//# debugId=1F494C70AD0064E364756E2164756E21

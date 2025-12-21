@@ -2279,6 +2279,194 @@ export const componentsData: ComponentDoc[] = [
       'Consider using SectionHeader for sections that need icons or trailing actions'
     ],
     relatedComponents: ['SectionHeader', 'Separator', 'Typography', 'Card']
+  },
+
+  // ============================================
+  // SWITCH COMPONENT
+  // ============================================
+  {
+    name: 'Switch',
+    importName: 'Switch',
+    category: 'form',
+    description: 'A toggle switch input with customizable content area. The switch toggle appears on the left, and any children are rendered on the right for maximum flexibility. Perfect for settings, preferences, and add-on selections. Supports Formik integration.',
+    props: [
+      {
+        name: 'children',
+        type: 'ReactNode',
+        required: false,
+        description: 'Content displayed to the right of the switch toggle (label, description, badges, etc.)'
+      },
+      {
+        name: 'checked',
+        type: 'boolean',
+        required: false,
+        description: 'Whether the switch is on (controlled mode)'
+      },
+      {
+        name: 'onChange',
+        type: '(e: ChangeEvent<HTMLInputElement>) => void',
+        required: false,
+        description: 'Change handler - receives native checkbox event'
+      },
+      {
+        name: 'formik',
+        type: 'FormikProps<any>',
+        required: false,
+        description: 'Formik instance for automatic checked/onChange/onBlur binding'
+      },
+      {
+        name: 'name',
+        type: 'string',
+        required: false,
+        description: 'Input name attribute (required when using formik prop)'
+      },
+      {
+        name: 'error',
+        type: 'string',
+        required: false,
+        description: 'Error message to display below the switch'
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        required: false,
+        description: 'Disables the switch interaction'
+      },
+      {
+        name: 'containerClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the outer container'
+      },
+      {
+        name: 'trackClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the toggle track (oval background)'
+      },
+      {
+        name: 'knobClassName',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the toggle knob (sliding circle)'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the label wrapper'
+      }
+    ],
+    examples: [
+      {
+        title: 'Basic Switch',
+        description: 'Simple switch with text label',
+        code: `<Switch
+  checked={enabled}
+  onChange={(e) => setEnabled(e.target.checked)}
+>
+  <span className="text-sm font-medium text-gray-900 dark:text-white">
+    Enable notifications
+  </span>
+</Switch>`
+      },
+      {
+        title: 'Switch with Description',
+        description: 'Switch with label and helper text',
+        code: `<Switch
+  checked={darkMode}
+  onChange={(e) => setDarkMode(e.target.checked)}
+>
+  <div>
+    <span className="text-sm font-bold text-gray-900 dark:text-white">
+      Dark Mode
+    </span>
+    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+      Use dark theme across the application
+    </p>
+  </div>
+</Switch>`
+      },
+      {
+        title: 'Switch with Badge',
+        description: 'Switch with label, description, and status badge',
+        code: `<Switch
+  checked={includeOatMilk}
+  onChange={(e) => setIncludeOatMilk(e.target.checked)}
+>
+  <div className="flex-grow">
+    <div className="flex justify-between items-center">
+      <span className="text-sm font-bold text-gray-900 dark:text-white">
+        Free Oat Milk Add-on
+      </span>
+      <Badge variant="success">FREE</Badge>
+    </div>
+    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+      Barista edition, 1L carton
+    </p>
+  </div>
+</Switch>`
+      },
+      {
+        title: 'Formik Integration',
+        description: 'Switch with automatic Formik binding',
+        code: `<Switch formik={formik} name="emailNotifications">
+  <div>
+    <span className="text-sm font-bold text-gray-900 dark:text-white">
+      Email Notifications
+    </span>
+    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+      Receive updates about your account
+    </p>
+  </div>
+</Switch>`
+      },
+      {
+        title: 'Settings List',
+        description: 'Multiple switches in a settings panel',
+        code: `<Card>
+  <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div className="py-4">
+      <Switch checked={notifications} onChange={(e) => setNotifications(e.target.checked)}>
+        <span className="text-sm font-medium">Push Notifications</span>
+      </Switch>
+    </div>
+    <div className="py-4">
+      <Switch checked={sounds} onChange={(e) => setSounds(e.target.checked)}>
+        <span className="text-sm font-medium">Sound Effects</span>
+      </Switch>
+    </div>
+    <div className="py-4">
+      <Switch checked={autoSave} onChange={(e) => setAutoSave(e.target.checked)}>
+        <span className="text-sm font-medium">Auto-save Drafts</span>
+      </Switch>
+    </div>
+  </div>
+</Card>`
+      },
+      {
+        title: 'Disabled Switch',
+        description: 'Non-interactive switch state',
+        code: `<Switch
+  checked={true}
+  disabled
+>
+  <span className="text-sm font-medium text-gray-900 dark:text-white">
+    Premium Feature (Upgrade Required)
+  </span>
+</Switch>`
+      }
+    ],
+    bestPractices: [
+      'Use Switch for binary on/off settings and preferences',
+      'Use Checkbox for agreement/consent forms (terms, policies)',
+      'Children area is fully customizable - add labels, descriptions, badges, icons',
+      'Access native event value via e.target.checked in onChange handler',
+      'The toggle is on the left, content flows to the right for natural reading',
+      'Use flex-grow in children for content that should span available width',
+      'Formik integration works with boolean field values'
+    ],
+    relatedComponents: ['Checkbox', 'RadioGroup', 'Badge', 'Card']
   }
 ];
 
