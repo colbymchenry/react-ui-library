@@ -142,29 +142,28 @@ export function Switch({
 						{...props}
 					/>
 
-					{/* Toggle track - the oval background */}
+					{/* 
+					 * Toggle track with knob as ::after pseudo-element.
+					 * Using after: ensures the knob inherits peer-checked state properly,
+					 * since peer-checked only works on siblings of the peer element.
+					 */}
 					<div
 						className={cx(
 							"w-10 h-6 rounded-full transition-colors duration-200",
 							"bg-gray-300 dark:bg-gray-700",
 							"peer-checked:bg-primary dark:peer-checked:bg-primary",
 							"peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2",
-							trackClassName
+							// Knob styles using after: pseudo-element
+							"after:content-[''] after:absolute after:top-[2px] after:left-[2px]",
+							"after:h-5 after:w-5 after:rounded-full",
+							"after:bg-white after:border after:border-gray-300",
+							"after:transition-all after:duration-200",
+							"peer-checked:after:translate-x-4 peer-checked:after:border-white",
+							trackClassName,
+							knobClassName
 						)}
 						aria-hidden="true"
-					>
-						{/* Toggle knob - the sliding circle */}
-						<div
-							className={cx(
-								"absolute top-[2px] left-[2px]",
-								"h-5 w-5 rounded-full",
-								"bg-white border border-gray-300",
-								"transition-transform duration-200 ease-in-out",
-								"peer-checked:translate-x-4 peer-checked:border-white",
-								knobClassName
-							)}
-						/>
-					</div>
+					/>
 				</div>
 
 				{/* Customizable content area - renders children */}

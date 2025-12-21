@@ -3131,11 +3131,8 @@ function Switch({
                 ...props
               }, undefined, false, undefined, this),
               /* @__PURE__ */ jsxDEV23("div", {
-                className: cx("w-10 h-6 rounded-full transition-colors duration-200", "bg-gray-300 dark:bg-gray-700", "peer-checked:bg-primary dark:peer-checked:bg-primary", "peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2", trackClassName),
-                "aria-hidden": "true",
-                children: /* @__PURE__ */ jsxDEV23("div", {
-                  className: cx("absolute top-[2px] left-[2px]", "h-5 w-5 rounded-full", "bg-white border border-gray-300", "transition-transform duration-200 ease-in-out", "peer-checked:translate-x-4 peer-checked:border-white", knobClassName)
-                }, undefined, false, undefined, this)
+                className: cx("w-10 h-6 rounded-full transition-colors duration-200", "bg-gray-300 dark:bg-gray-700", "peer-checked:bg-primary dark:peer-checked:bg-primary", "peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2", "after:content-[''] after:absolute after:top-[2px] after:left-[2px]", "after:h-5 after:w-5 after:rounded-full", "after:bg-white after:border after:border-gray-300", "after:transition-all after:duration-200", "peer-checked:after:translate-x-4 peer-checked:after:border-white", trackClassName, knobClassName),
+                "aria-hidden": "true"
               }, undefined, false, undefined, this)
             ]
           }, undefined, true, undefined, this),
@@ -3180,4 +3177,4 @@ export {
   AddMinus
 };
 
-//# debugId=1F494C70AD0064E364756E2164756E21
+//# debugId=9D09FC2A69AC255964756E2164756E21
