@@ -2169,6 +2169,116 @@ export const componentsData: ComponentDoc[] = [
       'Combine with testimonials for stronger social proof'
     ],
     relatedComponents: ['Card', 'Badge', 'MaterialIcon']
+  },
+
+  // ============================================
+  // SECTION DIVIDER COMPONENT
+  // ============================================
+  {
+    name: 'SectionDivider',
+    importName: 'SectionDivider',
+    category: 'layout',
+    description: 'Decorative horizontal divider with centered title text. Features gradient lines that fade from the center outward, creating an elegant visual separation between major sections of a page or dashboard. Supports both light and dark modes.',
+    props: [
+      {
+        name: 'title',
+        type: 'string',
+        required: true,
+        description: 'Title text displayed centered between the decorative gradient lines'
+      },
+      {
+        name: 'lineClassName',
+        type: 'string',
+        required: false,
+        default: '"to-gray-300"',
+        description: 'Custom gradient line color class for light mode'
+      },
+      {
+        name: 'lineDarkClassName',
+        type: 'string',
+        required: false,
+        default: '"dark:to-gray-600"',
+        description: 'Custom gradient line color class for dark mode'
+      },
+      {
+        name: 'titleClassName',
+        type: 'string',
+        required: false,
+        default: '"text-gray-500 dark:text-white"',
+        description: 'Custom title text color class'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Additional CSS classes for the container'
+      }
+    ],
+    examples: [
+      {
+        title: 'Basic Section Divider',
+        description: 'Simple divider with title',
+        code: `<SectionDivider title="Featured Products" />`
+      },
+      {
+        title: 'Dashboard Section Divider',
+        description: 'Separating sections in a dashboard layout',
+        code: `<div className="space-y-8">
+  <StatsCards />
+  <SectionDivider title="Recent Activity" />
+  <ActivityTable />
+  <SectionDivider title="Analytics Overview" />
+  <AnalyticsCharts />
+</div>`
+      },
+      {
+        title: 'Custom Styled Divider',
+        description: 'Divider with brand colors',
+        code: `<SectionDivider
+  title="Premium Collection"
+  lineClassName="to-primary/30"
+  lineDarkClassName="dark:to-primary/30"
+  titleClassName="text-primary dark:text-primary"
+/>`
+      },
+      {
+        title: 'Page Section Separator',
+        description: 'Breaking up landing page sections',
+        code: `<section className="py-16">
+  <SectionDivider title="What Our Customers Say" />
+  <div className="mt-12 grid gap-6 md:grid-cols-3">
+    <TestimonialCard />
+    <TestimonialCard />
+    <TestimonialCard />
+  </div>
+</section>`
+      },
+      {
+        title: 'Form Section Divider',
+        description: 'Separating form sections',
+        code: `<form className="space-y-6">
+  <Input label="Full Name" name="name" />
+  <Input label="Email" name="email" type="email" />
+  
+  <SectionDivider title="Address Information" />
+  
+  <Input label="Street Address" name="street" />
+  <div className="grid grid-cols-2 gap-4">
+    <Input label="City" name="city" />
+    <Input label="ZIP Code" name="zip" />
+  </div>
+</form>`
+      }
+    ],
+    bestPractices: [
+      'Use to visually separate major sections of a page or dashboard',
+      'Keep title text short and descriptive (2-4 words)',
+      'The component includes mb-10 spacing by default - adjust with className if needed',
+      'Works well for breaking up long forms into logical sections',
+      'Gradient lines create visual flow from content to the center title',
+      'Consider using SectionHeader for sections that need icons or trailing actions'
+    ],
+    relatedComponents: ['SectionHeader', 'Separator', 'Typography', 'Card']
   }
 ];
 

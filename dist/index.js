@@ -3056,6 +3056,40 @@ function SocialProof({
     ]
   }, undefined, true, undefined, this);
 }
+// src/components/ui-section-divider/ui-section-divider.tsx
+import { jsxDEV as jsxDEV22 } from "react/jsx-dev-runtime";
+function SectionDivider({
+  title,
+  lineClassName,
+  lineDarkClassName,
+  titleClassName,
+  className,
+  ...props
+}) {
+  const defaultLineClass = "to-gray-300";
+  const defaultLineDarkClass = "dark:to-gray-600";
+  const defaultTitleClass = "text-gray-500 dark:text-white";
+  return /* @__PURE__ */ jsxDEV22("div", {
+    ...props,
+    className: cx("flex items-center gap-4 mb-10 opacity-60", className),
+    role: "separator",
+    "aria-orientation": "horizontal",
+    children: [
+      /* @__PURE__ */ jsxDEV22("div", {
+        className: cx("h-px bg-gradient-to-r from-transparent flex-grow", lineClassName ?? defaultLineClass, lineDarkClassName ?? defaultLineDarkClass),
+        "aria-hidden": "true"
+      }, undefined, false, undefined, this),
+      /* @__PURE__ */ jsxDEV22("h2", {
+        className: cx("text-sm font-bold uppercase tracking-[0.2em] text-center", titleClassName ?? defaultTitleClass),
+        children: title
+      }, undefined, false, undefined, this),
+      /* @__PURE__ */ jsxDEV22("div", {
+        className: cx("h-px bg-gradient-to-l from-transparent flex-grow", lineClassName ?? defaultLineClass, lineDarkClassName ?? defaultLineDarkClass),
+        "aria-hidden": "true"
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
 export {
   Typography,
   ThemeToggle,
@@ -3063,6 +3097,7 @@ export {
   Separator,
   FormGroup as Select,
   SectionHeader,
+  SectionDivider,
   RadioGroup,
   ui_phone_input_default as PhoneInput,
   PageShell,
@@ -3082,4 +3117,4 @@ export {
   AddMinus
 };
 
-//# debugId=9B51EEBD9918ADB064756E2164756E21
+//# debugId=0FAAD0596CB2922E64756E2164756E21
