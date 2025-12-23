@@ -115,9 +115,11 @@ export function Checkbox(props: CheckboxProps) {
 					name={inputName}
 					className={cx(
 						"h-4 w-4 rounded border-gray-300 dark:border-gray-600",
-						"text-primary focus:ring-primary focus:ring-offset-0",
+						"accent-primary focus:ring-primary focus:ring-offset-0",
 						"bg-white dark:bg-card-dark",
 						"cursor-pointer transition-colors",
+						// Explicit checked state styling for cross-browser support
+						"checked:bg-primary checked:border-primary",
 						hasError && "border-red-500",
 						className
 					)}

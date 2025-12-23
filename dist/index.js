@@ -2879,7 +2879,7 @@ function Checkbox(props) {
             type: "checkbox",
             id: inputId,
             name: inputName,
-            className: cx("h-4 w-4 rounded border-gray-300 dark:border-gray-600", "text-primary focus:ring-primary focus:ring-offset-0", "bg-white dark:bg-card-dark", "cursor-pointer transition-colors", hasError && "border-red-500", className),
+            className: cx("h-4 w-4 rounded border-gray-300 dark:border-gray-600", "accent-primary focus:ring-primary focus:ring-offset-0", "bg-white dark:bg-card-dark", "cursor-pointer transition-colors", "checked:bg-primary checked:border-primary", hasError && "border-red-500", className),
             ...inputProps,
             ...rest
           }, undefined, false, undefined, this),
@@ -3222,4 +3222,4 @@ export {
   AddMinus
 };
 
-//# debugId=176E0259B7D49BA164756E2164756E21
+//# debugId=E0A8FA97C4D5C61364756E2164756E21
