@@ -8,6 +8,7 @@ export { MaterialIcon } from "./components/material-icon/material-icon";
 export { Badge } from "./components/ui-badge/ui-badge";
 export { Button } from "./components/ui-button/ui-button";
 export { Header } from "./components/ui-header/ui-header";
+export type { NavLink } from "./components/ui-header/ui-header";
 export { PageShell } from "./components/ui-page-shell/ui-page-shell";
 export { SectionHeader } from "./components/ui-section-header/ui-section-header";
 export { ThemeToggle } from "./components/ui-theme-toggle/ui-theme-toggle";

@@ -1370,57 +1370,146 @@ export const componentsData = [
         name: 'Header',
         importName: 'Header',
         category: 'layout',
-        description: 'Page header component with title, subtitle, and action area.',
+        description: 'Responsive sticky header with brand, navigation links, and action slots. Features a mobile-friendly hamburger menu that toggles navigation visibility using a CSS-only approach. Navigation links support optional icons and active state highlighting.',
         props: [
             {
-                name: 'title',
-                type: 'string',
-                required: true,
-                description: 'Page title'
-            },
-            {
-                name: 'subtitle',
-                type: 'string',
-                required: false,
-                description: 'Subtitle or description'
-            },
-            {
-                name: 'actions',
+                name: 'brand',
                 type: 'ReactNode',
                 required: false,
-                description: 'Action buttons area'
+                description: 'Custom brand/logo content - defaults to Volcanica branding if not provided'
+            },
+            {
+                name: 'navLinks',
+                type: 'NavLink[]',
+                required: false,
+                description: 'Array of navigation links: { label, href, icon?, active? }'
+            },
+            {
+                name: 'rightSlot',
+                type: 'ReactNode',
+                required: false,
+                description: 'Content for the right side of the header (theme toggle, user menu, notifications, etc.)'
+            },
+            {
+                name: 'renderLink',
+                type: '(link: NavLink, className: string) => ReactNode',
+                required: false,
+                description: 'Custom link renderer for router integration (Remix Link, Next.js Link, etc.)'
+            },
+            {
+                name: 'className',
+                type: 'string',
+                required: false,
+                description: 'Additional CSS classes for the header element'
             }
         ],
         examples: [
             {
-                title: 'Simple Header',
-                description: 'Header with title only',
-                code: `<Header title="Dashboard" />`
+                title: 'Basic Header with Navigation',
+                description: 'Header with navigation links',
+                code: `<Header
+  navLinks={[
+    { label: "Overview", href: "/overview" },
+    { label: "Gifting", href: "/gifting" },
+    { label: "Rewards", href: "/rewards" },
+    { label: "Account", href: "/account" },
+  ]}
+/>`
             },
             {
-                title: 'Header with Actions',
-                description: 'Full header with subtitle and buttons',
+                title: 'Header with Active Link and Icon',
+                description: 'Navigation with active state and icon',
                 code: `<Header
-  title="Products"
-  subtitle="Manage your product catalog"
-  actions={
-    <Button 
-      variant="primary" 
-      iconLeading={<MaterialIcon name="add" />}
-    >
-      Add Product
-    </Button>
+  navLinks={[
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Settings", href: "/settings" },
+    { label: "Admin", href: "/admin", icon: "admin_panel_settings", active: true },
+  ]}
+/>`
+            },
+            {
+                title: 'Header with Custom Brand',
+                description: 'Custom brand/logo content',
+                code: `<Header
+  brand={
+    <div className="flex items-center gap-2">
+      <img src="/logo.svg" alt="Logo" className="h-8" />
+      <span className="font-bold text-xl">My App</span>
+    </div>
+  }
+  navLinks={navLinks}
+/>`
+            },
+            {
+                title: 'Header with Right Slot',
+                description: 'Custom right side content with user menu',
+                code: `<Header
+  navLinks={navLinks}
+  rightSlot={
+    <div className="flex items-center gap-3">
+      <ThemeToggle />
+      <button className="relative p-2 rounded-full bg-gray-100 dark:bg-gray-800">
+        <MaterialIcon name="notifications" className="text-[20px]" />
+        <span className="absolute top-0 right-0 h-2.5 w-2.5 bg-primary rounded-full" />
+      </button>
+      <button className="h-9 w-9 rounded-full bg-primary text-white font-bold text-xs">
+        CM
+      </button>
+    </div>
+  }
+/>`
+            },
+            {
+                title: 'Remix Router Integration',
+                description: 'Using Remix Link component for navigation',
+                code: `import { Link } from "@remix-run/react";
+
+<Header
+  navLinks={navLinks}
+  renderLink={(link, className) => (
+    <Link to={link.href} className={className}>
+      {link.icon && <MaterialIcon name={link.icon} className="text-[16px]" />}
+      {link.label}
+    </Link>
+  )}
+/>`
+            },
+            {
+                title: 'Full Header Example',
+                description: 'Complete header with all features',
+                code: `const navLinks: NavLink[] = [
+  { label: "Overview", href: "/" },
+  { label: "Gifting", href: "/gifting" },
+  { label: "Rewards", href: "/rewards" },
+  { label: "Feedback", href: "/feedback" },
+  { label: "History", href: "/history" },
+  { label: "Account", href: "/account" },
+  { label: "Help", href: "/help" },
+  { label: "Admin", href: "/admin", icon: "admin_panel_settings", active: true },
+];
+
+<Header
+  navLinks={navLinks}
+  rightSlot={
+    <div className="flex items-center gap-3">
+      <ThemeToggle />
+      <NotificationButton />
+      <UserAvatar initials="CM" />
+    </div>
   }
 />`
             }
         ],
         bestPractices: [
-            'Use inside PageShell header prop',
-            'Keep titles concise',
-            'Use subtitle for additional context',
-            'Place primary actions in the actions prop'
+            'Use navLinks array for navigation - supports icons and active states',
+            'Use renderLink prop for router integration (Remix, Next.js, React Router)',
+            'Mobile menu is CSS-only - no JavaScript state required',
+            'ThemeToggle is shown in mobile controls automatically',
+            'rightSlot is hidden on mobile - key actions should be in navLinks',
+            'Active links display in primary color for visual feedback',
+            'Import NavLink type for TypeScript: import { Header, NavLink } from "@colbymchenry/react-ui-library"'
         ],
-        relatedComponents: ['PageShell', 'SectionHeader', 'Button']
+        relatedComponents: ['PageShell', 'ThemeToggle', 'MaterialIcon', 'Button']
     },
     // ============================================
     // SECTION HEADER COMPONENT

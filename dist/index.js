@@ -95,6 +95,9 @@ function Button({
     ]
   }, undefined, true, undefined, this);
 }
+// src/components/ui-header/ui-header.tsx
+import { useId } from "react";
+
 // src/components/ui-theme-toggle/ui-theme-toggle.tsx
 import { useEffect, useMemo, useState } from "react";
 import { jsxDEV as jsxDEV4 } from "react/jsx-dev-runtime";
@@ -148,35 +151,77 @@ function ThemeToggle({ className }) {
 // src/components/ui-header/ui-header.tsx
 import { jsxDEV as jsxDEV5 } from "react/jsx-dev-runtime";
 "use client";
-function Header({ brand, rightSlot }) {
-  return /* @__PURE__ */ jsxDEV5("header", {
-    className: "w-full px-8 py-5 flex justify-between items-center bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark sticky top-0 z-50",
+function Header({
+  brand,
+  navLinks,
+  rightSlot,
+  className,
+  renderLink
+}) {
+  const menuId = useId();
+  const defaultRenderLink = (link, linkClassName) => /* @__PURE__ */ jsxDEV5("a", {
+    href: link.href,
+    className: linkClassName,
     children: [
-      brand ?? /* @__PURE__ */ jsxDEV5("div", {
-        className: "flex items-center gap-4",
+      link.icon && /* @__PURE__ */ jsxDEV5(MaterialIcon, {
+        name: link.icon,
+        className: "text-[16px]"
+      }, undefined, false, undefined, this),
+      link.label
+    ]
+  }, undefined, true, undefined, this);
+  const linkRenderer = renderLink ?? defaultRenderLink;
+  const getLinkClassName = (link) => cx("text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-1", link.active ? "text-primary hover:text-secondary" : "text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary");
+  return /* @__PURE__ */ jsxDEV5("header", {
+    className: cx("w-full px-8 py-5 flex flex-wrap xl:flex-nowrap items-center", "bg-card-light dark:bg-card-dark", "border-b border-border-light dark:border-border-dark", "sticky top-0 z-50", className),
+    children: [
+      /* @__PURE__ */ jsxDEV5("div", {
+        className: "flex items-center gap-4 flex-shrink-0",
+        children: brand ?? /* @__PURE__ */ jsxDEV5("div", {
+          className: "flex flex-col items-start justify-center font-heading font-black text-2xl tracking-tight leading-none text-text-light dark:text-white",
+          children: [
+            /* @__PURE__ */ jsxDEV5("span", {
+              children: "VOLCANICA"
+            }, undefined, false, undefined, this),
+            /* @__PURE__ */ jsxDEV5("span", {
+              className: "text-[0.6rem] tracking-[0.3em] font-bold text-text-muted-light dark:text-text-muted-dark uppercase mt-0.5",
+              children: "Coffee Company"
+            }, undefined, false, undefined, this)
+          ]
+        }, undefined, true, undefined, this)
+      }, undefined, false, undefined, this),
+      navLinks && navLinks.length > 0 && /* @__PURE__ */ jsxDEV5("div", {
+        className: "hidden xl:block h-8 w-px bg-border-light dark:bg-border-dark mx-6"
+      }, undefined, false, undefined, this),
+      /* @__PURE__ */ jsxDEV5("div", {
+        className: "flex items-center gap-3 ml-auto xl:hidden",
         children: [
-          /* @__PURE__ */ jsxDEV5("div", {
-            className: "flex flex-col items-center justify-center font-heading font-black text-2xl tracking-tight leading-none text-text-light dark:text-white",
-            children: [
-              /* @__PURE__ */ jsxDEV5("span", {
-                children: "VOLCANICA"
-              }, undefined, false, undefined, this),
-              /* @__PURE__ */ jsxDEV5("span", {
-                className: "text-[0.6rem] tracking-[0.3em] font-bold text-text-muted-light dark:text-text-muted-dark uppercase mt-0.5",
-                children: "Coffee Company"
-              }, undefined, false, undefined, this)
-            ]
-          }, undefined, true, undefined, this),
-          /* @__PURE__ */ jsxDEV5("div", {
-            className: "h-8 w-px bg-gray-200 dark:bg-gray-700 mx-2"
-          }, undefined, false, undefined, this),
-          /* @__PURE__ */ jsxDEV5("span", {
-            className: "font-bold text-sm uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark",
-            children: "UI Library"
+          /* @__PURE__ */ jsxDEV5(ThemeToggle, {}, undefined, false, undefined, this),
+          navLinks && navLinks.length > 0 && /* @__PURE__ */ jsxDEV5("label", {
+            htmlFor: menuId,
+            className: cx("bg-gray-100 dark:bg-gray-800 p-2 rounded-full", "text-text-light dark:text-text-dark", "hover:bg-gray-200 dark:hover:bg-gray-700", "transition-colors cursor-pointer select-none"),
+            "aria-label": "Toggle navigation menu",
+            children: /* @__PURE__ */ jsxDEV5(MaterialIcon, {
+              name: "menu",
+              className: "text-[20px]"
+            }, undefined, false, undefined, this)
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
+      navLinks && navLinks.length > 0 && /* @__PURE__ */ jsxDEV5("input", {
+        type: "checkbox",
+        id: menuId,
+        className: "hidden peer",
+        "aria-hidden": "true"
+      }, undefined, false, undefined, this),
+      navLinks && navLinks.length > 0 && /* @__PURE__ */ jsxDEV5("nav", {
+        className: cx("hidden peer-checked:flex", "xl:flex", "w-full xl:w-auto", "flex-col xl:flex-row", "items-start xl:items-center", "gap-4 xl:gap-6", "mt-5 xl:mt-0", "pt-5 xl:pt-0", "border-t xl:border-t-0 border-gray-100 dark:border-gray-800", "order-last xl:order-none"),
+        children: navLinks.map((link) => /* @__PURE__ */ jsxDEV5("span", {
+          children: linkRenderer(link, getLinkClassName(link))
+        }, link.href, false, undefined, this))
+      }, undefined, false, undefined, this),
       /* @__PURE__ */ jsxDEV5("div", {
+        className: "hidden xl:flex items-center gap-3 ml-auto",
         children: rightSlot ?? /* @__PURE__ */ jsxDEV5(ThemeToggle, {}, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     ]
@@ -3177,4 +3222,4 @@ export {
   AddMinus
 };
 
-//# debugId=9D09FC2A69AC255964756E2164756E21
+//# debugId=176E0259B7D49BA164756E2164756E21
